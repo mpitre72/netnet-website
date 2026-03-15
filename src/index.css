@@ -10,7 +10,10 @@
   --color-green: #5FCEA8;
   --color-espresso: #2C1810;
   --color-parchment: #FAF5ED;
+  --color-netnet-blue: #0B88F9;
   --font-sans: 'Ubuntu', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 html {

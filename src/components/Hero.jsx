@@ -3,14 +3,11 @@ import logoReverse from '../assets/logo/logo-reverse.svg?raw'
 function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center bg-deep-violet overflow-hidden px-6">
-      {/* Film grain texture overlay */}
-      <div className="pointer-events-none absolute inset-0 z-10 opacity-[0.03]">
-        <svg width="100%" height="100%">
-          <filter id="grain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#grain)" />
-        </svg>
+      {/* Environmental background text */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="text-[30vw] font-serif font-bold italic text-netnet-purple/[0.08] leading-none">
+          TRUTH
+        </span>
       </div>
 
       {/* Content */}
