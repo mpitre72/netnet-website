@@ -1,6 +1,7 @@
 import FilmGrain from './components/FilmGrain'
 import Hero from './components/Hero'
 import TheProblem from './components/TheProblem'
+import EstimationTruth from './components/EstimationTruth'
 import TheShift from './components/TheShift'
 import FlowMeter from './components/FlowMeter'
 import FeatureCards from './components/FeatureCards'
@@ -16,6 +17,7 @@ function App() {
       <main>
         <Hero />
         <TheProblem />
+        <EstimationTruth />
         <TheShift />
         <FlowMeter />
         <FeatureCards />

@@ -1,77 +1,57 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
-const testimonials = [
-  {
-    quote: 'We thought we knew what things took. Net Net showed us we were wrong on almost every deliverable type we sold. We repriced. We stopped guessing.',
-    attribution: 'Agency founder, subscription design program',
-  },
-  {
-    quote: 'Three jobs in, the pattern was impossible to ignore. Our estimates weren\'t informed by data. They were informed by hope. Net Net ended that.',
-    attribution: 'Agency principal, 8-person creative firm',
-  },
-  {
-    quote: 'The first time an owner sees individual hours tied to actual deliverables, something changes. Not just the data. The conversation.',
-    attribution: 'Operations lead, technical consultancy',
-  },
+const quotes = [
+  "We thought we knew what things took. Net Net showed us we were wrong on almost every deliverable type we sold. We repriced. We stopped guessing.",
+  "Our estimates weren't informed by data. They were informed by hope. Net Net ended that.",
+  "The first time an owner sees individual hours tied to actual deliverables, something changes. Not just the data — the conversation.",
 ]
 
 function SocialProof() {
-  const sectionRef = useScrollAnimation((el, gsap) => {
-    gsap.from(el.querySelector('h2'), {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 75%' },
+  const sectionRef = useScrollAnimation((el, gsap, ScrollTrigger) => {
+    const slides = el.querySelectorAll('.proof-slide')
+
+    // Pin the section, cycle through quotes
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: 'top top',
+        end: `+=${window.innerHeight * (quotes.length + 0.5)}`,
+        scrub: 1,
+        pin: el.querySelector('.proof-pin'),
+        pinSpacing: true,
+      },
     })
 
-    gsap.from(el.querySelectorAll('.proof-card'), {
-      opacity: 0,
-      y: 30,
-      stagger: 0.2,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el.querySelector('.proofs'), start: 'top 80%' },
+    slides.forEach((slide, i) => {
+      if (i === 0) {
+        tl.fromTo(slide, { opacity: 0 }, { opacity: 1, duration: 0.5 })
+      }
+      if (i > 0) {
+        tl.fromTo(slides[i - 1], { opacity: 1 }, { opacity: 0, duration: 0.3 }, `>${0.5}`)
+        tl.fromTo(slide, { opacity: 0 }, { opacity: 1, duration: 0.5 }, '<0.1')
+      }
+      if (i === slides.length - 1) {
+        tl.to(slide, { opacity: 1, duration: 0.5 })
+        tl.to(slide, { opacity: 0, duration: 0.3 })
+      }
     })
   })
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-cream py-24 md:py-32 px-6 overflow-hidden"
-    >
-      <div className="relative z-10 max-w-5xl mx-auto">
-        <p className="font-mono text-sm text-burnt-sienna mb-6 tracking-wider uppercase">
-          Why it exists
-        </p>
-
-        <h2 className="text-espresso text-3xl md:text-5xl font-bold leading-tight mb-6 max-w-3xl">
-          The first users didn't celebrate.{' '}
-          <span className="font-serif italic text-netnet-purple">They were uncomfortable.</span>
-        </h2>
-        <p className="text-espresso/60 text-lg mb-16 max-w-2xl">
-          That's the point. You can't fix what you can't see. Net Net shows you what's actually happening. What you do with that truth is yours to own.
-        </p>
-
-        <div className="proofs space-y-6">
-          {testimonials.map((t, i) => (
+    <section ref={sectionRef} className="relative bg-cream overflow-hidden light-section">
+      <div className="proof-pin min-h-screen flex items-center justify-center px-6">
+        <div className="relative max-w-3xl mx-auto text-center" style={{ minHeight: '200px' }}>
+          {quotes.map((quote, i) => (
             <div
               key={i}
-              className="proof-card bg-white rounded-2xl p-8 md:p-10 border-l-4 border-goldenrod"
+              className="proof-slide absolute inset-0 flex items-center justify-center opacity-0"
             >
-              <p className="font-serif italic text-espresso text-lg md:text-xl leading-relaxed mb-4">
-                "{t.quote}"
-              </p>
-              <p className="font-mono text-xs text-espresso/40 uppercase tracking-wider">
-                {t.attribution}
+              <p className="text-deep-violet text-xl md:text-3xl lg:text-4xl font-bold leading-snug">
+                &ldquo;{quote}&rdquo;
               </p>
             </div>
           ))}
         </div>
-
-        <p className="mt-12 font-mono text-sm text-goldenrod text-center">
-          59% of agencies have fewer than 10 people. This is exactly who we built it for.
-        </p>
       </div>
     </section>
   )
