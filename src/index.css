@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-deep-violet: #1F194C;
+  --color-cream: #F5EADB;
+  --color-netnet-purple: #6B5CE7;
+  --color-goldenrod: #D4A843;
+  --color-burnt-sienna: #C4633E;
+  --color-teal: #1B6B6D;
+  --color-green: #5FCEA8;
+  --color-espresso: #2C1810;
+  --color-parchment: #FAF5ED;
+  --font-sans: 'Ubuntu', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Ubuntu', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
