@@ -98,7 +98,7 @@ const DRAW_GROUPS = [
       ...Object.keys(LIGHT_RAY_PATHS),
     ],
     startPct: 0,
-    endPct: 0.20,
+    endPct: 0.18,
   },
   {
     label: 'desk',
@@ -106,8 +106,8 @@ const DRAW_GROUPS = [
       ...Object.keys(DESK_STRUCTURE_PATHS),
       ...Object.keys(DESK_ITEM_PATHS),
     ],
-    startPct: 0.20,
-    endPct: 0.45,
+    startPct: 0.18,
+    endPct: 0.38,
   },
   {
     label: 'chair',
@@ -115,14 +115,14 @@ const DRAW_GROUPS = [
       ...Object.keys(CHAIR_STRUCTURE_PATHS),
       ...Object.keys(CHAIR_DETAIL_PATHS),
     ],
-    startPct: 0.45,
-    endPct: 0.65,
+    startPct: 0.38,
+    endPct: 0.55,
   },
   {
     label: 'plant',
     paths: Object.keys(PLANT_PATHS),
-    startPct: 0.65,
-    endPct: 0.85,
+    startPct: 0.55,
+    endPct: 0.72,
   },
 ]
 
@@ -290,43 +290,45 @@ function Chapter1() {
       ref={sectionRef}
       className="relative"
       style={{
-        minHeight: '500vh',
+        minHeight: '600vh',
         background:
           'radial-gradient(ellipse 80% 60% at 50% 20%, rgba(212, 168, 67, 0.04), transparent), var(--deep-violet)',
       }}
     >
       {/* =========================================== */}
-      {/* SVG — sticky, centered in viewport          */}
+      {/* SVG — fixed to viewport via sticky           */}
       {/* =========================================== */}
       <div
         ref={svgWrapRef}
-        className="sticky top-0 h-screen w-full flex items-center justify-center"
-        style={{ zIndex: 1 }}
+        className="sticky top-0 h-0 w-full flex items-center justify-center"
+        style={{ zIndex: 1, height: 0, overflow: 'visible' }}
       >
-        <svg
-          ref={svgRef}
-          viewBox="0 0 900 700"
-          className="w-[78vw] max-w-[1100px]"
-          style={{ height: 'auto', maxHeight: '58vh' }}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {Object.entries(ALL_PATHS).map(([name, d]) => {
-            const style = getPathStyle(name)
-            return (
-              <path
-                key={name}
-                data-name={name}
-                d={d}
-                stroke={style.stroke}
-                strokeWidth={style.strokeWidth}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            )
-          })}
-        </svg>
+        <div className="h-screen w-full flex items-center justify-center">
+          <svg
+            ref={svgRef}
+            viewBox="0 0 900 700"
+            className="w-[78vw] max-w-[1100px]"
+            style={{ height: 'auto', maxHeight: '58vh' }}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {Object.entries(ALL_PATHS).map(([name, d]) => {
+              const style = getPathStyle(name)
+              return (
+                <path
+                  key={name}
+                  data-name={name}
+                  d={d}
+                  stroke={style.stroke}
+                  strokeWidth={style.strokeWidth}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              )
+            })}
+          </svg>
+        </div>
       </div>
 
       {/* =========================================== */}
@@ -336,7 +338,7 @@ function Chapter1() {
       <div
         ref={textWrapRef}
         className="relative w-full"
-        style={{ height: '100vh', zIndex: 10, marginTop: '-100vh' }}
+        style={{ height: '100vh', zIndex: 10 }}
       >
         {/* LINE 1 */}
         <div
