@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+:root {
+  --deep-violet: #1F194C;
+  --net-net-purple: #6B5CE7;
+  --goldenrod: #D4A843;
+  --teal: #1B6B6D;
+  --burnt-sienna: #C4633E;
+  --green-flow: #5FCEA8;
+  --cream: #F5EADB;
+}
+
 @theme {
   --color-deep-violet: #1F194C;
   --color-cream: #F5EADB;
@@ -13,54 +23,21 @@
   --font-sans: 'Open Sans', system-ui, sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: 'Open Sans', system-ui, sans-serif;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: var(--deep-violet);
+  color: var(--cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #1F194C;
-  color: #F5EADB;
-}
-
-/* 10-minute toggle */
-.toggle-content {
-  overflow: hidden;
-  height: 0;
-}
-
-.toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(245, 234, 219, 0.2);
-  background: transparent;
-  color: rgba(245, 234, 219, 0.4);
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  font-size: 18px;
-  line-height: 1;
-}
-.toggle-btn:hover {
-  border-color: #6B5CE7;
-  color: #6B5CE7;
-}
-.toggle-btn.open {
-  transform: rotate(45deg);
-}
-
-/* Light section toggle overrides */
-.light-section .toggle-btn {
-  border-color: rgba(31, 25, 76, 0.2);
-  color: rgba(31, 25, 76, 0.4);
-}
-.light-section .toggle-btn:hover {
-  border-color: #6B5CE7;
-  color: #6B5CE7;
+  overflow-x: hidden;
 }
