@@ -19,6 +19,22 @@ const WINDOW_FRAME_PATHS = {
   dividerV: 'M 450 25 L 450 285',
 }
 
+// WINDOW BLINDS — Cream at 25% opacity, stroke-width 0.5
+const WINDOW_BLIND_PATHS = {
+  blindTL1: 'M 260 58 L 440 58',
+  blindTL2: 'M 260 90 L 440 90',
+  blindTL3: 'M 260 122 L 440 122',
+  blindTR1: 'M 460 58 L 640 58',
+  blindTR2: 'M 460 90 L 640 90',
+  blindTR3: 'M 460 122 L 640 122',
+  blindBL1: 'M 260 188 L 440 188',
+  blindBL2: 'M 260 220 L 440 220',
+  blindBL3: 'M 260 252 L 440 252',
+  blindBR1: 'M 460 188 L 640 188',
+  blindBR2: 'M 460 220 L 640 220',
+  blindBR3: 'M 460 252 L 640 252',
+}
+
 // LIGHT RAYS — Goldenrod, stroke-width 1.5, extend below window
 const LIGHT_RAY_PATHS = {
   ray1: 'M 350 25 L 310 400',
@@ -42,11 +58,9 @@ const DESK_STRUCTURE_PATHS = {
 }
 
 const DESK_ITEM_PATHS = {
-  // Coffee mug (left third of desk)
   mugBody: 'M 268 408 L 268 430 L 298 430 L 298 408',
   mugRim: 'M 264 408 L 302 408',
   mugHandle: 'M 298 413 Q 314 420 298 427',
-  // Laptop (right third of desk)
   laptopBase: 'M 548 430 L 548 422 L 632 422 L 632 430',
   laptopScreenL: 'M 550 422 L 542 356',
   laptopScreenT: 'M 542 356 L 638 356',
@@ -88,17 +102,18 @@ const PLANT_PATHS = {
 }
 
 /* =============================================
-   DRAW GROUPS — sequential draw-on-scroll
+   DRAW GROUPS — timeline positions (0-1)
    ============================================= */
 const DRAW_GROUPS = [
   {
     label: 'window',
     paths: [
       ...Object.keys(WINDOW_FRAME_PATHS),
+      ...Object.keys(WINDOW_BLIND_PATHS),
       ...Object.keys(LIGHT_RAY_PATHS),
     ],
-    startPct: 0,
-    endPct: 0.18,
+    start: 0,
+    end: 0.20,
   },
   {
     label: 'desk',
@@ -106,8 +121,8 @@ const DRAW_GROUPS = [
       ...Object.keys(DESK_STRUCTURE_PATHS),
       ...Object.keys(DESK_ITEM_PATHS),
     ],
-    startPct: 0.18,
-    endPct: 0.38,
+    start: 0.20,
+    end: 0.45,
   },
   {
     label: 'chair',
@@ -115,14 +130,14 @@ const DRAW_GROUPS = [
       ...Object.keys(CHAIR_STRUCTURE_PATHS),
       ...Object.keys(CHAIR_DETAIL_PATHS),
     ],
-    startPct: 0.38,
-    endPct: 0.55,
+    start: 0.45,
+    end: 0.65,
   },
   {
     label: 'plant',
     paths: Object.keys(PLANT_PATHS),
-    startPct: 0.55,
-    endPct: 0.72,
+    start: 0.65,
+    end: 0.85,
   },
 ]
 
@@ -132,6 +147,8 @@ const DRAW_GROUPS = [
 function getPathStyle(name) {
   if (name in WINDOW_FRAME_PATHS)
     return { stroke: 'rgba(245,234,219,0.6)', strokeWidth: 2 }
+  if (name in WINDOW_BLIND_PATHS)
+    return { stroke: 'rgba(245,234,219,0.25)', strokeWidth: 0.5 }
   if (name in LIGHT_RAY_PATHS)
     return { stroke: '#D4A843', strokeWidth: 1.5 }
   if (name in DESK_STRUCTURE_PATHS)
@@ -150,6 +167,7 @@ function getPathStyle(name) {
 // Merge all paths into one flat object for rendering
 const ALL_PATHS = {
   ...WINDOW_FRAME_PATHS,
+  ...WINDOW_BLIND_PATHS,
   ...LIGHT_RAY_PATHS,
   ...DESK_STRUCTURE_PATHS,
   ...DESK_ITEM_PATHS,
@@ -157,6 +175,9 @@ const ALL_PATHS = {
   ...CHAIR_DETAIL_PATHS,
   ...PLANT_PATHS,
 }
+
+// Rotating words for Line 2
+const ROTATING_WORDS = ['creative', 'impactful', 'technical', 'revealing', 'custom']
 
 /* =============================================
    COMPONENT
@@ -182,9 +203,7 @@ function Chapter1() {
 
     const ctx = gsap.context(() => {
       // ===========================================
-      // 1. SVG DRAW-ON-SCROLL
-      //    Separate ScrollTrigger spanning the full
-      //    section height, scrub: 1
+      // 1. SET UP SVG STROKE DASH
       // ===========================================
       const allPaths = svg.querySelectorAll('path')
       allPaths.forEach((p) => {
@@ -192,37 +211,22 @@ function Chapter1() {
         gsap.set(p, { strokeDasharray: len, strokeDashoffset: len })
       })
 
-      DRAW_GROUPS.forEach((group) => {
-        group.paths.forEach((name) => {
-          const p = svg.querySelector(`[data-name="${name}"]`)
-          if (!p) return
-          gsap.to(p, {
-            strokeDashoffset: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: el,
-              start: `${group.startPct * 100}% top`,
-              end: `${group.endPct * 100}% top`,
-              scrub: 1,
-            },
-          })
-        })
-      })
-
       // ===========================================
-      // 2. SVG OPACITY — 0.15 while text visible,
-      //    fades to 1.0 in the final 10% of the
-      //    pin's scroll (90-100% of timeline)
+      // 2. SVG OPACITY — start at 0.15
       // ===========================================
       gsap.set(svgWrap, { opacity: 0.15 })
 
       // ===========================================
-      // 3. SINGLE-PIN TEXT SEQUENCER
-      //    One wrapper pinned for 400vh.
-      //    Single timeline sequences all 3 lines.
+      // 3. TEXT — start hidden
       // ===========================================
       gsap.set([l1, l2, l3], { opacity: 0 })
 
+      // ===========================================
+      // 4. SINGLE-PIN TIMELINE
+      //    One wrapper pinned for 400vh.
+      //    All text + SVG draw + SVG reveal on one
+      //    timeline with explicit position params.
+      // ===========================================
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: textWrap,
@@ -233,53 +237,85 @@ function Chapter1() {
         },
       })
 
-      // LINE 1: "You built something real." (0% → 30%)
-      // 0-15%: fade in
-      tl.to(l1, { opacity: 1, duration: 0.15, ease: 'none' })
-      // 15-20%: glow in
-      tl.to(l1, {
-        textShadow: '0 0 40px rgba(212, 168, 67, 0.25)',
-        duration: 0.05,
-        ease: 'none',
+      // --- SVG DRAW GROUPS (background animation) ---
+      DRAW_GROUPS.forEach((group) => {
+        const dur = group.end - group.start
+        group.paths.forEach((name) => {
+          const p = svg.querySelector(`[data-name="${name}"]`)
+          if (!p) return
+          tl.to(
+            p,
+            { strokeDashoffset: 0, duration: dur, ease: 'none' },
+            group.start,
+          )
+        })
       })
-      // 20-25%: glow out (hold opacity)
-      tl.to(l1, {
-        textShadow: '0 0 40px rgba(212, 168, 67, 0)',
-        duration: 0.05,
-        ease: 'none',
-      })
-      // 25-30%: fade out
-      tl.to(l1, { opacity: 0, duration: 0.05, ease: 'none' })
 
-      // LINE 2: "You know your craft..." (30% → 60%)
-      // 30-45%: fade in
-      tl.to(l2, { opacity: 1, duration: 0.15, ease: 'none' })
-      // 45-55%: hold
-      tl.to(l2, { opacity: 1, duration: 0.10, ease: 'none' })
-      // 55-60%: fade out
-      tl.to(l2, { opacity: 0, duration: 0.05, ease: 'none' })
+      // --- LINE 1: "You built something real." (0% → 30%) ---
+      // 0-10%: fade in
+      tl.to(l1, { opacity: 1, duration: 0.10, ease: 'none' }, 0)
+      // 10-15%: glow in
+      tl.to(
+        l1,
+        {
+          textShadow: '0 0 40px rgba(212, 168, 67, 0.25)',
+          duration: 0.05,
+          ease: 'none',
+        },
+        0.10,
+      )
+      // 15-20%: glow out
+      tl.to(
+        l1,
+        {
+          textShadow: '0 0 40px rgba(212, 168, 67, 0)',
+          duration: 0.05,
+          ease: 'none',
+        },
+        0.15,
+      )
+      // 20-30%: fade out
+      tl.to(l1, { opacity: 0, duration: 0.10, ease: 'none' }, 0.20)
 
-      // LINE 3: "For years, that was the whole system." (60% → 90%)
-      // 60-75%: fade in
-      tl.to(l3, { opacity: 1, duration: 0.15, ease: 'none' })
+      // --- LINE 2: rotating word paragraph (30% → 65%) ---
+      // 30-40%: fade in
+      tl.to(l2, { opacity: 1, duration: 0.10, ease: 'none' }, 0.30)
+      // 40-55%: hold (word rotation runs via CSS, independent of scroll)
+      // 55-65%: fade out
+      tl.to(l2, { opacity: 0, duration: 0.10, ease: 'none' }, 0.55)
+
+      // --- LINE 3: "For years, that was the whole system." (65% → 95%) ---
+      // 65-75%: fade in
+      tl.to(l3, { opacity: 1, duration: 0.10, ease: 'none' }, 0.65)
       // 75-80%: glow in
-      tl.to(l3, {
-        textShadow: '0 0 40px rgba(212, 168, 67, 0.25)',
-        duration: 0.05,
-        ease: 'none',
-      })
-      // 80-85%: glow out (hold opacity)
-      tl.to(l3, {
-        textShadow: '0 0 40px rgba(212, 168, 67, 0)',
-        duration: 0.05,
-        ease: 'none',
-      })
-      // 85-90%: fade out
-      tl.to(l3, { opacity: 0, duration: 0.05, ease: 'none' })
+      tl.to(
+        l3,
+        {
+          textShadow: '0 0 40px rgba(212, 168, 67, 0.25)',
+          duration: 0.05,
+          ease: 'none',
+        },
+        0.75,
+      )
+      // 80-85%: glow out
+      tl.to(
+        l3,
+        {
+          textShadow: '0 0 40px rgba(212, 168, 67, 0)',
+          duration: 0.05,
+          ease: 'none',
+        },
+        0.80,
+      )
+      // 85-95%: fade out
+      tl.to(l3, { opacity: 0, duration: 0.10, ease: 'none' }, 0.85)
 
-      // 90-100%: SVG reveal — fade from 0.15 to 1.0
-      tl.to(svgWrap, { opacity: 1, duration: 0.10, ease: 'power2.out' })
-
+      // --- SVG REVEAL (95% → 100%) ---
+      tl.to(
+        svgWrap,
+        { opacity: 1, duration: 0.05, ease: 'power2.out' },
+        0.95,
+      )
     }, sectionRef)
 
     return () => ctx.revert()
@@ -296,11 +332,11 @@ function Chapter1() {
       }}
     >
       {/* =========================================== */}
-      {/* SVG — fixed to viewport via sticky           */}
+      {/* SVG — sticky, centered in viewport          */}
       {/* =========================================== */}
       <div
         ref={svgWrapRef}
-        className="sticky top-0 h-0 w-full flex items-center justify-center"
+        className="sticky top-0 w-full flex items-center justify-center"
         style={{ zIndex: 1, height: 0, overflow: 'visible' }}
       >
         <div className="h-screen w-full flex items-center justify-center">
@@ -357,7 +393,7 @@ function Chapter1() {
           </h1>
         </div>
 
-        {/* LINE 2 */}
+        {/* LINE 2 — with rotating word */}
         <div
           ref={line2Ref}
           className="absolute inset-0 flex items-center justify-center px-6"
@@ -372,8 +408,30 @@ function Chapter1() {
             }}
           >
             You know your craft. You know your clients. You hired people you
-            trust. You sell custom work and deliver it through grit, instinct,
-            and experience.
+            trust. You sell{' '}
+            <span
+              style={{
+                display: 'inline-grid',
+                verticalAlign: 'baseline',
+              }}
+            >
+              {ROTATING_WORDS.map((word, i) => (
+                <span
+                  key={word}
+                  style={{
+                    gridArea: '1 / 1',
+                    color: '#D4A843',
+                    fontWeight: 600,
+                    opacity: 0,
+                    animation: `rotateWord 7.5s linear infinite`,
+                    animationDelay: `${i * 1.5}s`,
+                  }}
+                >
+                  {word}
+                </span>
+              ))}
+            </span>{' '}
+            work and deliver it through grit, instinct, and experience.
           </p>
         </div>
 
