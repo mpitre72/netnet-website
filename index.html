@@ -1,16 +1,539 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Net Net | Your agency has a pulse. Do you know what it's saying?</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<title>Net Net | The Operating System for Small Service Firms</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --deep-violet: #1F194C;
+    --net-net-purple: #6B5CE7;
+    --goldenrod: #D4A843;
+    --teal: #1B6B6D;
+    --burnt-sienna: #C4633E;
+    --green-flow: #5FCEA8;
+    --cream: #F5EADB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep-violet);
+    font-family: 'Open Sans', sans-serif;
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  .scroll-spacer { height: 800vh; position: relative; }
+
+  /* ========== OFFICE SVG — FIXED, CENTERED, 60vw, NEVER SCROLLS ========== */
+  .office-layer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    z-index: 1;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .office-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .office-svg path,
+  .office-svg line,
+  .office-svg rect,
+  .office-svg circle,
+  .office-svg polyline,
+  .office-svg ellipse {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ========== LOGO — fixed, centered ========== */
+  .logo-layer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .logo-container { width: 280px; height: auto; }
+
+  .scroll-cue {
+    margin-top: 32px;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeInCue 1s ease-out 2s forwards, floatCue 2.5s ease-in-out 3s infinite;
+  }
+
+  @keyframes fadeInCue { to { opacity: 0.5; } }
+  @keyframes floatCue {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* ========== TEXT — fixed ========== */
+  .text-layer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 15;
+    pointer-events: none;
+  }
+
+  .ch1-line {
+    position: absolute;
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+
+  /*
+    Text positioning math:
+    SVG viewBox = 960 x 750, rendered at 60vw wide.
+    Rendered height = 60vw * (750/960) = 46.875vw
+    SVG top edge = 50vh - 23.4375vw
+    Window top (y=20 of 750) ≈ SVG top + 1.25vw = 50vh - 22.2vw
+    Chair bottom (y=645 of 750) ≈ SVG top + 40.3vw = 50vh + 16.9vw
+
+    Line 1: ~30px above window top
+    Line 2: ~30px below chair bottom
+  */
+
+  .ch1-line-1 {
+    top: calc(50vh - 22.2vw - 60px);
+    transform: translateX(-50%) translateY(-100%);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .ch1-line-2 {
+    top: calc(50vh + 16.9vw + 30px);
+    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 720px;
+  }
+
+  .ch1-line-3 {
+    top: calc(50% - 120px);
+    transform: translate(-50%, -50%);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .rotating-word {
+    color: var(--goldenrod);
+    font-weight: 600;
+    display: inline-block;
+    min-width: 140px;
+  }
+</style>
+</head>
+<body>
+
+<!-- OFFICE SVG — fixed to viewport center, NEVER scrolls -->
+<div class="office-layer">
+  <svg class="office-svg" viewBox="0 0 960 750" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- CITY SKYLINE (behind blinds, visible through window) -->
+    <g class="svg-city">
+      <!-- Left pane buildings -->
+      <rect x="100" y="160" width="40" height="195" rx="2" stroke="#F5EADB" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="150" y="120" width="55" height="235" rx="2" stroke="#F5EADB" stroke-opacity="0.12" stroke-width="1"/>
+      <rect x="215" y="80" width="35" height="275" rx="2" stroke="#F5EADB" stroke-opacity="0.18" stroke-width="1"/>
+      <rect x="260" y="140" width="50" height="215" rx="2" stroke="#F5EADB" stroke-opacity="0.14" stroke-width="1"/>
+      <!-- Small window dots on tall building -->
+      <line x1="225" y1="100" x2="240" y2="100" stroke="#F5EADB" stroke-opacity="0.08" stroke-width="0.5"/>
+      <line x1="225" y1="120" x2="240" y2="120" stroke="#F5EADB" stroke-opacity="0.08" stroke-width="0.5"/>
+      <line x1="225" y1="140" x2="240" y2="140" stroke="#F5EADB" stroke-opacity="0.08" stroke-width="0.5"/>
+      <!-- Center pane buildings -->
+      <rect x="370" y="100" width="60" height="255" rx="2" stroke="#F5EADB" stroke-opacity="0.16" stroke-width="1"/>
+      <rect x="440" y="60" width="40" height="295" rx="2" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="1"/>
+      <rect x="490" y="130" width="55" height="225" rx="2" stroke="#F5EADB" stroke-opacity="0.13" stroke-width="1"/>
+      <rect x="555" y="90" width="35" height="265" rx="2" stroke="#F5EADB" stroke-opacity="0.17" stroke-width="1"/>
+      <!-- Antenna on tallest building -->
+      <line x1="460" y1="60" x2="460" y2="35" stroke="#F5EADB" stroke-opacity="0.12" stroke-width="0.8"/>
+      <!-- Right pane buildings -->
+      <rect x="640" y="130" width="50" height="225" rx="2" stroke="#F5EADB" stroke-opacity="0.14" stroke-width="1"/>
+      <rect x="700" y="80" width="45" height="275" rx="2" stroke="#F5EADB" stroke-opacity="0.18" stroke-width="1"/>
+      <rect x="755" y="150" width="40" height="205" rx="2" stroke="#F5EADB" stroke-opacity="0.12" stroke-width="1"/>
+      <rect x="805" y="110" width="50" height="245" rx="2" stroke="#F5EADB" stroke-opacity="0.15" stroke-width="1"/>
+    </g>
+
+    <!-- BAY WINDOW -->
+    <g class="svg-window">
+      <rect x="80" y="20" width="800" height="340" rx="6" stroke="#F5EADB" stroke-width="3"/>
+      <rect x="70" y="355" width="820" height="12" rx="2" stroke="#F5EADB" stroke-width="2.5"/>
+      <line x1="347" y1="20" x2="347" y2="360" stroke="#F5EADB" stroke-width="2"/>
+      <line x1="613" y1="20" x2="613" y2="360" stroke="#F5EADB" stroke-width="2"/>
+      <!-- Left pane blinds -->
+      <line x1="95" y1="60" x2="335" y2="60" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="90" x2="335" y2="90" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="120" x2="335" y2="120" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="150" x2="335" y2="150" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="180" x2="335" y2="180" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="210" x2="335" y2="210" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="240" x2="335" y2="240" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="270" x2="335" y2="270" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="300" x2="335" y2="300" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="95" y1="330" x2="335" y2="330" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <!-- Center pane blinds -->
+      <line x1="360" y1="60" x2="600" y2="60" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="90" x2="600" y2="90" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="120" x2="600" y2="120" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="150" x2="600" y2="150" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="180" x2="600" y2="180" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="210" x2="600" y2="210" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="240" x2="600" y2="240" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="270" x2="600" y2="270" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="300" x2="600" y2="300" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="360" y1="330" x2="600" y2="330" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <!-- Right pane blinds -->
+      <line x1="626" y1="60" x2="866" y2="60" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="90" x2="866" y2="90" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="120" x2="866" y2="120" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="150" x2="866" y2="150" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="180" x2="866" y2="180" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="210" x2="866" y2="210" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="240" x2="866" y2="240" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="270" x2="866" y2="270" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="300" x2="866" y2="300" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <line x1="626" y1="330" x2="866" y2="330" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.8"/>
+      <!-- Valance -->
+      <rect x="85" y="22" width="790" height="14" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="1"/>
+      <!-- Pull cords -->
+      <line x1="213" y1="36" x2="213" y2="52" stroke="#F5EADB" stroke-opacity="0.3" stroke-width="0.6"/>
+      <line x1="480" y1="36" x2="480" y2="52" stroke="#F5EADB" stroke-opacity="0.3" stroke-width="0.6"/>
+      <line x1="746" y1="36" x2="746" y2="52" stroke="#F5EADB" stroke-opacity="0.3" stroke-width="0.6"/>
+    </g>
+
+    <!-- DESK (bigger: x=160-800, surface at y=415) -->
+    <g class="svg-desk">
+      <line x1="160" y1="415" x2="800" y2="415" stroke="#D4A843" stroke-width="3"/>
+      <line x1="160" y1="415" x2="160" y2="425" stroke="#D4A843" stroke-width="3"/>
+      <line x1="800" y1="415" x2="800" y2="425" stroke="#D4A843" stroke-width="3"/>
+      <line x1="160" y1="425" x2="800" y2="425" stroke="#D4A843" stroke-width="2.5"/>
+      <!-- Left legs -->
+      <line x1="195" y1="425" x2="168" y2="555" stroke="#D4A843" stroke-width="3"/>
+      <line x1="250" y1="425" x2="228" y2="555" stroke="#D4A843" stroke-width="2.5"/>
+      <!-- Right legs -->
+      <line x1="710" y1="425" x2="732" y2="555" stroke="#D4A843" stroke-width="2.5"/>
+      <line x1="765" y1="425" x2="792" y2="555" stroke="#D4A843" stroke-width="3"/>
+    </g>
+
+    <!-- LAPTOP (bigger, centered at x=480) -->
+    <g class="svg-laptop">
+      <!-- Keyboard base: 180px wide centered at 480 -->
+      <rect x="390" y="400" width="180" height="14" rx="2" stroke="#D4A843" stroke-width="2"/>
+      <!-- Screen (angled back, ~130px tall) -->
+      <path d="M394,400 L405,280 L575,280 L566,400" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <!-- Screen background fill to the OUTER edge of the screen frame -->
+      <polygon points="394,400 405,280 575,280 566,400" fill="#161240" stroke="none"/>
+    </g>
+
+    <!-- DESIGN APP UI ON LAPTOP SCREEN (fades in after draw completes) -->
+    <g class="laptop-logo" opacity="0">
+      <!-- Top menu bar -->
+      <line x1="407" y1="288" x2="573" y2="288" stroke="#F5EADB" stroke-opacity="0.4" stroke-width="0.6"/>
+      <!-- Tiny menu dots -->
+      <circle cx="412" cy="284" r="1.5" fill="#C4633E" opacity="0.7"/>
+      <circle cx="418" cy="284" r="1.5" fill="#D4A843" opacity="0.7"/>
+      <circle cx="424" cy="284" r="1.5" fill="#5FCEA8" opacity="0.7"/>
+      <!-- Left tool panel -->
+      <line x1="430" y1="288" x2="430" y2="395" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.6"/>
+      <!-- Tool icons (tiny squares/shapes in left panel) -->
+      <rect x="411" y="296" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <rect x="420" y="296" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <rect x="411" y="308" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <rect x="420" y="308" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <rect x="411" y="320" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <rect x="420" y="320" width="8" height="8" rx="1" stroke="#F5EADB" stroke-opacity="0.35" stroke-width="0.5" fill="none"/>
+      <!-- Right properties panel -->
+      <line x1="545" y1="288" x2="545" y2="395" stroke="#F5EADB" stroke-opacity="0.25" stroke-width="0.6"/>
+      <!-- Property lines (like layer names or values) -->
+      <line x1="549" y1="298" x2="567" y2="298" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <line x1="549" y1="308" x2="564" y2="308" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <line x1="549" y1="318" x2="570" y2="318" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <line x1="549" y1="328" x2="562" y2="328" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <!-- Canvas area: a design in progress (simple shapes suggesting a layout) -->
+      <!-- Artboard -->
+      <rect x="445" y="300" width="88" height="80" rx="2" stroke="#6B5CE7" stroke-opacity="0.5" stroke-width="0.7" fill="none"/>
+      <!-- Header block -->
+      <rect x="450" y="306" width="78" height="12" rx="1" fill="#6B5CE7" opacity="0.3"/>
+      <!-- Image placeholder -->
+      <rect x="450" y="322" width="38" height="28" rx="1" stroke="#D4A843" stroke-opacity="0.4" stroke-width="0.5" fill="none"/>
+      <!-- Diagonal line in image placeholder (like a photo icon) -->
+      <line x1="454" y1="346" x2="468" y2="330" stroke="#D4A843" stroke-opacity="0.3" stroke-width="0.5"/>
+      <line x1="468" y1="330" x2="478" y2="340" stroke="#D4A843" stroke-opacity="0.3" stroke-width="0.5"/>
+      <!-- Text lines next to image -->
+      <line x1="492" y1="326" x2="524" y2="326" stroke="#F5EADB" stroke-opacity="0.3" stroke-width="0.7"/>
+      <line x1="492" y1="332" x2="520" y2="332" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <line x1="492" y1="338" x2="522" y2="338" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <line x1="492" y1="344" x2="516" y2="344" stroke="#F5EADB" stroke-opacity="0.2" stroke-width="0.5"/>
+      <!-- Bottom content blocks -->
+      <rect x="450" y="356" width="24" height="18" rx="1" stroke="#1B6B6D" stroke-opacity="0.4" stroke-width="0.5" fill="none"/>
+      <rect x="478" y="356" width="24" height="18" rx="1" stroke="#1B6B6D" stroke-opacity="0.4" stroke-width="0.5" fill="none"/>
+      <rect x="506" y="356" width="24" height="18" rx="1" stroke="#1B6B6D" stroke-opacity="0.4" stroke-width="0.5" fill="none"/>
+    </g>
+
+    <!-- COFFEE MUG (bigger, right of laptop) -->
+    <g class="svg-mug">
+      <rect x="610" y="372" width="42" height="42" rx="4" stroke="#D4A843" stroke-width="2"/>
+      <path d="M652,380 C670,380 670,406 652,406" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <!-- Steam -->
+      <path d="M622,368 C625,356 630,362 633,350" stroke="#D4A843" stroke-width="1" stroke-opacity="0.4" fill="none"/>
+      <path d="M636,370 C639,358 644,364 647,352" stroke="#D4A843" stroke-width="1" stroke-opacity="0.3" fill="none"/>
+    </g>
+
+    <!-- OFFICE CHAIR (bigger, centered at x=480) -->
+    <g class="svg-chair">
+      <!-- Backrest (tall, curved) -->
+      <path d="M408,520 C404,495 412,450 480,440 C548,450 556,495 552,520" stroke="#D4A843" stroke-width="2.5" fill="none"/>
+      <!-- Seat pan -->
+      <path d="M395,540 C395,533 420,524 480,524 C540,524 565,533 565,540 L558,552 L402,552 Z" stroke="#D4A843" stroke-width="2.5" fill="none"/>
+      <!-- Center stem -->
+      <line x1="480" y1="552" x2="480" y2="600" stroke="#D4A843" stroke-width="2"/>
+      <!-- Gas cylinder -->
+      <rect x="472" y="590" width="16" height="20" rx="2" stroke="#D4A843" stroke-width="1.5"/>
+      <!-- 5-star base -->
+      <line x1="480" y1="610" x2="410" y2="635" stroke="#D4A843" stroke-width="2"/>
+      <line x1="480" y1="610" x2="435" y2="645" stroke="#D4A843" stroke-width="2"/>
+      <line x1="480" y1="610" x2="525" y2="645" stroke="#D4A843" stroke-width="2"/>
+      <line x1="480" y1="610" x2="550" y2="635" stroke="#D4A843" stroke-width="2"/>
+      <line x1="480" y1="610" x2="480" y2="650" stroke="#D4A843" stroke-width="2"/>
+      <!-- Caster wheels -->
+      <circle cx="410" cy="638" r="5" stroke="#D4A843" stroke-width="1.5"/>
+      <circle cx="435" cy="648" r="5" stroke="#D4A843" stroke-width="1.5"/>
+      <circle cx="525" cy="648" r="5" stroke="#D4A843" stroke-width="1.5"/>
+      <circle cx="550" cy="638" r="5" stroke="#D4A843" stroke-width="1.5"/>
+      <circle cx="480" cy="653" r="5" stroke="#D4A843" stroke-width="1.5"/>
+    </g>
+
+    <!-- PLANT (bigger, right side) -->
+    <g class="svg-plant">
+      <path d="M790,600 L776,650 L836,650 L822,600 Z" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <path d="M806,600 C800,562 782,540 774,526" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <path d="M806,600 C812,558 826,536 838,522" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <path d="M806,600 C794,572 800,545 806,524" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <path d="M806,600 C818,576 836,558 848,544" stroke="#D4A843" stroke-width="2" fill="none"/>
+      <path d="M806,600 C790,580 770,570 758,560" stroke="#D4A843" stroke-width="2" fill="none"/>
+    </g>
+  </svg>
+</div>
+
+<!-- NET NET LOGO -->
+<div class="logo-layer">
+  <div class="logo-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 180" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" style="white-space: pre; width: 100%; height: auto;">
+      <style>
+        @keyframes a1_t { 0% { transform: translate(87.5875px,87.6px) rotate(0deg) translate(-63.9125px,-64px); animation-timing-function: cubic-bezier(0.77,0,0.175,1); } 9.0909% { transform: translate(87.5875px,87.6px) rotate(90deg) translate(-63.9125px,-64px); } 36.3636% { transform: translate(87.5875px,87.6px) rotate(90deg) translate(-63.9125px,-64px); animation-timing-function: cubic-bezier(0.77,0,0.175,1); } 45.4545% { transform: translate(87.5875px,87.6px) rotate(180deg) translate(-63.9125px,-64px); } 100% { transform: translate(87.5875px,87.6px) rotate(180deg) translate(-63.9125px,-64px); } }
+        @keyframes o-2_t { 0% { transform: translate(105.125px,22.7px) scale(1,1) translate(-416.2px,-46.3px); animation-timing-function: cubic-bezier(0.77,0,0.175,1); } 3.6363% { transform: translate(105.125px,22.7px) scale(0,0) translate(-416.2px,-46.3px); } 5.4545% { transform: translate(105.125px,22.7px) scale(0,0) translate(-416.2px,-46.3px); } 9.0909% { transform: translate(105.125px,22.7px) scale(1,1) translate(-416.2px,-46.3px); } 36.3636% { transform: translate(105.125px,22.7px) scale(1,1) translate(-416.2px,-46.3px); } 40% { transform: translate(105.125px,22.7px) scale(0,0) translate(-416.2px,-46.3px); } 41.8181% { transform: translate(105.125px,22.7px) scale(0,0) translate(-416.2px,-46.3px); } 45.4545% { transform: translate(105.125px,22.7px) scale(1,1) translate(-416.2px,-46.3px); } 100% { transform: translate(105.125px,22.7px) scale(1,1) translate(-416.2px,-46.3px); } }
+        @keyframes o-1_t { 0% { transform: translate(22.725px,105.3px) scale(1,1) translate(-333.8px,-128.9px); animation-timing-function: cubic-bezier(0.77,0,0.175,1); } 3.6363% { transform: translate(22.725px,105.3px) scale(0,0) translate(-333.8px,-128.9px); } 5.4545% { transform: translate(22.725px,105.3px) scale(0,0) translate(-333.8px,-128.9px); } 9.0909% { transform: translate(22.725px,105.3px) scale(1,1) translate(-333.8px,-128.9px); } 36.3636% { transform: translate(22.725px,105.3px) scale(1,1) translate(-333.8px,-128.9px); } 40% { transform: translate(22.725px,105.3px) scale(0,0) translate(-333.8px,-128.9px); } 41.8181% { transform: translate(22.725px,105.3px) scale(0,0) translate(-333.8px,-128.9px); } 45.4545% { transform: translate(22.725px,105.3px) scale(1,1) translate(-333.8px,-128.9px); } 100% { transform: translate(22.725px,105.3px) scale(1,1) translate(-333.8px,-128.9px); } }
+      </style>
+      <g id="white" transform="translate(375,90.1) translate(-375,-61.8)">
+        <g transform="translate(615.35,61.8) translate(-615.35,-87.7)">
+          <path d="M688,30.2L714.5,25.9L714.5,53.4L746.3,53.4L746.3,75.4L714.5,75.4L714.5,108.2C714.5,113.8,715.5,118.2,717.4,121.5C719.4,124.8,723.3,126.5,729.2,126.5C732,126.5,735,126.2,738,125.7C741,125.2,743.8,124.4,746.3,123.5L750,144.1C746.8,145.4,743.3,146.5,739.3,147.5C735.4,148.4,730.6,148.9,724.9,148.9C717.7,148.9,711.7,147.9,707,146C702.3,144,698.5,141.3,695.6,137.8C692.8,134.3,690.8,130.1,689.7,125.1C688.6,120.1,688,114.6,688,108.6L688,30.2Z" fill="#ffffff" transform="translate(719,87.4) translate(-719,-87.4)"/>
+          <path d="M580.8,100.8C580.8,92.5,582.1,85.3,584.6,79.1C587.1,72.9,590.5,67.7,594.6,63.6C598.7,59.5,603.5,56.3,608.9,54.2C614.3,52.1,619.8,51,625.5,51C638.8,51,649.2,55.1,656.9,63.2C664.6,71.3,668.4,83.2,668.4,99C668.4,100.5,668.3,102.2,668.2,104.1C668.1,105.9,668,107.6,667.8,109L607.8,109C608.4,114.4,610.9,118.8,615.4,122C619.9,125.2,625.9,126.8,633.5,126.8C638.4,126.8,643.1,126.4,647.8,125.5C652.5,124.6,656.3,123.5,659.2,122.2L662.8,143.7C661.4,144.4,659.5,145.1,657.1,145.8C654.7,146.5,652.1,147.1,649.2,147.7C646.3,148.2,643.2,148.7,639.9,149C636.6,149.4,633.3,149.5,630,149.5C621.6,149.5,614.3,148.3,608.1,145.8C601.9,143.3,596.7,139.9,592.7,135.6C588.6,131.3,585.6,126.2,583.6,120.2C581.8,114.1,580.8,107.7,580.8,100.8ZM643,90.7C642.9,88.5,642.5,86.3,641.8,84.1C641.1,82,640.1,80.1,638.8,78.4C637.4,76.7,635.7,75.4,633.7,74.3C631.6,73.2,629.1,72.7,626,72.7C623,72.7,620.5,73.2,618.4,74.2C616.3,75.2,614.5,76.5,613.1,78.2C611.7,79.9,610.6,81.8,609.8,84C609,86.2,608.5,88.4,608.1,90.7L643,90.7Z" fill="#ffffff" transform="translate(624.6,100.25) translate(-624.6,-100.25)"/>
+          <path d="M480.7,56.6C485.2,55.3,491,54.1,498.1,53C505.2,51.9,512.7,51.3,520.5,51.3C528.4,51.3,535,52.3,540.3,54.4C545.6,56.5,549.7,59.4,552.8,63.2C555.9,67,558.1,71.5,559.4,76.7C560.7,81.9,561.4,87.7,561.4,94.1L561.4,146.8L534.9,146.8L534.9,97.3C534.9,88.8,533.8,82.7,531.5,79.2C529.3,75.6,525,73.9,518.9,73.9C517,73.9,515,74,512.9,74.2C510.8,74.4,508.9,74.6,507.2,74.8L507.2,146.9L480.7,146.9L480.7,56.6Z" fill="#ffffff" transform="translate(521.05,99.1) translate(-521.05,-99.1)"/>
+        </g>
+        <g transform="translate(134.65,61.8) translate(-134.65,-87.7)">
+          <path d="M207.3,30.2L233.8,25.9L233.8,53.4L265.6,53.4L265.6,75.4L233.8,75.4L233.8,108.2C233.8,113.8,234.8,118.2,236.7,121.5C238.7,124.8,242.6,126.5,248.5,126.5C251.3,126.5,254.3,126.2,257.3,125.7C260.3,125.2,263.1,124.4,265.6,123.5L269.3,144.1C266.1,145.4,262.6,146.5,258.6,147.5C254.7,148.4,249.9,148.9,244.2,148.9C237,148.9,231,147.9,226.3,146C221.6,144,217.8,141.3,214.9,137.8C212.1,134.3,210.1,130.1,209,125.1C207.9,120.1,207.3,114.6,207.3,108.6L207.3,30.2Z" fill="#ffffff" transform="translate(238.3,87.4) translate(-238.3,-87.4)"/>
+          <path d="M100.1,100.8C100.1,92.5,101.4,85.3,103.9,79.1C106.4,72.9,109.8,67.7,113.9,63.6C118,59.5,122.8,56.3,128.2,54.2C133.6,52.1,139.1,51,144.8,51C158.1,51,168.5,55.1,176.2,63.2C183.9,71.3,187.7,83.2,187.7,99C187.7,100.5,187.6,102.2,187.5,104.1C187.4,105.9,187.3,107.6,187.1,109L127.1,109C127.7,114.4,130.2,118.8,134.7,122C139.2,125.2,145.2,126.8,152.8,126.8C157.7,126.8,162.4,126.4,167.1,125.5C171.8,124.6,175.6,123.5,178.5,122.2L182.1,143.7C180.7,144.4,178.8,145.1,176.4,145.8C174,146.5,171.4,147.1,168.5,147.7C165.6,148.2,162.5,148.7,159.2,149C155.9,149.4,152.6,149.5,149.3,149.5C140.9,149.5,133.6,148.3,127.4,145.8C121.2,143.3,116,139.9,112,135.6C107.9,131.3,104.9,126.2,102.9,120.2C101.1,114.1,100.1,107.7,100.1,100.8ZM162.3,90.7C162.2,88.5,161.8,86.3,161.1,84.1C160.4,82,159.4,80.1,158.1,78.4C156.7,76.7,155,75.4,153,74.3C150.9,73.2,148.4,72.7,145.3,72.7C142.3,72.7,139.8,73.2,137.7,74.2C135.6,75.2,133.8,76.5,132.4,78.2C131,79.9,129.9,81.8,129.1,84C128.3,86.2,127.8,88.4,127.4,90.7L162.3,90.7Z" fill="#ffffff" transform="translate(143.9,100.25) translate(-143.9,-100.25)"/>
+          <path d="M0,56.6C4.5,55.3,10.3,54.1,17.4,53C24.5,51.9,32,51.3,39.8,51.3C47.7,51.3,54.3,52.3,59.6,54.4C64.9,56.5,69,59.4,72.1,63.2C75.2,67,77.4,71.5,78.7,76.7C80,81.9,80.7,87.7,80.7,94.1L80.7,146.8L54.1,146.8L54.1,97.3C54.1,88.8,53,82.7,50.7,79.2C48.5,75.6,44.2,73.9,38.1,73.9C36.2,73.9,34.2,74,32.1,74.2C30,74.4,28.1,74.6,26.4,74.8L26.4,146.9L0,146.9L0,56.6Z" fill="#ffffff" transform="translate(40.35,99.1) translate(-40.35,-99.1)"/>
+        </g>
+      </g>
+      <g id="logo" transform="translate(375,90) translate(-87.6,-87.6)">
+        <path d="M431.9,175.2L318.1,175.2C301.2,175.2,287.4,161.4,287.4,144.5L287.4,30.7C287.4,13.8,301.2,0,318.1,0L431.9,0C448.8,0,462.6,13.8,462.6,30.7L462.6,144.5C462.6,161.4,448.8,175.2,431.9,175.2Z" fill="#711FFF" transform="translate(87.6,87.6) translate(-375,-87.6)"/>
+        <g transform="translate(87.5875,87.6) translate(-63.9125,-64)" style="animation: 11s linear infinite both a1_t;">
+          <path d="M416.2,69C428.7,69,438.9,58.8,438.9,46.3C438.9,33.8,428.7,23.6,416.2,23.6C403.7,23.6,393.5,33.8,393.5,46.3C393.5,58.8,403.7,69,416.2,69ZM416.2,33.2C423.4,33.2,429.3,39.1,429.3,46.3C429.3,53.5,423.4,59.4,416.2,59.4C409,59.4,403.1,53.5,403.1,46.3C403.1,39.1,409,33.2,416.2,33.2Z" fill="#FFFFFF" transform="translate(105.125,22.7) translate(-416.2,-46.3)" style="animation: 11s linear infinite both o-2_t;"/>
+          <path d="M349.2,30.2C345.2,26.2,339.4,23.9,333.4,23.9C327.4,23.9,321.6,26.2,317.6,30.2C308.9,38.9,308.9,53.1,317.6,61.8L400.8,145C405,149.2,410.6,151.5,416.6,151.5C422.6,151.5,428.2,149.2,432.4,145C436.6,140.8,438.9,135.2,438.9,129.2C438.9,123.2,436.6,117.6,432.4,113.4L349.2,30.2ZM429.4,129.2C429.4,132.6,428.1,135.9,425.7,138.3C423.4,140.6,420.1,141.9,416.6,141.9C413.1,141.9,409.8,140.6,407.5,138.3L324.3,55.1C319.3,50.1,319.3,42,324.3,37C326.7,34.6,329.9,33.3,333.4,33.3C336.9,33.3,340.1,34.6,342.5,37L425.7,120.2C428.1,122.5,429.4,125.7,429.4,129.2Z" fill="#FFFFFF" transform="translate(63.9125,64.1) translate(-374.987,-87.7)"/>
+          <path d="M333.8,106.2C321.3,106.2,311.1,116.4,311.1,128.9C311.1,141.4,321.3,151.6,333.8,151.6C346.3,151.6,356.5,141.4,356.5,128.9C356.4,116.3,346.3,106.2,333.8,106.2ZM346.9,128.8C346.9,136,341,141.9,333.8,141.9C326.6,141.9,320.7,136,320.7,128.8C320.7,121.6,326.6,115.7,333.8,115.7C341,115.7,346.9,121.6,346.9,128.8Z" fill="#FFFFFF" transform="translate(22.725,105.3) translate(-333.8,-128.9)" style="animation: 11s linear infinite both o-1_t;"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <div class="scroll-cue">scroll to begin</div>
+</div>
+
+<!-- TEXT LAYER -->
+<div class="text-layer">
+  <div class="ch1-line ch1-line-1">You built something real.</div>
+  <div class="ch1-line ch1-line-2">
+    You know your craft. You know your clients. You hired people you trust. You sell
+    <span class="rotating-word">creative</span>
+    work and deliver it through grit, instinct, and experience.
+  </div>
+  <div class="ch1-line ch1-line-3">For years, that was the whole system.</div>
+</div>
+
+<div class="scroll-spacer"></div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const officeLayer = document.querySelector('.office-layer');
+const logoLayer = document.querySelector('.logo-layer');
+const line1 = document.querySelector('.ch1-line-1');
+const line2 = document.querySelector('.ch1-line-2');
+const line3 = document.querySelector('.ch1-line-3');
+const rotatingEl = document.querySelector('.rotating-word');
+
+const words = ['creative', 'impactful', 'technical', 'revealing', 'custom'];
+let wordIndex = 0;
+
+/*
+  Scroll budget (800vh):
+  0-5%     = breathing room
+  5-15%    = logo fades out
+  5-28%    = SVG draw animation + office brightens to FULL (1.0)
+  28-36%   = Line 1 fades in (above window)
+  36-40%   = Line 1 glow
+  40-44%   = Line 1 hold
+  44-48%   = Line 1 fades out
+  48-55%   = Line 2 fades in (below chair) + first word visible
+  55-58%   = scroll to "impactful"
+  58-61%   = scroll to "technical"
+  61-64%   = scroll to "revealing"
+  64-67%   = scroll to "custom"
+  67-71%   = Line 2 fades out
+  71-73%   = Office dims to 50% for contrast
+  73-80%   = Line 3 fades in centered + glow
+  80-84%   = Line 3 hold
+  84-88%   = Line 3 fades out
+  88-92%   = Office brightens back up
+  92-100%  = Office fades out
+*/
+
+const laptopLogo = document.querySelector('.laptop-logo');
+
+const masterTL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-spacer',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1,
+  }
+});
+
+masterTL
+  .to({}, { duration: 5 })
+
+  // Logo fades out
+  .to(logoLayer, { opacity: 0, duration: 10 })
+
+  // Office brightens to FULL during draw phase
+  .to(officeLayer, { opacity: 1, duration: 23 }, 5)
+
+  // Laptop logo fades onto screen after draw completes
+  .to(laptopLogo, { opacity: 1, duration: 4 }, 28)
+
+  // Line 1 in (above window)
+  .fromTo(line1, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 8 }, 28)
+  .to(line1, { textShadow: '0 0 50px rgba(212, 168, 67, 0.3)', duration: 3 }, 36)
+  .to(line1, { textShadow: '0 0 0px rgba(212, 168, 67, 0)', duration: 2 }, 39)
+  .to(line1, { opacity: 1, duration: 4 }, 41)
+  .to(line1, { opacity: 0, duration: 4 }, 44)
+
+  // Line 2 in (below chair)
+  .fromTo(line2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 7 }, 48)
+
+  // Scroll-driven word rotation: each word gets a scroll chunk
+  .call(() => { rotatingEl.textContent = 'impactful'; }, null, 55)
+  .call(() => { rotatingEl.textContent = 'technical'; }, null, 58)
+  .call(() => { rotatingEl.textContent = 'revealing'; }, null, 61)
+  .call(() => { rotatingEl.textContent = 'custom'; }, null, 64)
+
+  // Line 2 fades out
+  .to(line2, { opacity: 0, duration: 4 }, 67)
+
+  // Office dims to 50% for Line 3 contrast
+  .to(officeLayer, { opacity: 0.5, duration: 2 }, 71)
+
+  // Line 3 centered
+  .fromTo(line3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 5 }, 73)
+  .to(line3, { textShadow: '0 0 50px rgba(212, 168, 67, 0.3)', duration: 2 }, 78)
+  .to(line3, { textShadow: '0 0 0px rgba(212, 168, 67, 0)', duration: 2 }, 80)
+  .to(line3, { opacity: 1, duration: 4 }, 82)
+  .to(line3, { opacity: 0, duration: 4 }, 86)
+
+  // Everything fades out together
+  .to(officeLayer, { opacity: 0, duration: 10 }, 86);
+
+
+// ========== SVG DRAW-ON-SCROLL ==========
+function setupDrawOnScroll() {
+  const groups = [
+    { selector: '.svg-city', start: 0.05, end: 0.15 },
+    { selector: '.svg-window', start: 0.06, end: 0.18 },
+    { selector: '.svg-desk', start: 0.14, end: 0.22 },
+    { selector: '.svg-laptop', start: 0.17, end: 0.24 },
+    { selector: '.svg-mug', start: 0.20, end: 0.26 },
+    { selector: '.svg-chair', start: 0.22, end: 0.30 },
+    { selector: '.svg-plant', start: 0.26, end: 0.32 },
+  ];
+
+  groups.forEach(group => {
+    const els = document.querySelectorAll(
+      `${group.selector} path, ${group.selector} line, ${group.selector} rect, ${group.selector} polyline, ${group.selector} circle, ${group.selector} ellipse`
+    );
+
+    els.forEach(el => {
+      let length;
+      if (el.tagName === 'circle') {
+        length = 2 * Math.PI * parseFloat(el.getAttribute('r'));
+      } else if (el.tagName === 'rect') {
+        length = 2 * (parseFloat(el.getAttribute('width')) + parseFloat(el.getAttribute('height')));
+      } else if (el.tagName === 'line') {
+        const x1=parseFloat(el.getAttribute('x1')), y1=parseFloat(el.getAttribute('y1'));
+        const x2=parseFloat(el.getAttribute('x2')), y2=parseFloat(el.getAttribute('y2'));
+        length = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+      } else {
+        length = el.getTotalLength ? el.getTotalLength() : 200;
+      }
+      el.style.strokeDasharray = length;
+      el.style.strokeDashoffset = length;
+    });
+
+    gsap.to(`${group.selector} path, ${group.selector} line, ${group.selector} rect, ${group.selector} polyline, ${group.selector} circle, ${group.selector} ellipse`, {
+      strokeDashoffset: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.scroll-spacer',
+        start: `${group.start * 100}% top`,
+        end: `${group.end * 100}% top`,
+        scrub: 1,
+      }
+    });
+  });
+}
+
+document.fonts.ready.then(() => { setupDrawOnScroll(); });
+</script>
+
+</body>
 </html>
