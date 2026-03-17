@@ -30,13 +30,13 @@
 
   .scroll-spacer { height: 800vh; position: relative; }
 
-  /* ========== OFFICE SVG — FIXED, CENTERED, 60vw, NEVER SCROLLS ========== */
+  /* ========== OFFICE SVG — FIXED, CENTERED, 50vw, NEVER SCROLLS ========== */
   .office-layer {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60vw;
+    width: 50vw;
     z-index: 1;
     opacity: 0.08;
     pointer-events: none;
@@ -110,18 +110,18 @@
 
   /*
     Text positioning math:
-    SVG viewBox = 960 x 750, rendered at 60vw wide.
-    Rendered height = 60vw * (750/960) = 46.875vw
-    SVG top edge = 50vh - 23.4375vw
-    Window top (y=20 of 750) ≈ SVG top + 1.25vw = 50vh - 22.2vw
-    Chair bottom (y=645 of 750) ≈ SVG top + 40.3vw = 50vh + 16.9vw
+    SVG viewBox = 960 x 750, rendered at 50vw wide.
+    Rendered height = 50vw * (750/960) = 39.0625vw
+    SVG top edge = 50vh - 19.53vw
+    Window top (y=20 of 750) ≈ SVG top + 1.04vw = 50vh - 18.5vw
+    Chair bottom (y=645 of 750) ≈ SVG top + 33.6vw = 50vh + 14.1vw
 
-    Line 1: ~30px above window top
+    Line 1: ~80px above window top
     Line 2: ~30px below chair bottom
   */
 
   .ch1-line-1 {
-    top: calc(50vh - 22.2vw - 80px);
+    top: calc(50vh - 18.5vw - 80px);
     transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: 300;
@@ -130,7 +130,7 @@
   }
 
   .ch1-line-2 {
-    top: calc(50vh + 16.9vw + 30px);
+    top: calc(50vh + 14.1vw + 30px);
     font-size: clamp(1.15rem, 1.8vw, 1.6rem);
     font-weight: 400;
     line-height: 1.7;
@@ -138,7 +138,7 @@
   }
 
   .ch1-line-3 {
-    top: calc(50vh - 22.2vw - 80px);
+    top: calc(50vh - 18.5vw - 80px);
     transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: 300;
@@ -150,7 +150,7 @@
     color: var(--goldenrod);
     font-weight: 600;
     display: inline-block;
-    min-width: 140px;
+    min-width: auto;
   }
 </style>
 </head>
@@ -252,8 +252,8 @@
       <rect x="390" y="400" width="180" height="14" rx="2" stroke="#D4A843" stroke-width="2"/>
       <!-- Screen (angled back, ~130px tall) -->
       <path d="M394,400 L405,280 L575,280 L566,400" stroke="#D4A843" stroke-width="2" fill="none"/>
-      <!-- Screen background fill to the OUTER edge of the screen frame -->
-      <polygon points="394,400 405,280 575,280 566,400" fill="#161240" stroke="none"/>
+      <!-- Screen background fill (starts hidden, fades in after scene draws) -->
+      <polygon class="screen-fill" points="394,400 405,280 575,280 566,400" fill="#161240" stroke="none" opacity="0"/>
     </g>
 
     <!-- DESIGN APP UI ON LAPTOP SCREEN (fades in after draw completes) -->
@@ -403,7 +403,7 @@ const line2 = document.querySelector('.ch1-line-2');
 const line3 = document.querySelector('.ch1-line-3');
 const rotatingEl = document.querySelector('.rotating-word');
 
-const words = ['creative', 'impactful', 'technical', 'revealing', 'custom'];
+const words = ['creative', 'technical', 'impactful', 'amazing'];
 let wordIndex = 0;
 
 /*
@@ -416,10 +416,9 @@ let wordIndex = 0;
   40-44%   = Line 1 hold
   44-48%   = Line 1 fades out
   48-55%   = Line 2 fades in (below chair) + first word visible
-  55-58%   = scroll to "impactful"
-  58-61%   = scroll to "technical"
-  61-64%   = scroll to "revealing"
-  64-67%   = scroll to "custom"
+  55-59%   = scroll to "technical"
+  59-63%   = scroll to "impactful"
+  63-67%   = scroll to "amazing"
   67-71%   = Line 2 fades out
   73-76%   = Office dims to 15% for contrast (breathing room)
   76-81%   = Line 3 fades in above window
@@ -449,8 +448,10 @@ masterTL
   // Office brightens to FULL during draw phase
   .to(officeLayer, { opacity: 1, duration: 23 }, 5)
 
-  // Laptop logo fades onto screen after draw completes
-  .to(laptopLogo, { opacity: 1, duration: 4 }, 28)
+  // Screen "turns on": dark fill fades in after plant finishes drawing (30-33%)
+  .to('.screen-fill', { opacity: 1, duration: 3 }, 30)
+  // Design app UI fades onto screen after fill (33-36%)
+  .to(laptopLogo, { opacity: 1, duration: 3 }, 33)
 
   // Line 1 in (above window)
   .fromTo(line1, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 8 }, 28)
@@ -462,11 +463,10 @@ masterTL
   // Line 2 in (below chair)
   .fromTo(line2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 7 }, 48)
 
-  // Scroll-driven word rotation: each word gets a scroll chunk
-  .call(() => { rotatingEl.textContent = 'impactful'; }, null, 55)
-  .call(() => { rotatingEl.textContent = 'technical'; }, null, 58)
-  .call(() => { rotatingEl.textContent = 'revealing'; }, null, 61)
-  .call(() => { rotatingEl.textContent = 'custom'; }, null, 64)
+  // Scroll-driven word rotation: each word gets equal scroll time
+  .call(() => { rotatingEl.textContent = 'technical'; }, null, 55)
+  .call(() => { rotatingEl.textContent = 'impactful'; }, null, 59)
+  .call(() => { rotatingEl.textContent = 'amazing'; }, null, 63)
 
   // Line 2 fades out
   .to(line2, { opacity: 0, duration: 4 }, 67)
