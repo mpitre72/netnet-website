@@ -121,7 +121,7 @@
   */
 
   .ch1-line-1 {
-    top: calc(50vh - 22.2vw - 60px);
+    top: calc(50vh - 22.2vw - 80px);
     transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: 300;
@@ -138,8 +138,8 @@
   }
 
   .ch1-line-3 {
-    top: calc(50% - 120px);
-    transform: translate(-50%, -50%);
+    top: calc(50vh - 22.2vw - 80px);
+    transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: 300;
     line-height: 1.2;
@@ -421,12 +421,12 @@ let wordIndex = 0;
   61-64%   = scroll to "revealing"
   64-67%   = scroll to "custom"
   67-71%   = Line 2 fades out
-  71-73%   = Office dims to 50% for contrast
-  73-80%   = Line 3 fades in centered + glow
-  80-84%   = Line 3 hold
-  84-88%   = Line 3 fades out
-  88-92%   = Office brightens back up
-  92-100%  = Office fades out
+  73-76%   = Office dims to 15% for contrast (breathing room)
+  76-81%   = Line 3 fades in above window
+  81-85%   = Line 3 glow + hold
+  85-88%   = Line 3 hold
+  88-91%   = Line 3 fades out
+  91-100%  = Office fades out
 */
 
 const laptopLogo = document.querySelector('.laptop-logo');
@@ -471,18 +471,18 @@ masterTL
   // Line 2 fades out
   .to(line2, { opacity: 0, duration: 4 }, 67)
 
-  // Office dims to 50% for Line 3 contrast
-  .to(officeLayer, { opacity: 0.5, duration: 2 }, 71)
+  // Office dims aggressively for Line 3 contrast
+  .to(officeLayer, { opacity: 0.15, duration: 3 }, 73)
 
-  // Line 3 centered
-  .fromTo(line3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 5 }, 73)
-  .to(line3, { textShadow: '0 0 50px rgba(212, 168, 67, 0.3)', duration: 2 }, 78)
-  .to(line3, { textShadow: '0 0 0px rgba(212, 168, 67, 0)', duration: 2 }, 80)
-  .to(line3, { opacity: 1, duration: 4 }, 82)
-  .to(line3, { opacity: 0, duration: 4 }, 86)
+  // Line 3 above window (with breathing room after Line 2)
+  .fromTo(line3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 5 }, 76)
+  .to(line3, { textShadow: '0 0 50px rgba(212, 168, 67, 0.3)', duration: 2 }, 81)
+  .to(line3, { textShadow: '0 0 0px rgba(212, 168, 67, 0)', duration: 2 }, 83)
+  .to(line3, { opacity: 1, duration: 3 }, 85)
+  .to(line3, { opacity: 0, duration: 3 }, 88)
 
   // Everything fades out together
-  .to(officeLayer, { opacity: 0, duration: 10 }, 86);
+  .to(officeLayer, { opacity: 0, duration: 9 }, 91);
 
 
 // ========== SVG DRAW-ON-SCROLL ==========
