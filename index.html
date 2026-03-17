@@ -30,17 +30,19 @@
 
   .scroll-spacer { height: 800vh; position: relative; }
 
-  /* ========== OFFICE SVG — FIXED, CENTERED, 50vw, NEVER SCROLLS ========== */
+  /* ========== OFFICE SVG — FIXED, CENTERED, RESPONSIVE WIDTH ========== */
   .office-layer {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50vw;
+    width: 88vw;
     z-index: 1;
     opacity: 0.08;
     pointer-events: none;
   }
+  @media (min-width: 768px) { .office-layer { width: 65vw; } }
+  @media (min-width: 1200px) { .office-layer { width: 45vw; } }
 
   .office-svg {
     width: 100%;
@@ -106,44 +108,89 @@
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
+    pointer-events: auto;
+    user-select: text;
+    -webkit-user-select: text;
   }
 
   /*
-    Text positioning math:
-    SVG viewBox = 960 x 750, rendered at 50vw wide.
-    Rendered height = 50vw * (750/960) = 39.0625vw
-    SVG top edge = 50vh - 19.53vw
-    Window top (y=20 of 750) ≈ SVG top + 1.04vw = 50vh - 18.5vw
-    Chair bottom (y=645 of 750) ≈ SVG top + 33.6vw = 50vh + 14.1vw
+    Text positioning math (responsive):
+    SVG viewBox = 960 x 750. Aspect ratio = 750/960 = 0.78125.
+    Window top y=20 → factor = 20/960 = 0.02083
+    Chair bottom y=645 → factor = 645/960 = 0.671875
 
-    Line 1: ~80px above window top
-    Line 2: ~30px below chair bottom
+    Mobile (88vw):   height=68.75vw, half=34.375vw, winTop=50vh-32.5vw, chairBot=50vh+24.8vw
+    Tablet (65vw):   height=50.78vw, half=25.39vw,  winTop=50vh-24vw,   chairBot=50vh+18.3vw
+    Desktop (45vw):  height=35.16vw, half=17.58vw,  winTop=50vh-16.6vw, chairBot=50vh+12.7vw
   */
 
+  /*
+    GSAP animates 'y' (translateY) on Lines 1 & 2, which OVERWRITES any
+    CSS translateY. So we CANNOT use translateY(-100%) for positioning.
+    Instead, use 'top' set high enough that the text bottom clears the window.
+
+    Line 3 only has opacity animated (no y), so CSS transform is safe there.
+
+    SVG window top edge position from viewport center:
+      windowTop = 50vh - (svgWidth * 750/960 / 2) + (svgWidth * 20/960)
+    Simplified per breakpoint below.
+  */
+
+  /* --- MOBILE (default: 88vw SVG) --- */
+  /* windowTop ≈ 50vh - 32.5vw, need text BOTTOM above that with ~20px gap */
+  /* For ~48px text height on mobile, top ≈ windowTop - 48 - 20 = 50vh - 32.5vw - 68px */
   .ch1-line-1 {
-    top: calc(50vh - 18.5vw - 80px);
-    transform: translateX(-50%) translateY(-100%);
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    top: calc(50vh - 32.5vw - 80px);
+    font-size: clamp(2rem, 7vw, 4.5rem);
     font-weight: 300;
     line-height: 1.2;
     letter-spacing: -0.02em;
   }
 
   .ch1-line-2 {
-    top: calc(50vh + 14.1vw + 30px);
-    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    top: calc(50vh + 24.8vw + 20px);
+    font-size: clamp(1.05rem, 4vw, 1.6rem);
     font-weight: 400;
     line-height: 1.7;
     max-width: 720px;
   }
 
   .ch1-line-3 {
-    top: calc(50vh - 18.5vw - 80px);
-    transform: translateX(-50%) translateY(-100%);
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(2rem, 7vw, 4.5rem);
     font-weight: 300;
     line-height: 1.2;
     letter-spacing: -0.02em;
+  }
+
+  /* --- TABLET (65vw SVG) --- */
+  /* windowTop ≈ 50vh - 24vw, text ~56px tall → top = 50vh - 24vw - 80px */
+  @media (min-width: 768px) {
+    .ch1-line-1 {
+      top: calc(50vh - 24vw - 80px);
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+    }
+    .ch1-line-2 {
+      top: calc(50vh + 18.3vw + 25px);
+      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+    }
+    .ch1-line-3 {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+    }
+  }
+
+  /* --- DESKTOP (45vw SVG) --- */
+  /* windowTop ≈ 50vh - 16.6vw, text ~72px tall → top = 50vh - 16.6vw - 100px */
+  @media (min-width: 1200px) {
+    .ch1-line-1 {
+      top: calc(50vh - 16.6vw - 100px);
+    }
+    .ch1-line-2 {
+      top: calc(50vh + 12.7vw + 30px);
+      font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    }
   }
 
   .rotating-word {
@@ -421,7 +468,7 @@ let wordIndex = 0;
   63-67%   = scroll to "amazing"
   67-71%   = Line 2 fades out
   73-76%   = Office dims to 15% for contrast (breathing room)
-  76-81%   = Line 3 fades in above window
+  76-81%   = Line 3 fades in centered on viewport
   81-85%   = Line 3 glow + hold
   85-88%   = Line 3 hold
   88-91%   = Line 3 fades out
@@ -463,10 +510,7 @@ masterTL
   // Line 2 in (below chair)
   .fromTo(line2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 7 }, 48)
 
-  // Scroll-driven word rotation: each word gets equal scroll time
-  .call(() => { rotatingEl.textContent = 'technical'; }, null, 55)
-  .call(() => { rotatingEl.textContent = 'impactful'; }, null, 59)
-  .call(() => { rotatingEl.textContent = 'amazing'; }, null, 63)
+  // Word rotation is handled by onUpdate below for proper scroll-back support
 
   // Line 2 fades out
   .to(line2, { opacity: 0, duration: 4 }, 67)
@@ -474,8 +518,8 @@ masterTL
   // Office dims aggressively for Line 3 contrast
   .to(officeLayer, { opacity: 0.15, duration: 3 }, 73)
 
-  // Line 3 above window (with breathing room after Line 2)
-  .fromTo(line3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 5 }, 76)
+  // Line 3 centered on viewport (no y animation — preserve CSS translate centering)
+  .fromTo(line3, { opacity: 0 }, { opacity: 1, duration: 5 }, 76)
   .to(line3, { textShadow: '0 0 50px rgba(212, 168, 67, 0.3)', duration: 2 }, 81)
   .to(line3, { textShadow: '0 0 0px rgba(212, 168, 67, 0)', duration: 2 }, 83)
   .to(line3, { opacity: 1, duration: 3 }, 85)
@@ -533,6 +577,22 @@ function setupDrawOnScroll() {
 }
 
 document.fonts.ready.then(() => { setupDrawOnScroll(); });
+
+// Scroll-driven word rotation (works on scroll forward AND backward)
+ScrollTrigger.create({
+  trigger: '.scroll-spacer',
+  start: 'top top',
+  end: 'bottom bottom',
+  onUpdate: (self) => {
+    const p = self.progress * 100; // 0-100
+    let word;
+    if (p < 55) word = 'creative';
+    else if (p < 59) word = 'technical';
+    else if (p < 63) word = 'impactful';
+    else word = 'amazing';
+    if (rotatingEl.textContent !== word) rotatingEl.textContent = word;
+  }
+});
 </script>
 
 </body>
