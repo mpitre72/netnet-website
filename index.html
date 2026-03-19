@@ -616,28 +616,28 @@ ch2TL
 
   // Tool 1: Kanban
   .to(toolKanban,  { opacity: 1, duration: 3 }, 16)
-  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 17)
-  .to(labelTasks, { opacity: 0, duration: 2 }, 23)
+  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 22)
+  .to(labelTasks, { opacity: 0, duration: 2 }, 26)
 
   // Tool 2: Clock
   .to(toolClock, { opacity: 1, duration: 3 }, 24)
-  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 25)
-  .to(labelTime, { opacity: 0, duration: 2 }, 31)
+  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 29)
+  .to(labelTime, { opacity: 0, duration: 2 }, 33)
 
   // Tool 3: Chat
   .to(toolChat, { opacity: 1, duration: 3 }, 32)
-  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 33)
-  .to(labelChat, { opacity: 0, duration: 2 }, 39)
+  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 36)
+  .to(labelChat, { opacity: 0, duration: 2 }, 40)
 
   // Tool 4: Spreadsheet
   .to(toolSpreadsheet, { opacity: 1, duration: 3 }, 40)
-  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 41)
+  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 43)
   .to(labelFiles, { opacity: 0, duration: 2 }, 47)
 
   // Tool 5: Calendar
   .to(toolCalendar, { opacity: 1, duration: 3 }, 48)
-  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 49)
-  .to(labelWhatever, { opacity: 0, duration: 2 }, 55)
+  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 50)
+  .to(labelWhatever, { opacity: 0, duration: 2 }, 54)
 
   // Office dims for closing statement
   .to(officeLayer, { opacity: 0.15, duration: 4 }, 62)
@@ -702,11 +702,11 @@ function setupCh1Draw() {
 
 function setupCh2ToolDraw() {
   const toolGroups = [
-    { selector: '.tool-kanban',      start: 0.16, end: 0.20 },
-    { selector: '.tool-clock',       start: 0.23, end: 0.27 },
-    { selector: '.tool-chat',        start: 0.30, end: 0.34 },
-    { selector: '.tool-spreadsheet', start: 0.37, end: 0.41 },
-    { selector: '.tool-calendar',    start: 0.44, end: 0.48 },
+    { selector: '.tool-kanban',      start: 0.14, end: 0.20 },
+    { selector: '.tool-clock',       start: 0.22, end: 0.28 },
+    { selector: '.tool-chat',        start: 0.30, end: 0.36 },
+    { selector: '.tool-spreadsheet', start: 0.38, end: 0.44 },
+    { selector: '.tool-calendar',    start: 0.46, end: 0.52 },
   ];
 
   toolGroups.forEach(group => {
