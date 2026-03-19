@@ -614,30 +614,30 @@ ch2TL
 
   // === TOOLS ACCUMULATE — draw on and stay, all inside the office SVG ===
 
-  // Tool 1: Kanban
-  .to(toolKanban,  { opacity: 1, duration: 3 }, 16)
-  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 22)
+  // Tool 1: Kanban - draw ends at 20%
+  .to(toolKanban,  { opacity: 1, duration: 2 }, 14)
+  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 21)
   .to(labelTasks, { opacity: 0, duration: 2 }, 26)
 
-  // Tool 2: Clock
-  .to(toolClock, { opacity: 1, duration: 3 }, 24)
+  // Tool 2: Clock - draw ends at 28%
+  .to(toolClock, { opacity: 1, duration: 2 }, 22)
   .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 29)
-  .to(labelTime, { opacity: 0, duration: 2 }, 33)
+  .to(labelTime, { opacity: 0, duration: 2 }, 34)
 
-  // Tool 3: Chat
-  .to(toolChat, { opacity: 1, duration: 3 }, 32)
-  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 36)
-  .to(labelChat, { opacity: 0, duration: 2 }, 40)
+  // Tool 3: Chat - draw ends at 36%
+  .to(toolChat, { opacity: 1, duration: 2 }, 30)
+  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 37)
+  .to(labelChat, { opacity: 0, duration: 2 }, 42)
 
-  // Tool 4: Spreadsheet
-  .to(toolSpreadsheet, { opacity: 1, duration: 3 }, 40)
-  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 43)
-  .to(labelFiles, { opacity: 0, duration: 2 }, 47)
+  // Tool 4: Spreadsheet - draw ends at 44%
+  .to(toolSpreadsheet, { opacity: 1, duration: 2 }, 38)
+  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 45)
+  .to(labelFiles, { opacity: 0, duration: 2 }, 50)
 
-  // Tool 5: Calendar
-  .to(toolCalendar, { opacity: 1, duration: 3 }, 48)
-  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 50)
-  .to(labelWhatever, { opacity: 0, duration: 2 }, 54)
+  // Tool 5: Calendar - draw ends at 52%
+  .to(toolCalendar, { opacity: 1, duration: 2 }, 46)
+  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 53)
+  .to(labelWhatever, { opacity: 0, duration: 2 }, 58)
 
   // Office dims for closing statement
   .to(officeLayer, { opacity: 0.15, duration: 4 }, 62)
