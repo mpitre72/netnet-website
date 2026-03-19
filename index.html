@@ -118,7 +118,7 @@
   }
 
   .ch1-line-1 {
-    top: calc(50vh - 22.2vw - 60px);
+    top: calc(50vh - 22.2vw - 80px);
     transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: 300;
@@ -135,20 +135,20 @@
   }
 
   .ch1-line-3 {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    top: calc(50vh - 22.2vw - 80px);
+    transform: translateX(-50%) translateY(-100%);
+    font-size: clamp(2.8rem, 5vw, 3.8rem);
     font-weight: 300;
     line-height: 1.2;
     letter-spacing: -0.02em;
+    white-space: nowrap;
   }
 
   .rotating-word {
     color: var(--goldenrod);
     font-weight: 600;
-    display: inline-block;
-    min-width: 140px;
+    display: inline;
+    min-width: 0;
   }
 
   /* ===== CH2 TEXT ===== */
@@ -170,7 +170,7 @@
   }
 
   .ch2-opener {
-    top: calc(50vh - 28vw);
+    top: calc(50vh - 18vw);
     transform: translateX(-50%) translateY(-100%);
     font-size: clamp(2.2rem, 4vw, 3.8rem);
     font-weight: 300;
@@ -192,7 +192,7 @@
   /* ===== TOOL LABELS ===== */
   .tool-label {
     position: fixed;
-    bottom: 7vh;
+    bottom: 5vh;
     left: 50%;
     transform: translateX(-50%);
     font-size: clamp(1.4rem, 2.5vw, 2.2rem);
