@@ -135,10 +135,9 @@
   }
 
   .ch1-line-3 {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    top: calc(50vh - 22.2vw - 80px);
+    transform: translateX(-50%) translateY(-100%);
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
     font-weight: 300;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -547,7 +546,7 @@ ch1TL
 
   // Line 2
   .fromTo(line2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 7 }, 48)
-  .to(line2, { opacity: 0, duration: 4 }, 67)
+  .to(line2, { opacity: 0, duration: 4 }, 72)
 
   // Office dims for Line 3
   .to(officeLayer, { opacity: 0.15, duration: 3 }, 73)
@@ -574,9 +573,9 @@ ScrollTrigger.create({
   onUpdate: (self) => {
     const p = self.progress * 100;
     let word;
-    if      (p < 55) word = 'creative';
-    else if (p < 59) word = 'technical';
-    else if (p < 63) word = 'impactful';
+    if      (p < 54) word = 'creative';
+    else if (p < 60) word = 'technical';
+    else if (p < 66) word = 'impactful';
     else             word = 'amazing';
     if (rotatingEl.textContent !== word) rotatingEl.textContent = word;
   }
@@ -617,28 +616,28 @@ ch2TL
 
   // Tool 1: Kanban
   .to(toolKanban,  { opacity: 1, duration: 3 }, 16)
-  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 18)
-  .to(labelTasks, { opacity: 0, duration: 2 }, 22)
+  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 17)
+  .to(labelTasks, { opacity: 0, duration: 2 }, 23)
 
   // Tool 2: Clock
   .to(toolClock, { opacity: 1, duration: 3 }, 24)
-  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 26)
-  .to(labelTime, { opacity: 0, duration: 2 }, 30)
+  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 25)
+  .to(labelTime, { opacity: 0, duration: 2 }, 31)
 
   // Tool 3: Chat
   .to(toolChat, { opacity: 1, duration: 3 }, 32)
-  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 34)
-  .to(labelChat, { opacity: 0, duration: 2 }, 38)
+  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 33)
+  .to(labelChat, { opacity: 0, duration: 2 }, 39)
 
   // Tool 4: Spreadsheet
   .to(toolSpreadsheet, { opacity: 1, duration: 3 }, 40)
-  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 42)
-  .to(labelFiles, { opacity: 0, duration: 2 }, 46)
+  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 41)
+  .to(labelFiles, { opacity: 0, duration: 2 }, 47)
 
   // Tool 5: Calendar
   .to(toolCalendar, { opacity: 1, duration: 3 }, 48)
-  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 50)
-  .to(labelWhatever, { opacity: 0, duration: 2 }, 54)
+  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 49)
+  .to(labelWhatever, { opacity: 0, duration: 2 }, 55)
 
   // Office dims for closing statement
   .to(officeLayer, { opacity: 0.15, duration: 4 }, 62)
