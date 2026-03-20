@@ -135,8 +135,8 @@
   }
 
   .ch1-line-3 {
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: calc(50vh - 7vw);
+    transform: translateX(-50%) translateY(-50%);
     font-size: clamp(2.4rem, 4.5vw, 3.8rem);
     font-weight: 300;
     line-height: 1.2;
@@ -615,42 +615,39 @@ ch2TL
   // === TOOLS ACCUMULATE — draw on and stay, all inside the office SVG ===
 
   // Tool 1: Kanban - draw ends at 20%
-  .to(toolKanban,  { opacity: 1, duration: 2 }, 14)
+  .to(toolKanban,  { opacity: 1, duration: 3 }, 14)
   .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 21)
-  .to(labelTasks, { opacity: 0, duration: 2 }, 26)
+  .to(labelTasks, { opacity: 0, duration: 2 }, 33)
 
-  // Tool 2: Clock - draw ends at 28%
-  .to(toolClock, { opacity: 1, duration: 2 }, 22)
-  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 29)
-  .to(labelTime, { opacity: 0, duration: 2 }, 34)
+  // Tool 2: Clock - draw ends at 41%
+  .to(toolClock, { opacity: 1, duration: 3 }, 35)
+  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 42)
+  .to(labelTime, { opacity: 0, duration: 2 }, 54)
 
-  // Tool 3: Chat - draw ends at 36%
-  .to(toolChat, { opacity: 1, duration: 2 }, 30)
-  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 37)
-  .to(labelChat, { opacity: 0, duration: 2 }, 42)
+  // Tool 3: Chat - draw ends at 62%
+  .to(toolChat, { opacity: 1, duration: 3 }, 56)
+  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 63)
+  .to(labelChat, { opacity: 0, duration: 2 }, 75)
 
-  // Tool 4: Spreadsheet - draw ends at 44%
-  .to(toolSpreadsheet, { opacity: 1, duration: 2 }, 38)
-  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 45)
-  .to(labelFiles, { opacity: 0, duration: 2 }, 50)
+  // Tool 4: Spreadsheet - draw ends at 83%
+  .to(toolSpreadsheet, { opacity: 1, duration: 3 }, 77)
+  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 84)
+  .to(labelFiles, { opacity: 0, duration: 2 }, 96)
 
-  // Tool 5: Calendar - draw ends at 52%
-  .to(toolCalendar, { opacity: 1, duration: 2 }, 46)
-  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 53)
-  .to(labelWhatever, { opacity: 0, duration: 2 }, 58)
+  // Tool 5: Calendar - draw ends at 104%
+  .to(toolCalendar, { opacity: 1, duration: 3 }, 98)
+  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 105)
+  .to(labelWhatever, { opacity: 0, duration: 2 }, 117)
 
   // Office dims for closing statement
-  .to(officeLayer, { opacity: 0.15, duration: 4 }, 62)
+  .to(officeLayer, { opacity: 0.15, duration: 4 }, 119)
 
   // Closer
-  .fromTo(ch2Closer, { opacity: 0 }, { opacity: 1, duration: 5 }, 66)
-  .to(ch2Closer, { textShadow: '0 0 50px rgba(245, 234, 219, 0.15)', duration: 3 }, 71)
-  .to(ch2Closer, { textShadow: '0 0 0px rgba(245, 234, 219, 0)', duration: 2 }, 74)
-  .to(ch2Closer, { opacity: 1, duration: 4 }, 76)
-  .to(ch2Closer, { opacity: 0, duration: 4 }, 80)
+  .fromTo(ch2Closer, { opacity: 0 }, { opacity: 1, duration: 5 }, 124)
+  .to(ch2Closer, { opacity: 0, duration: 4 }, 140)
 
   // Hold
-  .to({}, { duration: 20 }, 80);
+  .to({}, { duration: 20 }, 140);
 
 
 // ==================== SVG DRAW ANIMATIONS ====================
@@ -703,10 +700,10 @@ function setupCh1Draw() {
 function setupCh2ToolDraw() {
   const toolGroups = [
     { selector: '.tool-kanban',      start: 0.14, end: 0.20 },
-    { selector: '.tool-clock',       start: 0.22, end: 0.28 },
-    { selector: '.tool-chat',        start: 0.30, end: 0.36 },
-    { selector: '.tool-spreadsheet', start: 0.38, end: 0.44 },
-    { selector: '.tool-calendar',    start: 0.46, end: 0.52 },
+    { selector: '.tool-clock',       start: 0.35, end: 0.41 },
+    { selector: '.tool-chat',        start: 0.56, end: 0.62 },
+    { selector: '.tool-spreadsheet', start: 0.77, end: 0.83 },
+    { selector: '.tool-calendar',    start: 0.98, end: 1.04 },
   ];
 
   toolGroups.forEach(group => {
