@@ -174,6 +174,18 @@
     opacity: 0;
     pointer-events: none;
   }
+  .ch2-accents {
+    position: fixed;
+    top: 58%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60vw;
+    max-width: 800px;
+    height: auto;
+    z-index: 29;
+    pointer-events: none;
+    overflow: visible;
+  }
   .ch2-tools {
     position: fixed;
     inset: 0;
@@ -589,6 +601,21 @@
 <div class="ch2-dark-overlay"></div>
 <div class="ch2-teal-overlay"></div>
 
+<!-- CH2: Beat 1 accent lines (draw-on SVG) -->
+<svg class="ch2-accents" viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Line 1 accent: thin horizontal rule extending outward from center (Goldenrod) -->
+  <line class="ch2-accent-1" x1="400" y1="50" x2="400" y2="50" stroke="#D4A843" stroke-width="1.5" stroke-opacity="0.6"/>
+  <!-- Line 2 accent: two lines converging from edges with a gap in the middle (Cream) -->
+  <line class="ch2-accent-2a" x1="100" y1="50" x2="370" y2="50" stroke="#F5EADB" stroke-width="1" stroke-opacity="0.4"/>
+  <line class="ch2-accent-2b" x1="430" y1="50" x2="700" y2="50" stroke="#F5EADB" stroke-width="1" stroke-opacity="0.4"/>
+  <!-- Line 3 accent: 5 short scattered fragments at slight angles (muted purple) -->
+  <line class="ch2-accent-3a" x1="180" y1="45" x2="230" y2="55" stroke="#8B7FBF" stroke-width="1.2" stroke-opacity="0.5"/>
+  <line class="ch2-accent-3b" x1="310" y1="52" x2="350" y2="42" stroke="#8B7FBF" stroke-width="1.2" stroke-opacity="0.5"/>
+  <line class="ch2-accent-3c" x1="440" y1="48" x2="490" y2="58" stroke="#8B7FBF" stroke-width="1.2" stroke-opacity="0.5"/>
+  <line class="ch2-accent-3d" x1="560" y1="55" x2="600" y2="40" stroke="#8B7FBF" stroke-width="1.2" stroke-opacity="0.5"/>
+  <line class="ch2-accent-3e" x1="640" y1="42" x2="680" y2="54" stroke="#8B7FBF" stroke-width="1.2" stroke-opacity="0.5"/>
+</svg>
+
 <!-- CH2 Beat 1: Tool Names -->
 <div class="ch2-tools">
   <span class="ch2-tool" style="top:15%;left:8%;font-size:2rem">ASANA</span>
@@ -721,6 +748,25 @@ ScrollTrigger.create({
   var b3l3        = document.querySelector('.ch2-b3-line3');
   var finale      = document.querySelector('.ch2-finale');
 
+  var acc1    = document.querySelector('.ch2-accent-1');
+  var acc2a   = document.querySelector('.ch2-accent-2a');
+  var acc2b   = document.querySelector('.ch2-accent-2b');
+  var acc3lines = Array.from(document.querySelectorAll('[class^="ch2-accent-3"]'));
+
+  function setupDraw(el) {
+    var x1 = parseFloat(el.getAttribute('x1')), y1 = parseFloat(el.getAttribute('y1'));
+    var x2 = parseFloat(el.getAttribute('x2')), y2 = parseFloat(el.getAttribute('y2'));
+    var len = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    if (len < 1) len = 300;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+    return len;
+  }
+  var acc1Len  = setupDraw(acc1);
+  var acc2aLen = setupDraw(acc2a);
+  var acc2bLen = setupDraw(acc2b);
+  var acc3Lens = acc3lines.map(function(el) { return setupDraw(el); });
+
   function ramp(s, e, p) {
     if (p <= s) return 0;
     if (p >= e) return 1;
@@ -791,10 +837,36 @@ ScrollTrigger.create({
         el.style.opacity = mid * (1 - toolGone);
       });
 
-      /* --- BEAT 1 COPY (3 lines, individually timed) --- */
-      setEl(b1l1, pulse(0.22, 0.28, 0.33, 0.38, p), ramp(0.22, 0.28, p));
-      setEl(b1l2, pulse(0.36, 0.42, 0.47, 0.51, p), ramp(0.36, 0.42, p));
-      setEl(b1l3, pulse(0.49, 0.55, 0.60, 0.64, p), ramp(0.49, 0.55, p));
+      /* --- BEAT 1 COPY (3 lines, individually timed, 2% gap between each) --- */
+      setEl(b1l1, pulse(0.20, 0.25, 0.30, 0.35, p), ramp(0.20, 0.25, p));
+      setEl(b1l2, pulse(0.37, 0.42, 0.47, 0.52, p), ramp(0.37, 0.42, p));
+      setEl(b1l3, pulse(0.54, 0.59, 0.63, 0.67, p), ramp(0.54, 0.59, p));
+
+      /* --- BEAT 1 ACCENT LINES --- */
+      /* Accent 1: Goldenrod rule draws outward from center with line 1 */
+      var a1draw = ramp(0.20, 0.29, p);
+      var a1fade = 1 - ramp(0.30, 0.35, p);
+      acc1.style.strokeDashoffset = acc1Len * (1 - a1draw);
+      acc1.style.opacity = a1fade;
+      acc1.setAttribute('x1', 400 - 200 * a1draw);
+      acc1.setAttribute('x2', 400 + 200 * a1draw);
+
+      /* Accent 2: Two cream lines draw inward from edges with line 2 */
+      var a2draw = ramp(0.37, 0.46, p);
+      var a2fade = 1 - ramp(0.47, 0.52, p);
+      acc2a.style.strokeDashoffset = acc2aLen * (1 - a2draw);
+      acc2b.style.strokeDashoffset = acc2bLen * (1 - a2draw);
+      acc2a.style.opacity = a2fade;
+      acc2b.style.opacity = a2fade;
+
+      /* Accent 3: Purple fragments draw staggered with line 3 */
+      var a3fade = 1 - ramp(0.63, 0.67, p);
+      acc3lines.forEach(function(el, i) {
+        var stagger = 0.54 + i * 0.015;
+        var draw = ramp(stagger, stagger + 0.06, p);
+        el.style.strokeDashoffset = acc3Lens[i] * (1 - draw);
+        el.style.opacity = draw * a3fade;
+      });
 
       /* --- BEAT 2 MESSAGES --- */
       msgs.forEach(function (el, i) {
