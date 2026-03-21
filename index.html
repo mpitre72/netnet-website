@@ -154,97 +154,146 @@
     min-width: 0;
   }
 
-  /* ===== CHAPTER 2 STYLES ===== */
+  /* ===== CHAPTER 2 ===== */
   .screen-layer {
     pointer-events: none;
   }
-  .tool-names-layer {
-    position: absolute;
+  .ch2-dark-overlay {
+    position: fixed;
     inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .tool-name {
-    position: absolute;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    color: var(--cream);
-    letter-spacing: 0.04em;
+    background: rgba(8, 6, 22, 0.76);
+    z-index: 26;
     opacity: 0;
     pointer-events: none;
   }
-  .ch2-text-block {
+  .ch2-teal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 107, 109, 0.20);
+    z-index: 27;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ch2-tools {
+    position: fixed;
+    inset: 0;
+    z-index: 28;
+    pointer-events: none;
+  }
+  .ch2-tool {
+    position: absolute;
+    color: rgba(245, 234, 219, 0.70);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    opacity: 0;
+  }
+  .ch2-b1-line1,
+  .ch2-b1-line2,
+  .ch2-b1-line3 {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    width: 680px;
+    max-width: 90vw;
     text-align: center;
     z-index: 30;
-    max-width: 660px;
-    width: 90vw;
+    opacity: 0;
     pointer-events: none;
-  }
-  .ch2-line {
+    color: #F5EADB;
     font-family: 'Open Sans', sans-serif;
-    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
     font-weight: 300;
-    color: var(--cream);
-    line-height: 1.6;
-    margin-bottom: 0.9rem;
-    opacity: 0;
-    pointer-events: auto;
-    user-select: text;
+    line-height: 1.5;
   }
-  .messages-layer {
+  .ch2-messages {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 35;
-    width: 90vw;
-    max-width: 700px;
-    pointer-events: none;
-  }
-  .msg-fragment {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: clamp(1.0rem, 2.2vw, 1.45rem);
-    color: var(--cream);
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    white-space: nowrap;
-    pointer-events: auto;
-    user-select: text;
-  }
-  .teal-wash {
-    position: absolute;
     inset: 0;
-    background: rgba(27, 107, 109, 0.2);
     pointer-events: none;
-    z-index: 5;
+    z-index: 33;
   }
-  .ch2-closing {
+  .ch2-msg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    max-width: 90vw;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(1rem, 2vw, 1.55rem);
+    color: #F5EADB;
+    opacity: 0;
+    line-height: 1.7;
+  }
+  .ch2-b2-close {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    width: 680px;
+    max-width: 90vw;
     text-align: center;
-    z-index: 40;
-    max-width: 700px;
-    width: 90vw;
-    pointer-events: auto;
-    user-select: text;
-  }
-  .ch2-closing p {
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    color: #F5EADB;
     font-family: 'Open Sans', sans-serif;
-    font-size: clamp(1.15rem, 2.7vw, 1.85rem);
+    font-size: clamp(1.2rem, 2.2vw, 1.85rem);
     font-weight: 300;
-    color: var(--cream);
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+  .ch2-b2-close p { margin: 0 0 0.55em; }
+  .ch2-b2-sub {
+    opacity: 0.65;
+    font-size: 0.87em;
+  }
+  .ch2-b3-line1,
+  .ch2-b3-line3 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 680px;
+    max-width: 90vw;
+    text-align: center;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    color: #F5EADB;
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .ch2-b3-line2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 320px;
+    text-align: center;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    color: #5FCEA8;
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .ch2-finale {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 740px;
+    max-width: 88vw;
+    text-align: center;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    color: #F5EADB;
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+    font-weight: 300;
+    line-height: 1.55;
   }
 </style>
 </head>
@@ -529,64 +578,51 @@
 <!-- ========== CHAPTER 2 ========== -->
 
 <div class="screen-layer">
-
-  <!-- Beat 1: Tool name fragments -->
-  <div class="tool-names-layer" id="toolNamesLayer">
-    <span class="tool-name" style="top:8%;left:12%;font-size:1.1rem;transform:rotate(-3deg)">Asana</span>
-    <span class="tool-name" style="top:15%;left:58%;font-size:0.85rem;transform:rotate(2deg)">Slack</span>
-    <span class="tool-name" style="top:28%;left:22%;font-size:1.3rem;transform:rotate(-1deg)">Harvest</span>
-    <span class="tool-name" style="top:20%;left:70%;font-size:0.9rem;transform:rotate(4deg)">Google Drive</span>
-    <span class="tool-name" style="top:42%;left:8%;font-size:1.0rem;transform:rotate(-2deg)">Monday</span>
-    <span class="tool-name" style="top:35%;left:48%;font-size:1.2rem;transform:rotate(1deg)">Toggl</span>
-    <span class="tool-name" style="top:55%;left:30%;font-size:0.8rem;transform:rotate(-4deg)">Basecamp</span>
-    <span class="tool-name" style="top:48%;left:72%;font-size:1.1rem;transform:rotate(3deg)">Notion</span>
-    <span class="tool-name" style="top:65%;left:15%;font-size:0.95rem;transform:rotate(-1deg)">ClickUp</span>
-    <span class="tool-name" style="top:60%;left:55%;font-size:1.0rem;transform:rotate(2deg)">Sheets</span>
-    <span class="tool-name" style="top:72%;left:38%;font-size:1.2rem;transform:rotate(-3deg)">Trello</span>
-    <span class="tool-name" style="top:25%;left:38%;font-size:0.85rem;transform:rotate(1deg)">Teams</span>
-    <span class="tool-name" style="top:75%;left:65%;font-size:0.9rem;transform:rotate(-2deg)">Jira</span>
-    <span class="tool-name" style="top:80%;left:20%;font-size:1.1rem;transform:rotate(3deg)">HubSpot</span>
-    <span class="tool-name" style="top:78%;left:48%;font-size:0.85rem;transform:rotate(-1deg)">Dropbox</span>
-  </div>
-
-  <!-- Beat 1: Copy lines -->
-  <div class="ch2-text-block" id="beat1Copy" style="opacity:0">
-    <p class="ch2-line" id="b1line1" style="opacity:0">You didn't set out to build a stack. You just kept solving problems.</p>
-    <p class="ch2-line" id="b1line2" style="opacity:0">None of them talk to each other.</p>
-    <p class="ch2-line" id="b1line3" style="opacity:0">You get pieces of the picture. Never the whole thing.</p>
-  </div>
-
-  <!-- Beat 2: Message fragments -->
-  <div class="messages-layer" id="messagesLayer" style="opacity:0">
-    <p class="msg-fragment" id="msg1" style="opacity:0">"Can you update the tracker?"</p>
-    <p class="msg-fragment" id="msg2" style="opacity:0">"I still need your hours from last week."</p>
-    <p class="msg-fragment" id="msg3" style="opacity:0">"What's the status on the Arkham job?"</p>
-    <p class="msg-fragment" id="msg4" style="opacity:0">"Why hasn't anyone logged time to the observatory retainer?"</p>
-    <p class="msg-fragment" id="msg5" style="opacity:0">"The time report doesn't match what's happening on our biggest project."</p>
-  </div>
-
-  <!-- Beat 2: Closing copy -->
-  <div class="ch2-text-block" id="beat2Copy" style="opacity:0">
-    <p class="ch2-line" id="b2line1" style="opacity:0">The tools only work if your team uses them. Consistently. Accurately. Every time.</p>
-    <p class="ch2-line" id="b2line2" style="opacity:0">That's a management job on top of the work itself.</p>
-  </div>
-
-  <!-- Beat 3: Teal wash -->
-  <div class="teal-wash" id="tealWash" style="opacity:0"></div>
-
-  <!-- Beat 3: AI copy -->
-  <div class="ch2-text-block" id="beat3Copy" style="opacity:0">
-    <p class="ch2-line" id="b3line1" style="opacity:0">Now your team uses AI to get work done faster.</p>
-    <p class="ch2-line" id="b3line2" style="opacity:0">It's working.</p>
-    <p class="ch2-line" id="b3line3" style="opacity:0">But your systems have no idea it's happening.</p>
-  </div>
-
-  <!-- Closing statement -->
-  <div class="ch2-closing" id="ch2Closing" style="opacity:0">
-    <p>The gap between what's actually happening in your shop and what your tools can show you is getting wider. Not narrower.</p>
-  </div>
-
 </div>
+
+<!-- CH2: Overlays -->
+<div class="ch2-dark-overlay"></div>
+<div class="ch2-teal-overlay"></div>
+
+<!-- CH2 Beat 1: Tool Names -->
+<div class="ch2-tools">
+  <span class="ch2-tool" style="top:16%;left:9%">ASANA</span>
+  <span class="ch2-tool" style="top:24%;left:71%;font-size:1.2rem">SLACK</span>
+  <span class="ch2-tool" style="top:67%;left:11%;font-size:0.88rem">HARVEST</span>
+  <span class="ch2-tool" style="top:74%;left:68%;font-size:0.76rem">NOTION</span>
+  <span class="ch2-tool" style="top:41%;left:6%;font-size:1.05rem">BASECAMP</span>
+  <span class="ch2-tool" style="top:54%;left:78%;font-size:0.84rem">MONDAY</span>
+  <span class="ch2-tool" style="top:84%;left:39%;font-size:1.1rem">CLICKUP</span>
+  <span class="ch2-tool" style="top:8%;left:49%;font-size:0.78rem">TOGGL</span>
+</div>
+
+<!-- CH2 Beat 1: Three separate copy lines for individual animation -->
+<div class="ch2-b1-line1">You didn't set out to build a stack.<br>You just kept solving problems.</div>
+<div class="ch2-b1-line2">None of them talk to each other.</div>
+<div class="ch2-b1-line3">You get pieces of the picture.<br>Never the whole thing.</div>
+
+<!-- CH2 Beat 2: Messages (each is independently animated) -->
+<div class="ch2-messages">
+  <div class="ch2-msg">&ldquo;Can you update the tracker?&rdquo;</div>
+  <div class="ch2-msg">&ldquo;I still need your hours from last week.&rdquo;</div>
+  <div class="ch2-msg">&ldquo;What&rsquo;s the status on the Arkham job?&rdquo;</div>
+  <div class="ch2-msg">&ldquo;Why hasn&rsquo;t anyone logged time to the observatory retainer?&rdquo;</div>
+  <div class="ch2-msg">&ldquo;The time report doesn&rsquo;t match what&rsquo;s happening on our biggest project.&rdquo;</div>
+</div>
+
+<!-- CH2 Beat 2: Closing copy -->
+<div class="ch2-b2-close">
+  <p>The tools only work if your team uses them.<br>Consistently. Accurately. Every time.</p>
+  <p class="ch2-b2-sub">That&rsquo;s a management job on top of the work itself.</p>
+</div>
+
+<!-- CH2 Beat 3: AI copy lines -->
+<div class="ch2-b3-line1">Now your team uses AI to get work done faster.</div>
+<div class="ch2-b3-line2">It&rsquo;s working.</div>
+<div class="ch2-b3-line3">But your systems have no idea it&rsquo;s happening.</div>
+
+<!-- CH2 Closing Statement -->
+<div class="ch2-finale">The gap between what&rsquo;s actually happening in your shop and what your tools can show you is getting wider. Not narrower.</div>
 
 <div class="ch2-spacer"></div>
 
@@ -665,78 +701,114 @@ ScrollTrigger.create({
 });
 
 
-// ==================== CHAPTER 2 ====================
+// ===== CHAPTER 2 =====
+(function () {
+  var darkOverlay = document.querySelector('.ch2-dark-overlay');
+  var tealOverlay = document.querySelector('.ch2-teal-overlay');
+  var toolEls     = Array.from(document.querySelectorAll('.ch2-tool'));
+  var b1l1        = document.querySelector('.ch2-b1-line1');
+  var b1l2        = document.querySelector('.ch2-b1-line2');
+  var b1l3        = document.querySelector('.ch2-b1-line3');
+  var msgs        = Array.from(document.querySelectorAll('.ch2-msg'));
+  var b2close     = document.querySelector('.ch2-b2-close');
+  var b3l1        = document.querySelector('.ch2-b3-line1');
+  var b3l2        = document.querySelector('.ch2-b3-line2');
+  var b3l3        = document.querySelector('.ch2-b3-line3');
+  var finale      = document.querySelector('.ch2-finale');
 
-const toolEls = document.querySelectorAll('.tool-name');
-ScrollTrigger.create({
-  trigger: '.ch2-spacer',
-  start: 'top top',
-  end: 'bottom bottom',
-  scrub: 1,
-  onUpdate: (self) => {
-    const p = self.progress;
-
-    // ---- BEAT 1: Tool names flood in (2% to 30%) ----
-    toolEls.forEach((el, i) => {
-      const fadeInStart = 0.02 + i * 0.013;
-      const fadeInEnd = fadeInStart + 0.04;
-      const t = Math.max(0, Math.min(1, (p - fadeInStart) / (fadeInEnd - fadeInStart)));
-      // Dim to 0.15 as Beat 2 begins (30% to 36%)
-      const dimT = Math.max(0, Math.min(1, (p - 0.30) / 0.06));
-      gsap.set(el, { opacity: t * (0.85 - dimT * 0.70) });
-    });
-
-    // Beat 1 copy (20% to 46%, fades out by 50%)
-    const b1Visible = p > 0.19 && p < 0.50;
-    gsap.set('#beat1Copy', { opacity: b1Visible ? 1 : 0 });
-    gsap.set('#b1line1', { opacity: Math.max(0, Math.min(1, (p - 0.20) / 0.04)) });
-    gsap.set('#b1line2', { opacity: Math.max(0, Math.min(1, (p - 0.24) / 0.04)) });
-    gsap.set('#b1line3', { opacity: Math.max(0, Math.min(1, (p - 0.28) / 0.04)) });
-
-    // ---- BEAT 2: Message fragments (36% to 66%) ----
-    gsap.set('#messagesLayer', { opacity: p > 0.35 && p < 0.67 ? 1 : 0 });
-    const msgIds    = ['#msg1','#msg2','#msg3','#msg4','#msg5'];
-    const msgStarts = [0.36, 0.42, 0.48, 0.54, 0.60];
-    msgIds.forEach((id, i) => {
-      const s = msgStarts[i];
-      const nextS = msgStarts[i + 1] || 0.68;
-      const fadeIn  = Math.max(0, Math.min(1, (p - s) / 0.04));
-      const fadeOut = Math.max(0, Math.min(1, 1 - (p - (nextS - 0.03)) / 0.03));
-      gsap.set(id, { opacity: Math.min(fadeIn, i < msgIds.length - 1 ? fadeOut : 1) });
-    });
-
-    // Beat 2 closing copy (64% to 74%)
-    gsap.set('#beat2Copy', { opacity: p > 0.63 && p < 0.75 ? 1 : 0 });
-    gsap.set('#b2line1', { opacity: Math.max(0, Math.min(1, (p - 0.64) / 0.04)) });
-    gsap.set('#b2line2', { opacity: Math.max(0, Math.min(1, (p - 0.68) / 0.04)) });
-
-    // ---- BEAT 3: Teal + AI copy (70% to 86%) ----
-    const tealT = Math.max(0, Math.min(1, (p - 0.68) / 0.10));
-    gsap.set('#tealWash', { opacity: tealT });
-    gsap.set('#beat3Copy', { opacity: p > 0.70 && p < 0.88 ? 1 : 0 });
-    gsap.set('#b3line1', { opacity: Math.max(0, Math.min(1, (p - 0.71) / 0.04)) });
-    gsap.set('#b3line2', { opacity: Math.max(0, Math.min(1, (p - 0.75) / 0.04)) });
-    gsap.set('#b3line3', { opacity: Math.max(0, Math.min(1, (p - 0.79) / 0.04)) });
-
-    // Background color: Deep Violet #1F194C to Darker Violet #17123D
-    const bgT = Math.max(0, Math.min(1, (p - 0.65) / 0.30));
-    const rVal = Math.round(31 + (23 - 31) * bgT);
-    const gVal = Math.round(25 + (18 - 25) * bgT);
-    const bVal = Math.round(76 + (61 - 76) * bgT);
-    document.body.style.background = `rgb(${rVal},${gVal},${bVal})`;
-
-    // ---- CLOSING STATEMENT (84% to 97%) ----
-    gsap.set('#ch2Closing', { opacity: p > 0.83 && p < 0.98 ? 1 : 0 });
-
-    // Fade out everything at the very end (96% to 100%)
-    if (p > 0.96) {
-      const outT = (p - 0.96) / 0.04;
-      gsap.set('.screen-layer', { opacity: 1 - outT });
-    } else {
-      gsap.set('.screen-layer', { opacity: 1 });
-    }
+  function ramp(s, e, p) {
+    if (p <= s) return 0;
+    if (p >= e) return 1;
+    return (p - s) / (e - s);
   }
-});
+
+  function pulse(is, ie, os, oe, p) {
+    return ramp(is, ie, p) * (1 - ramp(os, oe, p));
+  }
+
+  function setEl(el, opacity, enterRamp) {
+    el.style.opacity = opacity;
+    var yOff = (1 - Math.min(enterRamp * 2, 1)) * 14;
+    el.style.transform = 'translate(-50%, calc(-50% + ' + yOff + 'px))';
+  }
+
+  msgs.forEach(function (el) {
+    el.style.transform = 'translate(-50%, -50%)';
+  });
+
+  var toolSchedule = [
+    [0.02, 0.06], [0.04, 0.08], [0.06, 0.10], [0.08, 0.12],
+    [0.10, 0.14], [0.12, 0.16], [0.14, 0.18], [0.16, 0.20]
+  ];
+
+  var msgTimings = [
+    [0.37, 0.41, 0.44, 0.48],
+    [0.43, 0.47, 0.50, 0.54],
+    [0.49, 0.53, 0.56, 0.60],
+    [0.55, 0.59, 0.62, 0.66],
+    [0.61, 0.65, 0.69, 0.73]
+  ];
+
+  ScrollTrigger.create({
+    trigger: '.ch2-spacer',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1,
+    onUpdate: function (self) {
+      var p = self.progress;
+
+      // DARK OVERLAY
+      var dBase = 0.76 * ramp(0, 0.05, p);
+      var dDeep = 0.12 * ramp(0.93, 0.98, p);
+      darkOverlay.style.opacity = dBase + dDeep;
+
+      // TEAL OVERLAY (Beat 3)
+      tealOverlay.style.opacity = 0.20 * ramp(0.79, 0.84, p) * (1 - ramp(0.93, 0.98, p));
+
+      // TOOL NAMES (Beat 1)
+      var toolFadeToGhost = ramp(0.22, 0.32, p);
+      var toolGone        = ramp(0.36, 0.42, p);
+      toolEls.forEach(function (el, i) {
+        if (i >= toolSchedule.length) return;
+        var appear = ramp(toolSchedule[i][0], toolSchedule[i][1], p);
+        var full   = 0.62 * appear;
+        var ghost  = 0.07 * appear;
+        var mid    = full * (1 - toolFadeToGhost) + ghost * toolFadeToGhost;
+        el.style.opacity = mid * (1 - toolGone);
+      });
+
+      // BEAT 1 COPY
+      setEl(b1l1, pulse(0.22, 0.28, 0.33, 0.38, p), ramp(0.22, 0.28, p));
+      setEl(b1l2, pulse(0.36, 0.42, 0.47, 0.51, p), ramp(0.36, 0.42, p));
+      setEl(b1l3, pulse(0.49, 0.55, 0.60, 0.64, p), ramp(0.49, 0.55, p));
+
+      // BEAT 2 MESSAGES
+      msgs.forEach(function (el, i) {
+        if (i >= msgTimings.length) return;
+        var t = msgTimings[i];
+        el.style.opacity = pulse(t[0], t[1], t[2], t[3], p);
+      });
+
+      // BEAT 2 CLOSING COPY
+      setEl(b2close, pulse(0.68, 0.73, 0.78, 0.82, p), ramp(0.68, 0.73, p));
+
+      // BEAT 3 AI COPY
+      setEl(b3l1, pulse(0.80, 0.85, 0.87, 0.91, p), ramp(0.80, 0.85, p));
+      setEl(b3l2, pulse(0.89, 0.93, 0.95, 0.98, p), ramp(0.89, 0.93, p));
+      setEl(b3l3, pulse(0.93, 0.96, 0.98, 1.00, p), ramp(0.93, 0.96, p));
+
+      // CLOSING STATEMENT
+      setEl(finale, ramp(0.95, 0.99, p), ramp(0.95, 0.99, p));
+
+      // BACKGROUND COLOR TRANSITION
+      var bgT = ramp(0.65, 0.95, p);
+      var r   = Math.round(31 + (23 - 31) * bgT);
+      var g   = Math.round(25 + (18 - 25) * bgT);
+      var b   = Math.round(76 + (61 - 76) * bgT);
+      document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+  });
+})();
 
 
 // ==================== SVG DRAW ANIMATIONS ====================
