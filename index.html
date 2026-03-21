@@ -184,7 +184,6 @@
     position: absolute;
     color: rgba(245, 234, 219, 0.70);
     font-family: 'Open Sans', sans-serif;
-    font-size: 0.95rem;
     font-weight: 300;
     letter-spacing: 0.14em;
     opacity: 0;
@@ -206,6 +205,7 @@
     font-size: clamp(1.4rem, 2.6vw, 2.2rem);
     font-weight: 300;
     line-height: 1.5;
+    transform: translate(-50%, -50%);
   }
   .ch2-messages {
     position: fixed;
@@ -225,6 +225,7 @@
     color: #F5EADB;
     opacity: 0;
     line-height: 1.7;
+    transform: translate(-50%, -50%);
   }
   .ch2-b2-close {
     position: fixed;
@@ -241,6 +242,7 @@
     font-size: clamp(1.2rem, 2.2vw, 1.85rem);
     font-weight: 300;
     line-height: 1.65;
+    transform: translate(-50%, -50%);
   }
   .ch2-b2-close p { margin: 0 0 0.55em; }
   .ch2-b2-sub {
@@ -263,6 +265,7 @@
     font-size: clamp(1.3rem, 2.4vw, 2rem);
     font-weight: 300;
     line-height: 1.5;
+    transform: translate(-50%, -50%);
   }
   .ch2-b3-line2 {
     position: fixed;
@@ -278,6 +281,7 @@
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 600;
     letter-spacing: 0.02em;
+    transform: translate(-50%, -50%);
   }
   .ch2-finale {
     position: fixed;
@@ -294,6 +298,7 @@
     font-size: clamp(1.5rem, 2.8vw, 2.3rem);
     font-weight: 300;
     line-height: 1.55;
+    transform: translate(-50%, -50%);
   }
 </style>
 </head>
@@ -586,14 +591,14 @@
 
 <!-- CH2 Beat 1: Tool Names -->
 <div class="ch2-tools">
-  <span class="ch2-tool" style="top:16%;left:9%">ASANA</span>
-  <span class="ch2-tool" style="top:24%;left:71%;font-size:1.2rem">SLACK</span>
-  <span class="ch2-tool" style="top:67%;left:11%;font-size:0.88rem">HARVEST</span>
-  <span class="ch2-tool" style="top:74%;left:68%;font-size:0.76rem">NOTION</span>
-  <span class="ch2-tool" style="top:41%;left:6%;font-size:1.05rem">BASECAMP</span>
-  <span class="ch2-tool" style="top:54%;left:78%;font-size:0.84rem">MONDAY</span>
-  <span class="ch2-tool" style="top:84%;left:39%;font-size:1.1rem">CLICKUP</span>
-  <span class="ch2-tool" style="top:8%;left:49%;font-size:0.78rem">TOGGL</span>
+  <span class="ch2-tool" style="top:15%;left:8%;font-size:2rem">ASANA</span>
+  <span class="ch2-tool" style="top:22%;left:70%;font-size:2.4rem">SLACK</span>
+  <span class="ch2-tool" style="top:66%;left:10%;font-size:1.7rem">HARVEST</span>
+  <span class="ch2-tool" style="top:73%;left:67%;font-size:1.5rem">NOTION</span>
+  <span class="ch2-tool" style="top:40%;left:5%;font-size:2.1rem">BASECAMP</span>
+  <span class="ch2-tool" style="top:53%;left:77%;font-size:1.65rem">MONDAY</span>
+  <span class="ch2-tool" style="top:83%;left:38%;font-size:2.2rem">CLICKUP</span>
+  <span class="ch2-tool" style="top:7%;left:48%;font-size:1.55rem">TOGGL</span>
 </div>
 
 <!-- CH2 Beat 1: Three separate copy lines for individual animation -->
@@ -732,10 +737,6 @@ ScrollTrigger.create({
     el.style.transform = 'translate(-50%, calc(-50% + ' + yOff + 'px))';
   }
 
-  msgs.forEach(function (el) {
-    el.style.transform = 'translate(-50%, -50%)';
-  });
-
   var toolSchedule = [
     [0.02, 0.06], [0.04, 0.08], [0.06, 0.10], [0.08, 0.12],
     [0.10, 0.14], [0.12, 0.16], [0.14, 0.18], [0.16, 0.20]
@@ -745,8 +746,8 @@ ScrollTrigger.create({
     [0.37, 0.41, 0.44, 0.48],
     [0.43, 0.47, 0.50, 0.54],
     [0.49, 0.53, 0.56, 0.60],
-    [0.55, 0.59, 0.62, 0.66],
-    [0.61, 0.65, 0.69, 0.73]
+    [0.55, 0.59, 0.63, 0.67],
+    [0.62, 0.66, 0.70, 0.74]
   ];
 
   ScrollTrigger.create({
@@ -757,54 +758,67 @@ ScrollTrigger.create({
     onUpdate: function (self) {
       var p = self.progress;
 
-      // DARK OVERLAY
-      var dBase = 0.76 * ramp(0, 0.05, p);
-      var dDeep = 0.12 * ramp(0.93, 0.98, p);
-      darkOverlay.style.opacity = dBase + dDeep;
+      /* --- DARK OVERLAY --- */
+      var dBase = ramp(0, 0.05, p);
+      var dLevel;
+      if (p < 0.28) {
+        dLevel = 0.50;
+      } else if (p < 0.42) {
+        dLevel = 0.58;
+      } else if (p < 0.55) {
+        dLevel = 0.66;
+      } else if (p < 0.68) {
+        dLevel = 0.72;
+      } else if (p < 0.93) {
+        dLevel = 0.76;
+      } else {
+        dLevel = 0.76 + 0.12 * ramp(0.93, 0.98, p);
+      }
+      darkOverlay.style.opacity = dBase * dLevel;
 
-      // TEAL OVERLAY (Beat 3)
+      /* --- TEAL OVERLAY (Beat 3) --- */
       tealOverlay.style.opacity = 0.20 * ramp(0.79, 0.84, p) * (1 - ramp(0.93, 0.98, p));
 
-      // TOOL NAMES (Beat 1)
-      var toolFadeToGhost = ramp(0.22, 0.32, p);
-      var toolGone        = ramp(0.36, 0.42, p);
+      /* --- TOOL NAMES (Beat 1) --- */
+      var toolFade = ramp(0.22, 0.32, p);
+      var toolGone = ramp(0.55, 0.62, p);
       toolEls.forEach(function (el, i) {
         if (i >= toolSchedule.length) return;
         var appear = ramp(toolSchedule[i][0], toolSchedule[i][1], p);
-        var full   = 0.62 * appear;
-        var ghost  = 0.07 * appear;
-        var mid    = full * (1 - toolFadeToGhost) + ghost * toolFadeToGhost;
+        var full   = 0.65 * appear;
+        var ghost  = 0.08 * appear;
+        var mid    = full * (1 - toolFade) + ghost * toolFade;
         el.style.opacity = mid * (1 - toolGone);
       });
 
-      // BEAT 1 COPY
+      /* --- BEAT 1 COPY (3 lines, individually timed) --- */
       setEl(b1l1, pulse(0.22, 0.28, 0.33, 0.38, p), ramp(0.22, 0.28, p));
       setEl(b1l2, pulse(0.36, 0.42, 0.47, 0.51, p), ramp(0.36, 0.42, p));
       setEl(b1l3, pulse(0.49, 0.55, 0.60, 0.64, p), ramp(0.49, 0.55, p));
 
-      // BEAT 2 MESSAGES
+      /* --- BEAT 2 MESSAGES --- */
       msgs.forEach(function (el, i) {
         if (i >= msgTimings.length) return;
         var t = msgTimings[i];
         el.style.opacity = pulse(t[0], t[1], t[2], t[3], p);
       });
 
-      // BEAT 2 CLOSING COPY
+      /* --- BEAT 2 CLOSING COPY --- */
       setEl(b2close, pulse(0.68, 0.73, 0.78, 0.82, p), ramp(0.68, 0.73, p));
 
-      // BEAT 3 AI COPY
+      /* --- BEAT 3 AI COPY --- */
       setEl(b3l1, pulse(0.80, 0.85, 0.87, 0.91, p), ramp(0.80, 0.85, p));
       setEl(b3l2, pulse(0.89, 0.93, 0.95, 0.98, p), ramp(0.89, 0.93, p));
       setEl(b3l3, pulse(0.93, 0.96, 0.98, 1.00, p), ramp(0.93, 0.96, p));
 
-      // CLOSING STATEMENT
+      /* --- CLOSING STATEMENT --- */
       setEl(finale, ramp(0.95, 0.99, p), ramp(0.95, 0.99, p));
 
-      // BACKGROUND COLOR TRANSITION
+      /* --- BACKGROUND COLOR --- */
       var bgT = ramp(0.65, 0.95, p);
-      var r   = Math.round(31 + (23 - 31) * bgT);
-      var g   = Math.round(25 + (18 - 25) * bgT);
-      var b   = Math.round(76 + (61 - 76) * bgT);
+      var r = Math.round(31 + (23 - 31) * bgT);
+      var g = Math.round(25 + (18 - 25) * bgT);
+      var b = Math.round(76 + (61 - 76) * bgT);
       document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
     }
   });
