@@ -36,7 +36,7 @@
   .ch1-spacer { height: 800vh; position: relative; }
 
   /* ===== CHAPTER 2 SPACER ===== */
-  .ch2-spacer { height: 900vh; position: relative; }
+  .ch2-spacer { height: 700vh; position: relative; }
 
   /* ===== OFFICE SVG — fixed, 60vw, Ch1 ===== */
   .office-layer {
@@ -154,65 +154,98 @@
     min-width: 0;
   }
 
-  /* ===== CH2 TEXT ===== */
-  .ch2-text-layer {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 15;
+  /* ===== CHAPTER 2 STYLES ===== */
+  .screen-layer {
     pointer-events: none;
   }
-
-  .ch2-line {
+  .tool-names-layer {
     position: absolute;
-    text-align: center;
-    width: 90%;
-    max-width: 900px;
-    left: 50%;
-    transform: translateX(-50%);
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .tool-name {
+    position: absolute;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.04em;
     opacity: 0;
+    pointer-events: none;
   }
-
-  .ch2-opener {
-    top: calc(50vh - 18vw);
-    transform: translateX(-50%) translateY(-100%);
-    font-size: clamp(2.2rem, 4vw, 3.8rem);
-    font-weight: 300;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-
-  .ch2-closer {
+  .ch2-text-block {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
-    font-weight: 300;
-    line-height: 1.35;
-    letter-spacing: -0.02em;
-    max-width: 780px;
-  }
-
-  /* ===== TOOL LABELS ===== */
-  .tool-label {
-    position: fixed;
-    bottom: 5vh;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-    font-weight: 600;
-    letter-spacing: 0.1em;
     text-align: center;
-    opacity: 0;
-    z-index: 16;
+    z-index: 30;
+    max-width: 660px;
+    width: 90vw;
     pointer-events: none;
-    white-space: nowrap;
   }
-
-  #label-tasks   { color: var(--teal); }
-  #label-time    { color: var(--burnt-sienna); }
-  #label-chat    { color: var(--muted-purple); }
-  #label-files   { color: var(--teal-light); }
-  #label-whatever { color: var(--sienna-light); font-size: clamp(1.1rem, 2vw, 1.8rem); }
+  .ch2-line {
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.6;
+    margin-bottom: 0.9rem;
+    opacity: 0;
+    pointer-events: auto;
+    user-select: text;
+  }
+  .messages-layer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 35;
+    width: 90vw;
+    max-width: 700px;
+    pointer-events: none;
+  }
+  .msg-fragment {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(1.0rem, 2.2vw, 1.45rem);
+    color: var(--cream);
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    pointer-events: auto;
+    user-select: text;
+  }
+  .teal-wash {
+    position: absolute;
+    inset: 0;
+    background: rgba(27, 107, 109, 0.2);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .ch2-closing {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 40;
+    max-width: 700px;
+    width: 90vw;
+    pointer-events: auto;
+    user-select: text;
+  }
+  .ch2-closing p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(1.15rem, 2.7vw, 1.85rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -495,18 +528,65 @@
 
 <!-- ========== CHAPTER 2 ========== -->
 
-<!-- CH2 TEXT -->
-<div class="ch2-text-layer">
-  <div class="ch2-line ch2-opener">Then you added the tools.</div>
-  <div class="ch2-line ch2-closer">Five tools. Five fragments of the truth.<br>Zero connected picture.</div>
-</div>
+<div class="screen-layer">
 
-<!-- TOOL LABELS -->
-<div id="label-tasks" class="tool-label">One for tasks.</div>
-<div id="label-time" class="tool-label">One for time.</div>
-<div id="label-chat" class="tool-label">One for chat.</div>
-<div id="label-files" class="tool-label">One for files.</div>
-<div id="label-whatever" class="tool-label">One for whatever this month's fix was.</div>
+  <!-- Beat 1: Tool name fragments -->
+  <div class="tool-names-layer" id="toolNamesLayer">
+    <span class="tool-name" style="top:8%;left:12%;font-size:1.1rem;transform:rotate(-3deg)">Asana</span>
+    <span class="tool-name" style="top:15%;left:58%;font-size:0.85rem;transform:rotate(2deg)">Slack</span>
+    <span class="tool-name" style="top:28%;left:22%;font-size:1.3rem;transform:rotate(-1deg)">Harvest</span>
+    <span class="tool-name" style="top:20%;left:70%;font-size:0.9rem;transform:rotate(4deg)">Google Drive</span>
+    <span class="tool-name" style="top:42%;left:8%;font-size:1.0rem;transform:rotate(-2deg)">Monday</span>
+    <span class="tool-name" style="top:35%;left:48%;font-size:1.2rem;transform:rotate(1deg)">Toggl</span>
+    <span class="tool-name" style="top:55%;left:30%;font-size:0.8rem;transform:rotate(-4deg)">Basecamp</span>
+    <span class="tool-name" style="top:48%;left:72%;font-size:1.1rem;transform:rotate(3deg)">Notion</span>
+    <span class="tool-name" style="top:65%;left:15%;font-size:0.95rem;transform:rotate(-1deg)">ClickUp</span>
+    <span class="tool-name" style="top:60%;left:55%;font-size:1.0rem;transform:rotate(2deg)">Sheets</span>
+    <span class="tool-name" style="top:72%;left:38%;font-size:1.2rem;transform:rotate(-3deg)">Trello</span>
+    <span class="tool-name" style="top:25%;left:38%;font-size:0.85rem;transform:rotate(1deg)">Teams</span>
+    <span class="tool-name" style="top:75%;left:65%;font-size:0.9rem;transform:rotate(-2deg)">Jira</span>
+    <span class="tool-name" style="top:80%;left:20%;font-size:1.1rem;transform:rotate(3deg)">HubSpot</span>
+    <span class="tool-name" style="top:78%;left:48%;font-size:0.85rem;transform:rotate(-1deg)">Dropbox</span>
+  </div>
+
+  <!-- Beat 1: Copy lines -->
+  <div class="ch2-text-block" id="beat1Copy" style="opacity:0">
+    <p class="ch2-line" id="b1line1" style="opacity:0">You didn't set out to build a stack. You just kept solving problems.</p>
+    <p class="ch2-line" id="b1line2" style="opacity:0">None of them talk to each other.</p>
+    <p class="ch2-line" id="b1line3" style="opacity:0">You get pieces of the picture. Never the whole thing.</p>
+  </div>
+
+  <!-- Beat 2: Message fragments -->
+  <div class="messages-layer" id="messagesLayer" style="opacity:0">
+    <p class="msg-fragment" id="msg1" style="opacity:0">"Can you update the tracker?"</p>
+    <p class="msg-fragment" id="msg2" style="opacity:0">"I still need your hours from last week."</p>
+    <p class="msg-fragment" id="msg3" style="opacity:0">"What's the status on the Arkham job?"</p>
+    <p class="msg-fragment" id="msg4" style="opacity:0">"Why hasn't anyone logged time to the observatory retainer?"</p>
+    <p class="msg-fragment" id="msg5" style="opacity:0">"The time report doesn't match what's happening on our biggest project."</p>
+  </div>
+
+  <!-- Beat 2: Closing copy -->
+  <div class="ch2-text-block" id="beat2Copy" style="opacity:0">
+    <p class="ch2-line" id="b2line1" style="opacity:0">The tools only work if your team uses them. Consistently. Accurately. Every time.</p>
+    <p class="ch2-line" id="b2line2" style="opacity:0">That's a management job on top of the work itself.</p>
+  </div>
+
+  <!-- Beat 3: Teal wash -->
+  <div class="teal-wash" id="tealWash" style="opacity:0"></div>
+
+  <!-- Beat 3: AI copy -->
+  <div class="ch2-text-block" id="beat3Copy" style="opacity:0">
+    <p class="ch2-line" id="b3line1" style="opacity:0">Now your team uses AI to get work done faster.</p>
+    <p class="ch2-line" id="b3line2" style="opacity:0">It's working.</p>
+    <p class="ch2-line" id="b3line3" style="opacity:0">But your systems have no idea it's happening.</p>
+  </div>
+
+  <!-- Closing statement -->
+  <div class="ch2-closing" id="ch2Closing" style="opacity:0">
+    <p>The gap between what's actually happening in your shop and what your tools can show you is getting wider. Not narrower.</p>
+  </div>
+
+</div>
 
 <div class="ch2-spacer"></div>
 
@@ -587,70 +667,76 @@ ScrollTrigger.create({
 
 // ==================== CHAPTER 2 ====================
 
-const ch2Opener     = document.querySelector('.ch2-opener');
-const ch2Closer     = document.querySelector('.ch2-closer');
-const labelTasks    = document.querySelector('#label-tasks');
-const labelTime     = document.querySelector('#label-time');
-const labelChat     = document.querySelector('#label-chat');
-const labelFiles    = document.querySelector('#label-files');
-const labelWhatever = document.querySelector('#label-whatever');
-const toolKanban    = document.querySelector('.tool-kanban');
-const toolClock     = document.querySelector('.tool-clock');
-const toolChat      = document.querySelector('.tool-chat');
-const toolSpreadsheet = document.querySelector('.tool-spreadsheet');
-const toolCalendar  = document.querySelector('.tool-calendar');
+const toolEls = document.querySelectorAll('.tool-name');
+ScrollTrigger.create({
+  trigger: '.ch2-spacer',
+  start: 'top top',
+  end: 'bottom bottom',
+  scrub: 1,
+  onUpdate: (self) => {
+    const p = self.progress;
 
-const ch2TL = gsap.timeline({
-  scrollTrigger: {
-    trigger: '.ch2-spacer',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 1,
+    // ---- BEAT 1: Tool names flood in (2% to 30%) ----
+    toolEls.forEach((el, i) => {
+      const fadeInStart = 0.02 + i * 0.013;
+      const fadeInEnd = fadeInStart + 0.04;
+      const t = Math.max(0, Math.min(1, (p - fadeInStart) / (fadeInEnd - fadeInStart)));
+      // Dim to 0.15 as Beat 2 begins (30% to 36%)
+      const dimT = Math.max(0, Math.min(1, (p - 0.30) / 0.06));
+      gsap.set(el, { opacity: t * (0.85 - dimT * 0.70) });
+    });
+
+    // Beat 1 copy (20% to 46%, fades out by 50%)
+    const b1Visible = p > 0.19 && p < 0.50;
+    gsap.set('#beat1Copy', { opacity: b1Visible ? 1 : 0 });
+    gsap.set('#b1line1', { opacity: Math.max(0, Math.min(1, (p - 0.20) / 0.04)) });
+    gsap.set('#b1line2', { opacity: Math.max(0, Math.min(1, (p - 0.24) / 0.04)) });
+    gsap.set('#b1line3', { opacity: Math.max(0, Math.min(1, (p - 0.28) / 0.04)) });
+
+    // ---- BEAT 2: Message fragments (36% to 66%) ----
+    gsap.set('#messagesLayer', { opacity: p > 0.35 && p < 0.67 ? 1 : 0 });
+    const msgIds    = ['#msg1','#msg2','#msg3','#msg4','#msg5'];
+    const msgStarts = [0.36, 0.42, 0.48, 0.54, 0.60];
+    msgIds.forEach((id, i) => {
+      const s = msgStarts[i];
+      const nextS = msgStarts[i + 1] || 0.68;
+      const fadeIn  = Math.max(0, Math.min(1, (p - s) / 0.04));
+      const fadeOut = Math.max(0, Math.min(1, 1 - (p - (nextS - 0.03)) / 0.03));
+      gsap.set(id, { opacity: Math.min(fadeIn, i < msgIds.length - 1 ? fadeOut : 1) });
+    });
+
+    // Beat 2 closing copy (64% to 74%)
+    gsap.set('#beat2Copy', { opacity: p > 0.63 && p < 0.75 ? 1 : 0 });
+    gsap.set('#b2line1', { opacity: Math.max(0, Math.min(1, (p - 0.64) / 0.04)) });
+    gsap.set('#b2line2', { opacity: Math.max(0, Math.min(1, (p - 0.68) / 0.04)) });
+
+    // ---- BEAT 3: Teal + AI copy (70% to 86%) ----
+    const tealT = Math.max(0, Math.min(1, (p - 0.68) / 0.10));
+    gsap.set('#tealWash', { opacity: tealT });
+    gsap.set('#beat3Copy', { opacity: p > 0.70 && p < 0.88 ? 1 : 0 });
+    gsap.set('#b3line1', { opacity: Math.max(0, Math.min(1, (p - 0.71) / 0.04)) });
+    gsap.set('#b3line2', { opacity: Math.max(0, Math.min(1, (p - 0.75) / 0.04)) });
+    gsap.set('#b3line3', { opacity: Math.max(0, Math.min(1, (p - 0.79) / 0.04)) });
+
+    // Background color: Deep Violet #1F194C to Darker Violet #17123D
+    const bgT = Math.max(0, Math.min(1, (p - 0.65) / 0.30));
+    const rVal = Math.round(31 + (23 - 31) * bgT);
+    const gVal = Math.round(25 + (18 - 25) * bgT);
+    const bVal = Math.round(76 + (61 - 76) * bgT);
+    document.body.style.background = `rgb(${rVal},${gVal},${bVal})`;
+
+    // ---- CLOSING STATEMENT (84% to 97%) ----
+    gsap.set('#ch2Closing', { opacity: p > 0.83 && p < 0.98 ? 1 : 0 });
+
+    // Fade out everything at the very end (96% to 100%)
+    if (p > 0.96) {
+      const outT = (p - 0.96) / 0.04;
+      gsap.set('.screen-layer', { opacity: 1 - outT });
+    } else {
+      gsap.set('.screen-layer', { opacity: 1 });
+    }
   }
 });
-
-ch2TL
-  // Opener
-  .fromTo(ch2Opener, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 4 }, 5)
-  .to(ch2Opener, { textShadow: '0 0 40px rgba(245, 234, 219, 0.15)', duration: 2 }, 9)
-  .to(ch2Opener, { opacity: 0, duration: 4 }, 12)
-
-  // === TOOLS ACCUMULATE — draw on and stay, all inside the office SVG ===
-
-  // Tool 1: Kanban - draw ends at 20%
-  .to(toolKanban,  { opacity: 1, duration: 3 }, 14)
-  .fromTo(labelTasks, { opacity: 0 }, { opacity: 1, duration: 2 }, 21)
-  .to(labelTasks, { opacity: 0, duration: 2 }, 33)
-
-  // Tool 2: Clock - draw ends at 41%
-  .to(toolClock, { opacity: 1, duration: 3 }, 35)
-  .fromTo(labelTime, { opacity: 0 }, { opacity: 1, duration: 2 }, 42)
-  .to(labelTime, { opacity: 0, duration: 2 }, 54)
-
-  // Tool 3: Chat - draw ends at 62%
-  .to(toolChat, { opacity: 1, duration: 3 }, 56)
-  .fromTo(labelChat, { opacity: 0 }, { opacity: 1, duration: 2 }, 63)
-  .to(labelChat, { opacity: 0, duration: 2 }, 75)
-
-  // Tool 4: Spreadsheet - draw ends at 83%
-  .to(toolSpreadsheet, { opacity: 1, duration: 3 }, 77)
-  .fromTo(labelFiles, { opacity: 0 }, { opacity: 1, duration: 2 }, 84)
-  .to(labelFiles, { opacity: 0, duration: 2 }, 96)
-
-  // Tool 5: Calendar - draw ends at 104%
-  .to(toolCalendar, { opacity: 1, duration: 3 }, 98)
-  .fromTo(labelWhatever, { opacity: 0 }, { opacity: 1, duration: 2 }, 105)
-  .to(labelWhatever, { opacity: 0, duration: 2 }, 117)
-
-  // Office dims for closing statement
-  .to(officeLayer, { opacity: 0.15, duration: 4 }, 119)
-
-  // Closer
-  .fromTo(ch2Closer, { opacity: 0 }, { opacity: 1, duration: 5 }, 124)
-  .to(ch2Closer, { opacity: 0, duration: 4 }, 140)
-
-  // Hold
-  .to({}, { duration: 20 }, 140);
 
 
 // ==================== SVG DRAW ANIMATIONS ====================
@@ -700,52 +786,8 @@ function setupCh1Draw() {
   });
 }
 
-function setupCh2ToolDraw() {
-  const toolGroups = [
-    { selector: '.tool-kanban',      start: 0.14, end: 0.20 },
-    { selector: '.tool-clock',       start: 0.35, end: 0.41 },
-    { selector: '.tool-chat',        start: 0.56, end: 0.62 },
-    { selector: '.tool-spreadsheet', start: 0.77, end: 0.83 },
-    { selector: '.tool-calendar',    start: 0.98, end: 1.04 },
-  ];
-
-  toolGroups.forEach(group => {
-    const els = document.querySelectorAll(
-      `${group.selector} path, ${group.selector} line, ${group.selector} rect, ${group.selector} circle, ${group.selector} polyline, ${group.selector} ellipse`
-    );
-    els.forEach(el => {
-      let length;
-      if (el.tagName === 'circle') {
-        length = 2 * Math.PI * parseFloat(el.getAttribute('r'));
-      } else if (el.tagName === 'rect') {
-        length = 2 * (parseFloat(el.getAttribute('width')) + parseFloat(el.getAttribute('height')));
-      } else if (el.tagName === 'line') {
-        const x1=parseFloat(el.getAttribute('x1')), y1=parseFloat(el.getAttribute('y1'));
-        const x2=parseFloat(el.getAttribute('x2')), y2=parseFloat(el.getAttribute('y2'));
-        length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
-      } else {
-        length = el.getTotalLength ? el.getTotalLength() : 200;
-      }
-      el.style.strokeDasharray  = length;
-      el.style.strokeDashoffset = length;
-    });
-
-    gsap.to(`${group.selector} path, ${group.selector} line, ${group.selector} rect, ${group.selector} circle, ${group.selector} polyline, ${group.selector} ellipse`, {
-      strokeDashoffset: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.ch2-spacer',
-        start: `${group.start * 100}% top`,
-        end:   `${group.end   * 100}% top`,
-        scrub: 1,
-      }
-    });
-  });
-}
-
 document.fonts.ready.then(() => {
   setupCh1Draw();
-  setupCh2ToolDraw();
 });
 </script>
 
