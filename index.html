@@ -789,11 +789,11 @@ ScrollTrigger.create({
   ];
 
   var msgTimings = [
-    [0.37, 0.41, 0.44, 0.48],
-    [0.43, 0.47, 0.50, 0.54],
-    [0.49, 0.53, 0.56, 0.60],
-    [0.55, 0.59, 0.63, 0.67],
-    [0.62, 0.66, 0.70, 0.74]
+    [0.55, 0.58, 0.61, 0.64],
+    [0.58, 0.61, 0.64, 0.67],
+    [0.61, 0.64, 0.67, 0.70],
+    [0.64, 0.67, 0.70, 0.73],
+    [0.67, 0.70, 0.73, 0.76]
   ];
 
   ScrollTrigger.create({
@@ -807,13 +807,13 @@ ScrollTrigger.create({
       /* --- DARK OVERLAY --- */
       var dBase = ramp(0, 0.05, p);
       var dLevel;
-      if (p < 0.28) {
+      if (p < 0.18) {
         dLevel = 0.50;
-      } else if (p < 0.42) {
+      } else if (p < 0.35) {
         dLevel = 0.58;
-      } else if (p < 0.55) {
+      } else if (p < 0.52) {
         dLevel = 0.66;
-      } else if (p < 0.68) {
+      } else if (p < 0.75) {
         dLevel = 0.72;
       } else if (p < 0.93) {
         dLevel = 0.76;
@@ -823,11 +823,11 @@ ScrollTrigger.create({
       darkOverlay.style.opacity = dBase * dLevel;
 
       /* --- TEAL OVERLAY (Beat 3) --- */
-      tealOverlay.style.opacity = 0.20 * ramp(0.79, 0.84, p) * (1 - ramp(0.93, 0.98, p));
+      tealOverlay.style.opacity = 0.20 * ramp(0.82, 0.86, p) * (1 - ramp(0.93, 0.98, p));
 
       /* --- TOOL NAMES (Beat 1) --- */
-      var toolFade = ramp(0.22, 0.32, p);
-      var toolGone = ramp(0.55, 0.62, p);
+      var toolFade = ramp(0.05, 0.15, p);
+      var toolGone = ramp(0.38, 0.44, p);
       toolEls.forEach(function (el, i) {
         if (i >= toolSchedule.length) return;
         var appear = ramp(toolSchedule[i][0], toolSchedule[i][1], p);
@@ -838,31 +838,31 @@ ScrollTrigger.create({
       });
 
       /* --- BEAT 1 COPY (3 lines, individually timed, 2% gap between each) --- */
-      setEl(b1l1, pulse(0.20, 0.25, 0.30, 0.35, p), ramp(0.20, 0.25, p));
-      setEl(b1l2, pulse(0.40, 0.45, 0.50, 0.55, p), ramp(0.40, 0.45, p));
-      setEl(b1l3, pulse(0.60, 0.65, 0.69, 0.73, p), ramp(0.60, 0.65, p));
+      setEl(b1l1, pulse(0.06, 0.10, 0.14, 0.18, p), ramp(0.06, 0.10, p));
+      setEl(b1l2, pulse(0.23, 0.27, 0.31, 0.35, p), ramp(0.23, 0.27, p));
+      setEl(b1l3, pulse(0.40, 0.44, 0.48, 0.52, p), ramp(0.40, 0.44, p));
 
       /* --- BEAT 1 ACCENT LINES --- */
       /* Accent 1: Goldenrod rule draws outward from center with line 1 */
-      var a1draw = ramp(0.20, 0.29, p);
-      var a1fade = 1 - ramp(0.30, 0.35, p);
+      var a1draw = ramp(0.06, 0.14, p);
+      var a1fade = 1 - ramp(0.14, 0.18, p);
       acc1.style.strokeDashoffset = acc1Len * (1 - a1draw);
       acc1.style.opacity = a1fade;
       acc1.setAttribute('x1', 400 - 200 * a1draw);
       acc1.setAttribute('x2', 400 + 200 * a1draw);
 
       /* Accent 2: Two cream lines draw inward from edges with line 2 */
-      var a2draw = ramp(0.40, 0.49, p);
-      var a2fade = 1 - ramp(0.50, 0.55, p);
+      var a2draw = ramp(0.23, 0.31, p);
+      var a2fade = 1 - ramp(0.31, 0.35, p);
       acc2a.style.strokeDashoffset = acc2aLen * (1 - a2draw);
       acc2b.style.strokeDashoffset = acc2bLen * (1 - a2draw);
       acc2a.style.opacity = a2fade;
       acc2b.style.opacity = a2fade;
 
       /* Accent 3: Purple fragments draw staggered with line 3 */
-      var a3fade = 1 - ramp(0.69, 0.73, p);
+      var a3fade = 1 - ramp(0.48, 0.52, p);
       acc3lines.forEach(function(el, i) {
-        var stagger = 0.60 + i * 0.015;
+        var stagger = 0.40 + i * 0.015;
         var draw = ramp(stagger, stagger + 0.08, p);
         el.style.strokeDashoffset = acc3Lens[i] * (1 - draw);
         el.style.opacity = draw * a3fade;
@@ -876,18 +876,18 @@ ScrollTrigger.create({
       });
 
       /* --- BEAT 2 CLOSING COPY --- */
-      setEl(b2close, pulse(0.68, 0.73, 0.78, 0.82, p), ramp(0.68, 0.73, p));
+      setEl(b2close, pulse(0.74, 0.78, 0.82, 0.85, p), ramp(0.74, 0.78, p));
 
       /* --- BEAT 3 AI COPY --- */
-      setEl(b3l1, pulse(0.80, 0.85, 0.87, 0.91, p), ramp(0.80, 0.85, p));
-      setEl(b3l2, pulse(0.89, 0.93, 0.95, 0.98, p), ramp(0.89, 0.93, p));
-      setEl(b3l3, pulse(0.93, 0.96, 0.98, 1.00, p), ramp(0.93, 0.96, p));
+      setEl(b3l1, pulse(0.84, 0.87, 0.89, 0.92, p), ramp(0.84, 0.87, p));
+      setEl(b3l2, pulse(0.90, 0.93, 0.95, 0.98, p), ramp(0.90, 0.93, p));
+      setEl(b3l3, pulse(0.95, 0.97, 0.99, 1.00, p), ramp(0.95, 0.97, p));
 
       /* --- CLOSING STATEMENT --- */
       setEl(finale, ramp(0.95, 0.99, p), ramp(0.95, 0.99, p));
 
       /* --- BACKGROUND COLOR --- */
-      var bgT = ramp(0.65, 0.95, p);
+      var bgT = ramp(0.75, 0.95, p);
       var r = Math.round(31 + (23 - 31) * bgT);
       var g = Math.round(25 + (18 - 25) * bgT);
       var b = Math.round(76 + (61 - 76) * bgT);
