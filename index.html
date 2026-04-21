@@ -1013,6 +1013,7 @@ p{ margin:0 0 1em }
 .nn-drift-pronouncement{
   display:flex; align-items:center; justify-content:center;
   gap:clamp(16px, 2.4vw, 32px); margin-top:52px; flex-wrap:wrap;
+  overflow:hidden;
 }
 .nn-drift-rule{
   display:block; height:1px; width:clamp(50px, 10vw, 130px);
@@ -2636,6 +2637,7 @@ p{ margin:0 0 1em }
     const closer = pronouncement.querySelector('.nn-drift-closer');
     const damage = pronouncement.querySelector('.nn-drift-closer-damage');
     const rules  = pronouncement.querySelectorAll('.nn-drift-rule');
+    const growScale = window.innerWidth < 768 ? 1.5 : 3;
     gsap.set(closer, { scale: 1, autoAlpha: 0, y: 14 });
     gsap.set(rules,  { scaleX: 0 });
     const ptl = gsap.timeline({
@@ -2648,7 +2650,7 @@ p{ margin:0 0 1em }
     });
     ptl.fromTo(closer,
           { y: 14, autoAlpha: 0, scale: 1 },
-          { y: 0, autoAlpha: 1, scale: 3, duration: 0.6, ease: 'none' }, 0)
+          { y: 0, autoAlpha: 1, scale: growScale, duration: 0.6, ease: 'none' }, 0)
        .fromTo(rules,
           { scaleX: 0 },
           { scaleX: 1, duration: 0.45, ease: 'none' }, 0.15);
