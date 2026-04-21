@@ -2637,8 +2637,9 @@ p{ margin:0 0 1em }
     const closer = pronouncement.querySelector('.nn-drift-closer');
     const damage = pronouncement.querySelector('.nn-drift-closer-damage');
     const rules  = pronouncement.querySelectorAll('.nn-drift-rule');
-    const growScale = window.innerWidth < 768 ? 1.5 : 3;
-    gsap.set(closer, { scale: 1, autoAlpha: 0, y: 14 });
+    const isMobile = window.innerWidth < 768;
+    const growScale = isMobile ? 1 : 3;
+    gsap.set(closer, { scale: 1, autoAlpha: 0, y: isMobile ? 20 : 14 });
     gsap.set(rules,  { scaleX: 0 });
     const ptl = gsap.timeline({
       scrollTrigger: {
@@ -2649,7 +2650,7 @@ p{ margin:0 0 1em }
       }
     });
     ptl.fromTo(closer,
-          { y: 14, autoAlpha: 0, scale: 1 },
+          { y: isMobile ? 20 : 14, autoAlpha: 0, scale: 1 },
           { y: 0, autoAlpha: 1, scale: growScale, duration: 0.6, ease: 'none' }, 0)
        .fromTo(rules,
           { scaleX: 0 },
