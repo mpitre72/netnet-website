@@ -1,0 +1,2682 @@
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+/* ====================================================================
+   NET NET — v12 HOMEPAGE
+   BUILT ON v11 — with one structural rebuild:
+
+   v12 delta: the crossfade chain was rebuilt around a 10-chapter
+   content map instead of firing at every sub-section. Four new
+   fixed stages were added (T04 warm spotlight, T12 negative-space
+   geometry, T14 glass ground, T16 illustrated waves+dots). The
+   flywheel keeps its T13 animated-green stage. The final CTA is
+   black (T01 deep dark). NN-pattern stages (T08/T09 family) are
+   no longer in the crossfade chain.
+
+   Chapter map:
+     1 Hero | 2 Drift | 3 Survey Ribbon | 4 Signals family
+     5 Flywheel | 6 Built Around + Pricing | 7 Founder portrait
+     8 AI / V1→V2 | 9 Kumail portrait | 10 Final CTA (black)
+
+   Everything else (content, sizing, density, anim culls, flywheel
+   reveal, matched portrait glass cards) is preserved from v11.
+   v11 is retained at 07-v11-density-pass.html for reference.
+   ==================================================================== */
+
+:root{
+  --nn-dark:#0D0B1A;
+  --nn-dark-mid:#161329;
+  --nn-dark-deep:#07050F;
+  --nn-purple:#711FFF;
+  --nn-purple-light:#9b5fff;
+  --nn-purple-deep:#3D0F8F;
+  --nn-purple-wash-start:#1a0f3d;
+  --nn-purple-wash-end:#0E4F51;
+  --nn-teal:#2DD4BF;
+  --nn-gold:#F5C842;
+  --nn-cream:#FAFAFA;
+  --nn-muted:rgba(250,250,250,0.7);
+
+  /* Real WP media library URLs */
+  --pat-nn-white-outline: url("https://hellonetnet.com/wp-content/uploads/2026/04/NN-White_Outline-14.svg");
+  --pat-nn-purple-outline: url("https://hellonetnet.com/wp-content/uploads/2026/04/NN-Purple_Outline-19.svg");
+
+  --nn-grad-text: linear-gradient(135deg, #711FFF 0%, #9b5fff 50%, #2DD4BF 100%);
+
+  --nn-container: 1280px;
+  --nn-pad-x: clamp(20px, 4vw, 80px);
+  /* DENSITY PASS: reduced vertical padding so more fits in 1675x1020 viewport */
+  --nn-pad-y: clamp(56px, 8vh, 100px);
+
+  --nn-h1: clamp(40px, 6.4vw, 78px);
+  --nn-h2: clamp(30px, 4.2vw, 56px);
+  --nn-h3: clamp(22px, 2.4vw, 32px);
+  --nn-body: clamp(16px, 1.25vw, 19px);
+  --nn-lg: clamp(18px, 1.5vw, 22px);
+}
+
+*,*::before,*::after{ box-sizing:border-box }
+html{ scroll-behavior:smooth }
+body{
+  margin:0;
+  background:var(--nn-dark);
+  color:var(--nn-cream);
+  font-family:'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  font-size:var(--nn-body);
+  line-height:1.6;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; height:auto; display:block }
+a{ color:inherit; text-decoration:none }
+
+h1,h2,h3{ font-family:'Space Grotesk', -apple-system, system-ui, sans-serif; letter-spacing:-0.02em; line-height:1.05; margin:0 0 0.5em }
+h1{ font-size:var(--nn-h1); font-weight:700 }
+h2{ font-size:var(--nn-h2); font-weight:700 }
+h3{ font-size:var(--nn-h3); font-weight:600 }
+
+p{ margin:0 0 1em }
+
+.nn-grad-text{
+  background: var(--nn-grad-text);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+}
+
+.nn-container{
+  max-width:var(--nn-container);
+  margin:0 auto;
+  padding:0 var(--nn-pad-x);
+  position:relative;
+  z-index:2;
+}
+
+.nn-eyebrow{
+  display:inline-block;
+  font-family:'Space Grotesk', sans-serif;
+  font-size:13px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--nn-teal);
+  font-weight:600;
+  margin-bottom:20px;
+}
+
+/* Buttons */
+.nn-btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 32px; border-radius:12px;
+  font-weight:700; font-size:16px; letter-spacing:0.02em;
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  cursor:pointer; border:none; font-family:inherit;
+}
+.nn-btn-primary{
+  background:linear-gradient(135deg, #711FFF 0%, #2DD4BF 100%);
+  color:#fff;
+  box-shadow:0 10px 30px rgba(113,31,255,0.28);
+}
+.nn-btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 46px rgba(113,31,255,0.4) }
+.nn-btn-ghost{
+  background:transparent; color:var(--nn-cream);
+  border:1.5px solid rgba(255,255,255,0.3);
+}
+.nn-btn-ghost:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.6) }
+
+/* ====================================================================
+   HIGH-CONTRAST ALTERNATING PALETTE — Marc's key v11 feedback
+   Chapters alternate dark ↔ bright purple wash so fades are VISIBLE.
+   Sequence:
+     HERO        dark-spotlight (T04)
+     DRIFT&FLOW  PURPLE WASH (T06) ← contrast
+     VISIBILITY  dark (T02)        ← contrast
+     SIGNALS     PURPLE WASH (T06) ← contrast
+     FLYWHEEL    dark (T18)        ← contrast
+     QUICK TASKS PURPLE WASH (T06) ← contrast
+     INVITE      dark (T10)        ← contrast
+     BUILT       PURPLE WASH (T06) ← contrast
+     KUMAIL      PORTRAIT (image + dark overlay)
+     HYBRID      PURPLE WASH       ← contrast
+     V1V2        dark (T10)        ← contrast
+     PRICING     PURPLE WASH (T06) ← contrast
+     FOUNDER     PORTRAIT (image + dark overlay)
+     CTA         PURPLE WASH (T06)
+   ==================================================================== */
+
+/* T01 Deep dark (footer only) */
+.nn-bg-t01-deep-dark{ background:var(--nn-dark-deep); position:relative }
+
+/* T02 Flat dark */
+.nn-bg-t02-dark{ background:var(--nn-dark); position:relative }
+
+/* T04 Hero spotlight */
+.nn-bg-t04-spotlight{
+  background:radial-gradient(ellipse at 50% 30%, #1a1240 0%, #0D0B1A 55%);
+  position:relative;
+}
+.nn-bg-t04-spotlight::before{
+  content:""; position:absolute; top:20%; left:50%;
+  transform:translateX(-50%);
+  width:1200px; height:1200px;
+  background:radial-gradient(circle, rgba(113,31,255,0.22) 0%, transparent 60%);
+  filter:blur(40px); pointer-events:none; z-index:0;
+}
+
+/* T06 Full purple wash — the HIGH-CONTRAST companion to dark sections */
+.nn-bg-t06-wash{
+  background:linear-gradient(135deg, var(--nn-purple-wash-start) 0%, var(--nn-purple-deep) 50%, var(--nn-purple-wash-end) 100%);
+  position:relative;
+}
+.nn-bg-t06-wash::before{
+  content:""; position:absolute; inset:0;
+  background-image:var(--pat-nn-white-outline);
+  background-size:contain;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  opacity:0.12;
+  pointer-events:none; z-index:0;
+}
+
+/* T06 variant — purple wash without the fixed pattern overlay */
+.nn-bg-t06-wash-plain{
+  background:linear-gradient(135deg, var(--nn-purple-wash-start) 0%, var(--nn-purple-deep) 50%, var(--nn-purple-wash-end) 100%);
+  position:relative;
+}
+
+/* T11 Halftone + Duotone (Crawford testimonial treatment) — pure CSS.
+   Base: purple→dark diagonal gradient. Layered: fine purple halftone dots +
+   gold coarse accent dots with screen blend. */
+.nn-bg-t11-duotone{
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg, rgba(113,31,255,0.92) 0%, rgba(13,11,26,0.98) 100%);
+}
+.nn-bg-t11-duotone::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background-image:radial-gradient(circle, rgba(155,95,255,0.9) 1.5px, transparent 2px);
+  background-size:6px 6px;
+  opacity:0.4;
+  pointer-events:none;
+}
+.nn-bg-t11-duotone::after{
+  content:""; position:absolute; inset:0; z-index:0;
+  background-image:radial-gradient(circle, rgba(245,200,66,0.5) 1px, transparent 1.8px);
+  background-size:8px 8px;
+  mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(90deg, #000 0%, transparent 60%);
+  mask-image:linear-gradient(90deg, #000 0%, transparent 60%);
+  pointer-events:none;
+}
+/* Ensure content sits above the halftone dot pattern */
+.nn-bg-t11-duotone > *{ position:relative; z-index:2; }
+
+/* === CRAWFORD BG STAGE LAYERS — fixed, cross-fading backdrops ===
+   Crawford's Annual Report uses one canvas (the body) whose bg color
+   is RGB-interpolated on scroll. Sections are transparent.
+   We can't RGB-tween between textured gradients (radial spotlights,
+   duotones, halftones), so we adapt: 9 fixed full-viewport bg stages
+   stacked behind the page. GSAP ScrollTrigger cross-fades opacity
+   between adjacent stages at each major section boundary.
+   Each stage is an exact visual clone of one of the T-class section
+   backgrounds, so the cross-fade feels continuous. */
+.nn-bg-stage{
+  position:fixed; inset:0; z-index:0;
+  pointer-events:none; will-change:opacity;
+  overflow:hidden;
+}
+/* Stage A: hero spotlight (mirrors T04) — visible by default */
+.nn-bg-stage-hero{
+  background:radial-gradient(ellipse at 50% 30%, #1a1240 0%, #0D0B1A 55%);
+}
+.nn-bg-stage-hero::before{
+  content:""; position:absolute; top:20%; left:50%;
+  transform:translateX(-50%);
+  width:1200px; height:1200px;
+  background:radial-gradient(circle, rgba(113,31,255,0.22) 0%, transparent 60%);
+  filter:blur(40px); pointer-events:none;
+}
+/* Stage B: drift duotone + halftones (mirrors T11) */
+.nn-bg-stage-drift{
+  opacity:0;
+  background:linear-gradient(135deg, rgba(113,31,255,0.92) 0%, rgba(13,11,26,0.98) 100%);
+}
+.nn-bg-stage-drift::before{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(155,95,255,0.9) 1.5px, transparent 2px);
+  background-size:6px 6px;
+  opacity:0.22; pointer-events:none;
+}
+.nn-bg-stage-drift::after{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(245,200,66,0.5) 1px, transparent 1.8px);
+  background-size:8px 8px;
+  mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(90deg, #000 0%, transparent 60%);
+  mask-image:linear-gradient(90deg, #000 0%, transparent 60%);
+  pointer-events:none;
+}
+/* Stage C: side-glow dark (mirrors T17) */
+.nn-bg-stage-sideglow{
+  opacity:0;
+  background:var(--nn-dark);
+}
+.nn-bg-stage-sideglow::before{
+  content:""; position:absolute; left:-200px; top:50%;
+  transform:translateY(-50%);
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(113,31,255,0.28) 0%, transparent 60%);
+  filter:blur(60px); pointer-events:none;
+}
+/* Stage D: flat dark (mirrors T02) */
+.nn-bg-stage-dark{
+  opacity:0;
+  background:var(--nn-dark);
+}
+/* Stage E: purple wash plain (mirrors T06 wash-plain) */
+.nn-bg-stage-wash-plain{
+  opacity:0;
+  background:linear-gradient(135deg, var(--nn-purple-wash-start) 0%, var(--nn-purple-deep) 50%, var(--nn-purple-wash-end) 100%);
+}
+/* Stage F: center spotlight dark (mirrors T18) */
+.nn-bg-stage-spotlight-dark{
+  opacity:0;
+  background:var(--nn-dark-deep);
+}
+.nn-bg-stage-spotlight-dark::before{
+  content:""; position:absolute; top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(113,31,255,0.22) 0%, transparent 55%);
+  filter:blur(50px); pointer-events:none;
+}
+/* Stage G: halftone dots dark (mirrors T10) */
+.nn-bg-stage-halftone-dark{
+  opacity:0;
+  background:var(--nn-dark);
+}
+.nn-bg-stage-halftone-dark::before{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(155,95,255,0.45) 1px, transparent 1.5px);
+  background-size:12px 12px;
+  -webkit-mask-image:radial-gradient(ellipse at 70% 50%, #000 0%, transparent 70%);
+  mask-image:radial-gradient(ellipse at 70% 50%, #000 0%, transparent 70%);
+  pointer-events:none;
+}
+.nn-bg-stage-halftone-dark::after{
+  content:""; position:absolute; right:-10%; top:50%;
+  transform:translateY(-50%);
+  width:700px; height:700px; border-radius:50%;
+  background:radial-gradient(circle, rgba(113,31,255,0.35) 0%, transparent 70%);
+  filter:blur(60px); pointer-events:none;
+}
+/* Stage H: purple wash with white-outline pattern (mirrors T06 wash) */
+.nn-bg-stage-wash{
+  opacity:0;
+  background:linear-gradient(135deg, var(--nn-purple-wash-start) 0%, var(--nn-purple-deep) 50%, var(--nn-purple-wash-end) 100%);
+}
+.nn-bg-stage-wash::before{
+  content:""; position:absolute; inset:0;
+  background-image:var(--pat-nn-white-outline);
+  background-size:contain;
+  background-position:center center;
+  background-repeat:no-repeat;
+  opacity:0.12;
+  pointer-events:none;
+}
+/* Stage I: deep dark (mirrors T01 footer) */
+.nn-bg-stage-deep-dark{
+  opacity:0;
+  background:var(--nn-dark-deep);
+}
+/* Stage J: animated emerald/teal gradient motion (Performance Loop backdrop)
+   Mirrors T13 Animated Gradient Motion, green-only palette. The radical
+   background shift is the visual signal that you've left the "signals" family
+   and entered the Performance Loop moment. */
+.nn-bg-stage-green{
+  opacity:0;
+  background:
+    radial-gradient(ellipse at 25% 30%, rgba(45,212,191,0.32) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 75%, rgba(22,120,90,0.42) 0%, transparent 60%),
+    linear-gradient(140deg, #051611 0%, #0b2a20 35%, #0e3529 65%, #061812 100%);
+}
+.nn-bg-stage-green::before{
+  content:""; position:absolute; inset:-15%;
+  background:
+    radial-gradient(ellipse at 40% 60%, rgba(45,212,191,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(80,200,160,0.18) 0%, transparent 55%);
+  filter:blur(40px);
+  animation:nnGreenDrift 22s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+.nn-bg-stage-green::after{
+  content:""; position:absolute; inset:-15%;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(40,180,140,0.2) 0%, transparent 52%),
+    radial-gradient(ellipse at 80% 20%, rgba(70,220,180,0.16) 0%, transparent 55%);
+  filter:blur(50px);
+  animation:nnGreenDrift 28s ease-in-out infinite alternate-reverse;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+@keyframes nnGreenDrift{
+  0%   { transform:translate(0,0) scale(1); }
+  33%  { transform:translate(4%, -4%) scale(1.06); }
+  66%  { transform:translate(-4%, 4%) scale(0.96); }
+  100% { transform:translate(0,0) scale(1); }
+}
+
+/* =============================================================
+   V12 CHAPTER-MAP STAGES (added 2026-04-20)
+   Four new fixed-background stages that pair with the 10-chapter
+   content map. They ride above the older v11 stages in z-order via
+   append order and are the only stages used by the v12 crossfade chain.
+   ============================================================= */
+
+/* Stage K: T04 WARM SPOTLIGHT — Chapter 3 (Survey Ribbon)
+   Deep-plum base with a warm gold+purple radial glow rising from
+   below. Differentiates cleanly from the hero's cool purple
+   spotlight — this is an "interrupter/invitation" moment. */
+.nn-bg-stage-spotlight-warm{
+  opacity:0;
+  background:var(--nn-dark-deep);
+}
+.nn-bg-stage-spotlight-warm::before{
+  content:""; position:absolute; bottom:-20%; left:50%;
+  transform:translateX(-50%);
+  width:1400px; height:1200px;
+  background:
+    radial-gradient(ellipse at center,
+      rgba(245,200,66,0.20) 0%,
+      rgba(113,31,255,0.18) 30%,
+      rgba(113,31,255,0.05) 55%,
+      transparent 75%);
+  filter:blur(50px); pointer-events:none;
+}
+.nn-bg-stage-spotlight-warm::after{
+  content:""; position:absolute; top:10%; right:10%;
+  width:500px; height:500px; border-radius:50%;
+  background:radial-gradient(circle, rgba(245,200,66,0.10) 0%, transparent 65%);
+  filter:blur(60px); pointer-events:none;
+}
+
+/* Stage L: T12 NEGATIVE-SPACE GEOMETRY — Chapter 4 (Back into Flow / Signals / Quick Tasks)
+   Clean technical canvas. Hair-thin isometric lines on neutral dark.
+   Lets product screenshots and data cards breathe; no competing pattern. */
+.nn-bg-stage-geometry{
+  opacity:0;
+  background:var(--nn-dark);
+}
+.nn-bg-stage-geometry::before{
+  content:""; position:absolute; inset:0;
+  background-image:
+    linear-gradient(30deg,  transparent 49.4%, rgba(155,95,255,0.12) 49.6%, rgba(155,95,255,0.12) 50.4%, transparent 50.6%),
+    linear-gradient(150deg, transparent 49.4%, rgba(155,95,255,0.10) 49.6%, rgba(155,95,255,0.10) 50.4%, transparent 50.6%),
+    linear-gradient(90deg,  transparent 49.4%, rgba(155,95,255,0.06) 49.6%, rgba(155,95,255,0.06) 50.4%, transparent 50.6%);
+  background-size:120px 208px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%, #000 0%, transparent 85%);
+          mask-image:radial-gradient(ellipse at 50% 50%, #000 0%, transparent 85%);
+  pointer-events:none;
+}
+.nn-bg-stage-geometry::after{
+  content:""; position:absolute; right:-10%; top:20%;
+  width:520px; height:520px; border-radius:50%;
+  background:radial-gradient(circle, rgba(45,212,191,0.10) 0%, transparent 65%);
+  filter:blur(70px); pointer-events:none;
+}
+
+/* Stage M: T14 GLASSMORPHIC GROUND — Chapter 6 (Invite + Built Around + Pricing)
+   Rich, saturated purple base with soft blurred light leaks. This is
+   the backdrop for glass-styled cards above — it sells the premium
+   feel of the six Built Around chip cards and the pricing card. */
+.nn-bg-stage-glass{
+  opacity:0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(113,31,255,0.55) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 85%, rgba(245,66,180,0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 40%, rgba(45,212,191,0.18) 0%, transparent 45%),
+    linear-gradient(135deg, #1a0a3a 0%, #0D0B1A 55%, #1a0a3a 100%);
+}
+.nn-bg-stage-glass::before{
+  content:""; position:absolute; inset:-10%;
+  background:
+    radial-gradient(ellipse at 40% 60%, rgba(155,95,255,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 30%, rgba(245,200,66,0.10) 0%, transparent 52%);
+  filter:blur(80px);
+  animation:nnGlassDrift 30s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes nnGlassDrift{
+  0%   { transform:translate(0,0) scale(1); }
+  100% { transform:translate(3%, -3%) scale(1.04); }
+}
+
+/* Stage N: T16 ILLUSTRATED WAVES + DOTS — Chapter 8 (AI Hybrid + V1→V2)
+   Flowing SVG curves on dark with a faded dot grid above. Distinctive
+   and conceptual — pairs with the AI brain graphic and the "new
+   reality of hybrid teams" narrative. */
+.nn-bg-stage-illustrated{
+  opacity:0;
+  background:var(--nn-dark);
+}
+.nn-bg-stage-illustrated::before{
+  content:""; position:absolute; inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' preserveAspectRatio='none'><path d='M0,500 Q300,350 600,500 T1200,500' stroke='rgba(155,95,255,0.22)' stroke-width='1.2' fill='none'/><path d='M0,560 Q300,410 600,560 T1200,560' stroke='rgba(155,95,255,0.16)' stroke-width='1' fill='none'/><path d='M0,620 Q300,470 600,620 T1200,620' stroke='rgba(45,212,191,0.18)' stroke-width='1' fill='none'/><path d='M0,680 Q300,530 600,680 T1200,680' stroke='rgba(45,212,191,0.12)' stroke-width='1' fill='none'/></svg>");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  pointer-events:none;
+}
+.nn-bg-stage-illustrated::after{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(155,95,255,0.20) 1px, transparent 1.4px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 75%);
+          mask-image:radial-gradient(ellipse at 50% 30%, #000 0%, transparent 75%);
+  opacity:0.85;
+  pointer-events:none;
+}
+
+/* Unified stage-driven section wrapper. Transparent bg so the fixed
+   stage shows through; content lifted above the stage layers.
+   Applied to every major container that should ride the cross-fade. */
+.nn-stage-section{
+  position:relative; z-index:1;
+  background:transparent !important;
+}
+.nn-stage-section > .nn-container,
+.nn-stage-section > .nn-loop-inner,
+.nn-stage-section > .nn-hybrid-grid,
+.nn-stage-section > .nn-pricing-grid,
+.nn-stage-section > .nn-cta-inner{
+  position:relative; z-index:2;
+}
+
+/* T10 Halftone dots dark */
+.nn-bg-t10-halftone{ background:var(--nn-dark); position:relative; overflow:hidden }
+.nn-bg-t10-halftone::before{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(155,95,255,0.45) 1px, transparent 1.5px);
+  background-size:12px 12px;
+  -webkit-mask-image:radial-gradient(ellipse at 70% 50%, #000 0%, transparent 70%);
+  mask-image:radial-gradient(ellipse at 70% 50%, #000 0%, transparent 70%);
+  pointer-events:none; z-index:0;
+}
+.nn-bg-t10-halftone::after{
+  content:""; position:absolute; right:-10%; top:50%;
+  transform:translateY(-50%);
+  width:700px; height:700px; border-radius:50%;
+  background:radial-gradient(circle, rgba(113,31,255,0.35) 0%, transparent 70%);
+  filter:blur(60px); pointer-events:none; z-index:0;
+}
+
+/* T17 Side glow (dark) */
+.nn-bg-t17-side-glow{ background:var(--nn-dark); position:relative; overflow:hidden }
+.nn-bg-t17-side-glow::before{
+  content:""; position:absolute; left:-200px; top:50%;
+  transform:translateY(-50%);
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(113,31,255,0.28) 0%, transparent 60%);
+  filter:blur(60px); pointer-events:none; z-index:0;
+}
+
+/* T18 Center spotlight (dark) */
+.nn-bg-t18-spotlight{
+  background:var(--nn-dark-deep);
+  position:relative; overflow:hidden;
+}
+.nn-bg-t18-spotlight::before{
+  content:""; position:absolute; top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(113,31,255,0.22) 0%, transparent 55%);
+  filter:blur(50px); pointer-events:none; z-index:0;
+}
+
+/* ====================================================================
+   SCROLL ANIMATIONS — OPT-IN VIA .nn-anim-keep (Marc: cull to ~10)
+   Only elements tagged .nn-anim-keep are animated. Everything else
+   renders naturally — no initial opacity:0 trap, no stacking ghost.
+   ==================================================================== */
+.nn-anim-keep{ opacity:0 }
+.nn-animate-fadeup{ transform:translateY(60px) }
+.nn-animate-fadein{ }
+.nn-animate-scale{ transform:scale(0.9) }
+
+@media (prefers-reduced-motion: reduce){
+  .nn-anim-keep{ opacity:1 !important; transform:none !important }
+}
+
+/* ====================================================================
+   CHAPTER FADE TRANSITIONS — REBUILT FOR HIGH CONTRAST
+   Each variant targets a specific color pair so the gradient fades
+   to/from the exact same color as the neighbor section.
+   The 200px overlap creates the Crawford Annual Report cross-fade.
+   ==================================================================== */
+
+/* DARK → PURPLE WASH (bottom fades into purple) */
+.nn-chapter-end-to-purple{ position:relative; }
+.nn-chapter-end-to-purple::after{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:200px; pointer-events:none; z-index:3;
+  background:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(26,15,61,0.35) 35%,
+    rgba(26,15,61,0.80) 65%,
+    var(--nn-purple-wash-start) 100%);
+}
+/* PURPLE WASH → DARK (bottom fades into dark) */
+.nn-chapter-end-to-dark{ position:relative; }
+.nn-chapter-end-to-dark::after{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:200px; pointer-events:none; z-index:3;
+  background:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(13,11,26,0.35) 35%,
+    rgba(13,11,26,0.80) 65%,
+    var(--nn-dark) 100%);
+}
+/* DARK → PORTRAIT (bottom fades into portrait's dark overlay) */
+.nn-chapter-end-to-portrait{ position:relative; }
+.nn-chapter-end-to-portrait::after{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:180px; pointer-events:none; z-index:3;
+  background:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(13,11,26,0.40) 40%,
+    rgba(13,11,26,0.92) 100%);
+}
+/* PURPLE WASH entering from dark (top fades in from dark) */
+.nn-chapter-start-from-dark{ position:relative; }
+.nn-chapter-start-from-dark::before{
+  content:""; position:absolute; left:0; right:0; top:0;
+  height:200px; pointer-events:none; z-index:3;
+  background:linear-gradient(to top,
+    transparent 0%,
+    rgba(13,11,26,0.35) 35%,
+    rgba(13,11,26,0.80) 65%,
+    var(--nn-dark) 100%);
+}
+/* DARK entering from purple wash (top fades in from purple) */
+.nn-chapter-start-from-purple{ position:relative; }
+.nn-chapter-start-from-purple::before{
+  content:""; position:absolute; left:0; right:0; top:0;
+  height:200px; pointer-events:none; z-index:3;
+  background:linear-gradient(to top,
+    transparent 0%,
+    rgba(26,15,61,0.35) 35%,
+    rgba(26,15,61,0.80) 65%,
+    var(--nn-purple-wash-start) 100%);
+}
+
+/* ====================================================================
+   FULL-BLEED PORTRAIT SECTIONS (Founder + Kumail) — WITH GLASS CARD
+   Marc's refined spec: full-bleed BG image + overlaid glass card with
+   short quote. Both portraits use IDENTICAL glass-card treatment.
+   ==================================================================== */
+.nn-portrait{
+  position:relative;
+  min-height:clamp(460px, 64vh, 640px);  /* DENSITY: shorter than v10 */
+  padding:clamp(60px, 9vh, 120px) 0;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--nn-dark);
+}
+.nn-portrait-bg{
+  position:absolute; inset:0;
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:left center;
+  z-index:0;
+}
+.nn-portrait.reverse .nn-portrait-bg{
+  background-position:right center;
+}
+/* Dark gradient overlay fades toward the glass-card side for readability */
+.nn-portrait-overlay{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(
+    to right,
+    rgba(13,11,26,0.20) 0%,
+    rgba(13,11,26,0.55) 40%,
+    rgba(13,11,26,0.90) 70%,
+    rgba(13,11,26,0.95) 100%
+  );
+}
+.nn-portrait.reverse .nn-portrait-overlay{
+  background:linear-gradient(
+    to left,
+    rgba(13,11,26,0.20) 0%,
+    rgba(13,11,26,0.55) 40%,
+    rgba(13,11,26,0.90) 70%,
+    rgba(13,11,26,0.95) 100%
+  );
+}
+.nn-portrait-inner{
+  position:relative; z-index:2;
+  max-width:var(--nn-container);
+  margin:0 auto;
+  padding:0 var(--nn-pad-x);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(40px,6vw,96px);
+  align-items:center;
+}
+.nn-portrait-copy{ grid-column:2 }
+.nn-portrait.reverse .nn-portrait-copy{ grid-column:1 }
+
+/* GLASS CARD overlay — identical treatment for both portraits */
+.nn-portrait-card{
+  background:rgba(13,11,26,0.55);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:20px;
+  padding:clamp(28px, 3.2vw, 40px) clamp(30px, 3.6vw, 44px);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  max-width:520px;
+}
+.nn-portrait-eyebrow{
+  font-size:12px; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--nn-teal); font-weight:700; margin-bottom:16px;
+}
+/* MATCHED SIZE — founder & Kumail both use this type scale */
+.nn-portrait-quote{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:500;
+  font-size:clamp(17px, 1.55vw, 22px);
+  line-height:1.45;
+  color:#fff;
+  margin-bottom:22px;
+  letter-spacing:-0.005em;
+}
+.nn-portrait-attr{
+  font-size:15px; font-weight:700; color:#fff; margin-bottom:2px;
+}
+.nn-portrait-role{
+  font-size:13px; color:rgba(255,255,255,0.72); letter-spacing:0.02em;
+  margin-bottom:0;
+}
+.nn-portrait-closer{
+  margin-top:18px; font-size:14px; color:rgba(255,255,255,0.82);
+  line-height:1.55;
+}
+.nn-portrait-closer strong{ color:#fff; font-weight:600 }
+
+/* Mobile show/hide */
+.nn-portrait-desktop{ display:block }
+.nn-portrait-mobile{ display:none }
+@media (max-width:767px){
+  .nn-portrait-desktop{ display:none !important }
+  .nn-portrait-mobile{ display:block }
+}
+.nn-portrait-mobile{
+  padding:clamp(60px,9vh,90px) 0;
+  background:var(--nn-dark);
+}
+.nn-portrait-mobile-card{
+  max-width:560px; margin:0 auto;
+  padding:clamp(28px,5vw,40px);
+  border-radius:20px;
+  background:linear-gradient(135deg, rgba(113,31,255,0.09), rgba(45,212,191,0.05));
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(12px);
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+.nn-portrait-mobile-photo{
+  width:140px; height:140px; border-radius:50%;
+  margin:0 auto 20px;
+  background-size:cover; background-position:center center;
+  border:3px solid rgba(155,95,255,0.5);
+  box-shadow:0 12px 36px rgba(113,31,255,0.35);
+}
+
+/* Stack on small desktop/tablet */
+@media (max-width:980px){
+  .nn-portrait-inner{ grid-template-columns:1fr }
+  .nn-portrait-copy,
+  .nn-portrait.reverse .nn-portrait-copy{ grid-column:1 }
+  .nn-portrait-overlay,
+  .nn-portrait.reverse .nn-portrait-overlay{
+    background:linear-gradient(to bottom, rgba(13,11,26,0.45) 0%, rgba(13,11,26,0.90) 100%);
+  }
+  .nn-portrait-card{ margin:0 auto }
+}
+
+/* Dev banner */
+.v9-banner{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background:linear-gradient(90deg, rgba(113,31,255,.95), rgba(45,212,191,.95));
+  color:#fff; text-align:center; padding:8px 16px;
+  font-size:12px; letter-spacing:.08em; font-weight:600;
+  backdrop-filter:blur(10px);
+}
+
+/* ====================================================================
+   SECTION-SPECIFIC LAYOUT
+   ==================================================================== */
+
+/* HEADER */
+.nn-header{
+  position:sticky; top:0; z-index:100;
+  background:rgba(13,11,26,0.88);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:16px 0;
+  margin-top:32px;
+}
+.nn-header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:32px;
+}
+.nn-header img{ height:36px; width:auto }
+.nn-nav{ display:flex; gap:32px; align-items:center }
+.nn-nav a{ font-size:14px; font-weight:500; opacity:0.85; transition:opacity .2s }
+.nn-nav a:hover{ opacity:1 }
+.nn-nav .nn-btn{ padding:10px 20px; font-size:13px }
+
+/* HAMBURGER TOGGLE — hidden on desktop */
+.nn-hamburger{
+  display:none; background:none; border:none; cursor:pointer;
+  width:40px; height:40px; position:relative; z-index:102;
+  padding:0; flex-shrink:0;
+}
+.nn-hamburger span{
+  display:block; width:22px; height:2px; background:#fff;
+  border-radius:2px; position:absolute; left:9px;
+  transition:transform 0.3s ease, opacity 0.2s ease;
+}
+.nn-hamburger span:nth-child(1){ top:12px }
+.nn-hamburger span:nth-child(2){ top:19px }
+.nn-hamburger span:nth-child(3){ top:26px }
+.nn-hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg) }
+.nn-hamburger.open span:nth-child(2){ opacity:0 }
+.nn-hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg) }
+
+/* MOBILE DRAWER */
+.nn-mobile-drawer{
+  display:none; position:fixed; inset:0; z-index:101;
+  background:rgba(13,11,26,0.96); backdrop-filter:blur(20px);
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:28px; opacity:0; transition:opacity 0.3s ease;
+  pointer-events:none;
+}
+.nn-mobile-drawer.open{ opacity:1; pointer-events:auto }
+.nn-mobile-drawer a{
+  font-size:clamp(20px, 4.5vw, 28px); font-weight:600; color:#fff;
+  opacity:0.9; transition:opacity 0.2s; text-decoration:none;
+}
+.nn-mobile-drawer a:hover{ opacity:1 }
+.nn-mobile-drawer .nn-btn{
+  margin-top:12px; padding:14px 36px; font-size:16px;
+}
+
+@media (max-width:860px){
+  .nn-nav{ display:none }
+  .nn-hamburger{ display:block }
+  .nn-mobile-drawer{ display:flex }
+  .nn-header{ margin-top:0 }
+}
+
+/* HERO — DENSITY: tighter top/bottom padding + 2-line H1 + screenshot sneak-peek */
+.nn-hero{
+  padding:clamp(60px, 8vh, 90px) 0 clamp(32px, 5vh, 50px);
+  text-align:center;
+}
+.nn-hero h1{ max-width:19ch; margin:0 auto 24px }
+.nn-hero-sub{
+  color:var(--nn-muted);
+  font-size:var(--nn-lg);
+  max-width:36ch;
+  margin:0 auto 36px;
+}
+.nn-hero-tag{
+  display:inline-flex; gap:12px; align-items:center;
+  padding:8px 16px; border-radius:999px;
+  background:rgba(113,31,255,0.1);
+  border:1px solid rgba(113,31,255,0.25);
+  font-size:12px; letter-spacing:0.14em; font-weight:600;
+  text-transform:uppercase;
+  color:#cfc7ff;
+  margin-bottom:24px;
+}
+.nn-hero-tag .dot{ width:8px; height:8px; border-radius:50%; background:var(--nn-teal); box-shadow:0 0 12px var(--nn-teal) }
+.nn-hero-overline{
+  font-size:14px; text-transform:uppercase; letter-spacing:0.2em;
+  font-weight:600; color:rgba(250,250,250,0.55);
+  margin-bottom:20px;
+}
+.nn-hero-screenshot{
+  max-width:1100px;
+  margin:32px auto 0;
+  position:relative;
+}
+.nn-hero-screenshot img{
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 40px 100px rgba(0,0,0,0.5), 0 0 80px rgba(113,31,255,0.15);
+}
+
+/* SURVEY RIBBON */
+.nn-ribbon{ padding:clamp(32px, 5vh, 50px) 0; position:relative }
+.nn-ribbon-inner{
+  display:flex; gap:24px; align-items:center; justify-content:space-between;
+  flex-wrap:wrap;
+}
+.nn-ribbon-body{ max-width:700px }
+.nn-ribbon h3{ margin-bottom:6px }
+.nn-ribbon p{ margin:0; color:rgba(255,255,255,0.85); font-size:15px }
+
+/* SERVICE TYPES STRIP */
+.nn-works-for{
+  padding:clamp(48px, 6vh, 72px) 0;
+  margin-bottom:clamp(48px, 6vh, 72px);
+  border-top:1px solid rgba(255,255,255,0.05);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  text-align:center;
+}
+.nn-works-for-label{
+  font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+  color:rgba(250,250,250,0.5); margin-bottom:20px; font-weight:600;
+}
+.nn-works-for-list{
+  display:flex; gap:clamp(10px, 1.4vw, 18px); justify-content:center;
+  flex-wrap:wrap; font-size:clamp(14px, 1.1vw, 17px); font-weight:600;
+}
+/* Liquid chip — glass pill, gradient border, scroll-reactive + hover */
+.nn-works-for-item{
+  position:relative;
+  padding:10px 22px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(10px) saturate(130%);
+  -webkit-backdrop-filter:blur(10px) saturate(130%);
+  color:var(--nn-cream);
+  letter-spacing:0.01em;
+  transition:transform 0.35s cubic-bezier(0.2,0.8,0.2,1),
+             border-color 0.3s ease,
+             background 0.3s ease,
+             box-shadow 0.3s ease;
+  cursor:default;
+  will-change:transform;
+}
+/* Rotating accent borders + tints across the five items */
+.nn-works-for-item:nth-of-type(1){
+  border-color:rgba(113,31,255,0.45);
+  color:#cfc7ff;
+  box-shadow:0 0 0 1px rgba(113,31,255,0.12) inset;
+}
+.nn-works-for-item:nth-of-type(2){
+  border-color:rgba(45,212,191,0.55);
+  color:var(--nn-teal);
+  box-shadow:0 0 0 1px rgba(45,212,191,0.14) inset;
+}
+.nn-works-for-item:nth-of-type(3){
+  border-color:rgba(245,200,66,0.5);
+  color:var(--nn-gold);
+  box-shadow:0 0 0 1px rgba(245,200,66,0.12) inset;
+}
+.nn-works-for-item:nth-of-type(4){
+  border-color:rgba(45,212,191,0.55);
+  color:var(--nn-teal);
+  box-shadow:0 0 0 1px rgba(45,212,191,0.14) inset;
+}
+.nn-works-for-item:nth-of-type(5){
+  border-color:rgba(113,31,255,0.45);
+  color:#cfc7ff;
+  box-shadow:0 0 0 1px rgba(113,31,255,0.12) inset;
+}
+.nn-works-for-item:hover{
+  transform:translateY(-3px) scale(1.04);
+  border-color:rgba(255,255,255,0.55);
+  background:rgba(255,255,255,0.08);
+  box-shadow:0 14px 34px rgba(113,31,255,0.28),
+             0 0 0 1px rgba(255,255,255,0.14) inset;
+}
+/* Separator dots no longer needed — chips carry their own structure */
+.nn-works-for-sep{ display:none }
+
+/* DRIFT & FLOW — SIDE-BY-SIDE stays dense */
+.nn-drift{ padding:var(--nn-pad-y) 0 }
+/* Opener block: sits ABOVE the Drift & Flow header. Generous bottom margin
+   creates visual separation so the two blocks read as distinct beats. */
+.nn-drift-opener{
+  text-align:center; max-width:860px;
+  margin:0 auto clamp(40px, 5vw, 64px);
+  position:relative;
+  isolation:isolate;
+}
+.nn-drift-opener h2{ margin-bottom:20px }
+.nn-drift-opener::after{
+  content:"";
+  display:block;
+  width:clamp(60px, 8vw, 100px);
+  height:1px;
+  margin:clamp(24px, 3vw, 40px) auto 0;
+  background:linear-gradient(90deg, rgba(45,212,191,0) 0%, rgba(45,212,191,0.6) 50%, rgba(45,212,191,0) 100%);
+}
+.nn-drift-head{
+  text-align:center; max-width:860px; margin:0 auto 56px;
+  position:relative;
+  isolation:isolate;
+}
+/* Radial scrim: tames halftone directly behind the head copy without killing chapter texture */
+.nn-drift-head::before{
+  content:"";
+  position:absolute;
+  inset:-60px -140px;
+  background:radial-gradient(ellipse at center, rgba(13,11,26,0.55) 0%, rgba(13,11,26,0.32) 45%, transparent 75%);
+  z-index:-1;
+  pointer-events:none;
+}
+.nn-drift-head h2{ margin-bottom:24px }
+.nn-drift-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px }
+@media (max-width:760px){ .nn-drift-grid{ grid-template-columns:1fr } }
+/* Frosted glass: card lifts off the halftone via backdrop blur + darker base tint */
+.nn-drift-card{
+  padding:clamp(24px,3vw,40px);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(13,11,26,0.42);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  position:relative; overflow:hidden;
+}
+.nn-drift-card.drift{
+  border-color:rgba(245,200,66,0.45);
+  background:linear-gradient(180deg, rgba(245,200,66,0.14), rgba(13,11,26,0.48));
+}
+.nn-drift-card.flow{
+  border-color:rgba(45,212,191,0.5);
+  background:linear-gradient(180deg, rgba(45,212,191,0.16), rgba(13,11,26,0.48));
+}
+.nn-drift-card h3{ font-size:clamp(26px,2.8vw,36px); margin-bottom:16px }
+.nn-drift-card.drift h3{ color:var(--nn-gold) }
+.nn-drift-card.flow h3{ color:var(--nn-teal) }
+.nn-drift-pronouncement{
+  display:flex; align-items:center; justify-content:center;
+  gap:clamp(16px, 2.4vw, 32px); margin-top:52px; flex-wrap:wrap;
+  overflow:hidden;
+}
+.nn-drift-rule{
+  display:block; height:1px; width:clamp(50px, 10vw, 130px);
+  background:linear-gradient(90deg, rgba(45,212,191,0) 0%, rgba(45,212,191,0.7) 50%, rgba(45,212,191,0) 100%);
+  will-change:transform; flex:0 0 auto;
+}
+.nn-drift-rule-left{ transform-origin:right center }
+.nn-drift-rule-right{ transform-origin:left center }
+.nn-drift-closer{
+  text-align:center; font-size:var(--nn-h3); font-weight:500;
+  margin:0; color:var(--nn-cream);
+  letter-spacing:-0.01em; line-height:1.25; flex:0 0 auto;
+}
+.nn-drift-closer-lead{ opacity:0.82; font-weight:400 }
+.nn-drift-closer-damage{
+  display:inline-block; font-weight:800; font-size:1.22em;
+  letter-spacing:-0.025em; margin-left:0.28em;
+  color:var(--nn-cream); will-change:transform;
+  text-shadow:0 0 28px rgba(245,200,66,0.22);
+}
+
+/* VISIBILITY — slim, single-image focal + tighter vertical rhythm for screenshot peek */
+.nn-visibility{
+  padding:clamp(40px, 5.5vh, 70px) 0 var(--nn-pad-y);
+  text-align:center;
+}
+.nn-visibility .nn-eyebrow{ margin-bottom:14px }
+.nn-visibility h2{ max-width:18ch; margin:0 auto 14px }
+.nn-visibility p{ max-width:56ch; margin:0 auto 12px; color:var(--nn-muted) }
+.nn-visibility-img{
+  max-width:1000px; margin:28px auto 0;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 40px 100px rgba(0,0,0,0.5);
+  overflow:hidden;
+}
+
+/* TWO SIGNALS — FIXED: no parallax on media, z-index on copy */
+.nn-signals{ padding:var(--nn-pad-y) 0 }
+.nn-signals-head{ text-align:center; max-width:900px; margin:0 auto 56px }
+.nn-signals-head h2{ margin-bottom:18px }
+.nn-signal-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,4.5vw,72px);
+  align-items:center;
+  margin-bottom:clamp(56px, 8vh, 96px);
+}
+.nn-signal-row:last-child{ margin-bottom:0 }
+.nn-signal-row.reverse .nn-signal-copy{ order:2 }
+.nn-signal-row.reverse .nn-signal-media{ order:1 }
+@media (max-width:860px){
+  .nn-signal-row, .nn-signal-row.reverse{ grid-template-columns:1fr }
+  .nn-signal-row.reverse .nn-signal-copy,
+  .nn-signal-row.reverse .nn-signal-media{ order:unset }
+}
+.nn-signal-copy{
+  position:relative; z-index:5;
+  padding-left:28px;
+}
+.nn-signal-row.reverse .nn-signal-copy{
+  padding-left:0; padding-right:28px;
+}
+.nn-signal-copy::before{
+  content:""; position:absolute;
+  left:0; top:6px; bottom:20px; width:2px;
+  background:linear-gradient(180deg, var(--nn-teal) 0%, rgba(45,212,191,0) 100%);
+  border-radius:2px;
+  transform-origin:top center;
+  transform:scaleY(var(--nn-rule-scale, 0));
+  will-change:transform;
+}
+.nn-signal-row.reverse .nn-signal-copy::before{
+  left:auto; right:0;
+  background:linear-gradient(180deg, var(--nn-gold) 0%, rgba(245,200,66,0) 100%);
+}
+.nn-signal-num{
+  position:absolute; top:-56px; left:-10px;
+  font-size:clamp(100px, 12vw, 170px);
+  font-weight:900; letter-spacing:-0.05em; line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,0.08);
+  pointer-events:none; z-index:0;
+  font-family:var(--nn-font);
+}
+.nn-signal-row.reverse .nn-signal-num{ left:auto; right:-10px }
+.nn-signal-copy > *:not(.nn-signal-num){ position:relative; z-index:1 }
+.nn-signal-eyebrow{
+  font-size:12px; letter-spacing:0.22em; text-transform:uppercase;
+  font-weight:700; margin-bottom:16px;
+  display:inline-flex; align-items:center; gap:10px;
+  color:var(--nn-teal);
+}
+.nn-signal-row.reverse .nn-signal-eyebrow{ color:var(--nn-gold) }
+.nn-signal-eyebrow em{
+  font-style:normal; color:rgba(255,255,255,0.55); font-weight:500;
+  letter-spacing:0.12em;
+}
+.nn-signal-dot{
+  display:inline-block; width:7px; height:7px; border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 0 4px rgba(45,212,191,0.14), 0 0 18px currentColor;
+}
+.nn-signal-row.reverse .nn-signal-dot{
+  box-shadow:0 0 0 4px rgba(245,200,66,0.14), 0 0 18px currentColor;
+}
+.nn-signal-copy h3{ font-size:clamp(26px,2.8vw,38px); margin-bottom:16px; max-width:18ch }
+.nn-signal-copy p{ color:rgba(255,255,255,0.92); font-size:var(--nn-lg); max-width:42ch; margin:0 }
+.nn-signal-media{ position:relative; z-index:1 }
+.nn-signal-media-frame{ position:relative }
+.nn-signal-media img{
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  display:block;
+}
+
+/* Annotated callout — floats on the screenshot with a drawing arrow */
+.nn-signal-callout{
+  position:absolute; z-index:3;
+  display:flex; align-items:center; gap:4px;
+  pointer-events:none;
+}
+.nn-signal-callout-text{
+  background:rgba(13,11,26,0.9);
+  backdrop-filter:blur(12px) saturate(140%);
+  -webkit-backdrop-filter:blur(12px) saturate(140%);
+  border:1px solid rgba(45,212,191,0.45);
+  color:var(--nn-cream);
+  font-size:13px; font-weight:600; letter-spacing:0.01em;
+  padding:10px 18px; border-radius:999px; white-space:nowrap;
+  box-shadow:0 14px 36px rgba(0,0,0,0.5),
+             0 0 0 1px rgba(45,212,191,0.12) inset,
+             0 0 22px rgba(45,212,191,0.15);
+}
+.nn-signal-arrow{
+  width:clamp(70px, 8vw, 110px); height:clamp(44px, 5vw, 68px);
+  color:var(--nn-teal); flex:0 0 auto;
+  filter:drop-shadow(0 0 8px rgba(45,212,191,0.4));
+}
+.nn-signal-arrow path{
+  fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round;
+}
+.nn-signal-arrow circle{ fill:currentColor }
+
+/* Row 1 — callout top-left of image, arrow sweeps down-right into the stats */
+.nn-signal-row:not(.reverse) .nn-signal-callout{
+  top:-22px; left:22px;
+}
+
+/* Row 2 — callout bottom-right of image, arrow sweeps up-left into the timeline */
+.nn-signal-row.reverse .nn-signal-callout{
+  bottom:-22px; right:22px;
+  flex-direction:row-reverse;
+}
+.nn-signal-row.reverse .nn-signal-callout-text{
+  border-color:rgba(245,200,66,0.45);
+  box-shadow:0 14px 36px rgba(0,0,0,0.5),
+             0 0 0 1px rgba(245,200,66,0.14) inset,
+             0 0 22px rgba(245,200,66,0.18);
+}
+.nn-signal-row.reverse .nn-signal-arrow{
+  color:var(--nn-gold);
+  filter:drop-shadow(0 0 8px rgba(245,200,66,0.4));
+}
+
+@media (max-width:860px){
+  .nn-signal-callout{ display:none }
+  .nn-signal-num{ font-size:84px; top:-28px; left:0 }
+  .nn-signal-row.reverse .nn-signal-num{ left:auto; right:0 }
+  .nn-signal-copy, .nn-signal-row.reverse .nn-signal-copy{
+    padding-left:20px; padding-right:0;
+  }
+  .nn-signal-row.reverse .nn-signal-copy::before{ left:0; right:auto }
+}
+
+/* ====================================================================
+   PERFORMANCE LOOP — NO PIN. Gentle staggered reveal on enter.
+   Removing the pin fixes all the issues in one shot — scene sits there,
+   animates once on scroll-into-view, then stays put on screen.
+   ==================================================================== */
+.nn-loop-section{
+  /* Tightened to fit under 1020px viewport height */
+  padding:clamp(48px, 6vh, 64px) 0 clamp(40px, 5vh, 52px);
+  position:relative;
+  overflow:hidden;
+}
+.nn-loop-inner{
+  max-width:1200px; width:100%;
+  margin:0 auto;
+  padding:0 var(--nn-pad-x);
+  display:flex; flex-direction:column; align-items:center;
+  position:relative; z-index:2;
+}
+.nn-loop-copy{
+  width:100%;
+  text-align:center;
+}
+.nn-loop-eyebrow{
+  font-size:12px; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--nn-teal); font-weight:600; margin-bottom:8px;
+}
+.nn-loop-section h2{
+  margin-bottom:8px;
+  font-size:clamp(26px,2.8vw,38px);
+  line-height:1.1;
+}
+.nn-loop-intro{
+  color:rgba(255,255,255,0.88);
+  max-width:56ch;
+  margin:0 auto;
+  font-size:14.5px;
+  line-height:1.45;
+}
+/* PERFORMANCE LOOP WHEEL — nodes on a true circle, circular hub, arc arrows */
+.nn-loop-head{
+  max-width:60ch;
+  margin:0 auto 14px;
+}
+.nn-loop-wheel{
+  position:relative;
+  width:100%;
+  margin:0 auto;
+  aspect-ratio: 1 / 1;
+  max-width:540px;
+  max-height:540px;
+}
+.nn-loop-wheel-arrows{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  z-index:1; pointer-events:none;
+  overflow:visible;
+}
+.nn-loop-ring-bg{
+  fill:none; stroke:rgba(255,255,255,0.08);
+  stroke-width:1; stroke-dasharray:3 9; opacity:0.5;
+}
+.nn-loop-arrow-path{
+  fill:none; stroke:url(#nnLoopGrad); stroke-width:1.6;
+  stroke-dasharray:6 7; opacity:0.9;
+}
+.nn-loop-node{
+  position:absolute;
+  width:clamp(130px, 35%, 210px);
+  padding:12px 14px;
+  transform:translate(-50%, -50%);
+  background:rgba(255,255,255,0.045);
+  backdrop-filter:blur(16px) saturate(145%);
+  -webkit-backdrop-filter:blur(16px) saturate(145%);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:12px;
+  box-shadow:0 22px 48px rgba(0,0,0,0.4);
+  z-index:2;
+  transition:background .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+.nn-loop-node:hover{
+  border-color:rgba(45,212,191,0.5);
+  background:rgba(45,212,191,0.055);
+  box-shadow:0 30px 70px rgba(0,0,0,0.55),
+             0 0 0 1px rgba(45,212,191,0.22) inset,
+             0 0 28px rgba(45,212,191,0.18);
+}
+.nn-loop-node-head{
+  display:flex; align-items:baseline; gap:10px;
+  margin-bottom:4px;
+}
+.nn-loop-node-num{
+  font-size:24px; font-weight:800; letter-spacing:-0.03em;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(45,212,191,0.55);
+  line-height:1; font-family:var(--nn-font);
+  transition:-webkit-text-stroke-color .35s ease;
+}
+.nn-loop-node:hover .nn-loop-node-num{
+  -webkit-text-stroke-color:var(--nn-teal);
+}
+.nn-loop-node-title{
+  font-size:15px; margin:0; font-weight:700;
+  color:var(--nn-cream); letter-spacing:-0.005em;
+}
+.nn-loop-node-body{
+  margin:0; font-size:12px; line-height:1.45;
+  color:var(--nn-muted);
+}
+/* Polar positions on a true circle, center (50%,50%), radius 35% of square frame.
+   Cards sit ON the ring (centers land on circle). */
+.nn-loop-node-1{ top:15%;    left:50%;    }   /* Plan — 0° (top) */
+.nn-loop-node-2{ top:39.2%;  left:83.3%;  }   /* Deliver — 72° (upper right) */
+.nn-loop-node-3{ top:78.3%;  left:70.6%;  }   /* Track — 144° (lower right) */
+.nn-loop-node-4{ top:78.3%;  left:29.4%;  }   /* Learn — 216° (lower left) */
+.nn-loop-node-5{ top:39.2%;  left:16.7%;  }   /* Repeat — 288° (upper left) */
+
+/* Repeat, sharper — gold accent (the cycle-closing step) */
+.nn-loop-node-5{
+  border-color:rgba(245,200,66,0.25);
+  background:linear-gradient(135deg, rgba(245,200,66,0.08), rgba(255,255,255,0.035));
+}
+.nn-loop-node-5 .nn-loop-node-num{
+  -webkit-text-stroke-color:rgba(245,200,66,0.75);
+}
+.nn-loop-node-5 .nn-loop-node-title{ color:var(--nn-gold) }
+.nn-loop-node-5:hover{
+  border-color:rgba(245,200,66,0.55);
+  background:linear-gradient(135deg, rgba(245,200,66,0.12), rgba(255,255,255,0.05));
+  box-shadow:0 30px 70px rgba(0,0,0,0.55),
+             0 0 0 1px rgba(245,200,66,0.3) inset,
+             0 0 28px rgba(245,200,66,0.22);
+}
+.nn-loop-node-5:hover .nn-loop-node-num{
+  -webkit-text-stroke-color:var(--nn-gold);
+}
+
+/* Center hub — circular */
+.nn-loop-hub{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  width:clamp(180px, 20%, 218px);
+  aspect-ratio:1/1;
+  padding:18px 22px;
+  background:rgba(13,11,26,0.82);
+  backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid rgba(45,212,191,0.32);
+  border-radius:50%;
+  box-shadow:0 30px 70px rgba(0,0,0,0.55),
+             0 0 50px rgba(45,212,191,0.18);
+  text-align:center;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  z-index:3;
+}
+.nn-loop-hub-label{
+  font-size:9px; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--nn-teal); margin:0 0 6px; font-weight:700;
+}
+.nn-loop-hub-chart{
+  width:82%; height:auto; display:block; margin:0 0 7px;
+}
+.nn-loop-hub-caption{
+  font-size:11.5px; color:var(--nn-cream); margin:0;
+  font-weight:600; letter-spacing:-0.005em; line-height:1.3;
+}
+
+/* Mobile — stack */
+@media (max-width:900px){
+  .nn-loop-inner{
+    grid-template-columns:1fr;
+    gap:32px;
+  }
+  .nn-loop-wheel{
+    aspect-ratio:auto; max-height:unset;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .nn-loop-node, .nn-loop-hub{
+    position:static; transform:none; width:100%;
+    max-width:none; aspect-ratio:auto; border-radius:14px;
+    padding:16px 18px;
+  }
+  .nn-loop-wheel-arrows{ display:none }
+  .nn-loop-hub{ order:6 }
+}
+
+.nn-loop-pronouncement{
+  display:flex; align-items:center; justify-content:center;
+  gap:clamp(16px, 2.4vw, 32px); margin-top:14px; flex-wrap:wrap;
+}
+.nn-loop-closer{
+  font-size:clamp(18px, 2vw, 26px) !important;
+}
+.nn-loop-rule{
+  display:block; height:1px; width:clamp(50px, 10vw, 130px);
+  background:linear-gradient(90deg, rgba(45,212,191,0) 0%, rgba(45,212,191,0.7) 50%, rgba(45,212,191,0) 100%);
+  flex:0 0 auto;
+}
+.nn-loop-closer{
+  text-align:center; font-size:var(--nn-h3); font-weight:500;
+  margin:0; color:var(--nn-cream);
+  letter-spacing:-0.01em; line-height:1.25; flex:0 0 auto;
+}
+.nn-loop-closer-lead{ opacity:0.82; font-weight:400 }
+.nn-loop-closer-punch{
+  display:inline-block; font-weight:800; font-size:1.22em;
+  letter-spacing:-0.025em; margin-left:0.28em;
+  color:var(--nn-cream);
+  text-shadow:0 0 28px rgba(45,212,191,0.22);
+}
+
+/* QUICK TASKS — SIDE-BY-SIDE, shorter */
+.nn-tasks{ padding:var(--nn-pad-y) 0 }
+.nn-tasks-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,4.5vw,72px);
+  align-items:center;
+}
+@media (max-width:860px){ .nn-tasks-grid{ grid-template-columns:1fr } }
+.nn-tasks-copy h2{ max-width:14ch; margin-bottom:20px }
+.nn-tasks-copy p{ color:rgba(255,255,255,0.92); font-size:var(--nn-lg); max-width:48ch }
+.nn-tasks img{
+  border-radius:14px; border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+}
+/* Inline variant when Quick Tasks is nested inside Signals section.
+   Timeline row's margin-bottom already provides vertical separation. */
+.nn-tasks-grid-inline img{
+  border-radius:14px; border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+}
+
+/* INVITE EVERYONE */
+.nn-invite{ padding:var(--nn-pad-y) 0; text-align:center }
+.nn-invite h2{ max-width:18ch; margin:0 auto 22px }
+.nn-invite-sub{ color:var(--nn-muted); font-size:var(--nn-lg); max-width:56ch; margin:0 auto 40px }
+.nn-invite-chips{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center }
+.nn-invite-chip{
+  padding:12px 24px; border-radius:999px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.16);
+  font-weight:600; font-size:15px;
+  color:#fff;
+  transition:background .2s, border-color .2s, transform .2s;
+}
+
+/* BUILT AROUND */
+.nn-built-around{ padding:var(--nn-pad-y) 0 }
+.nn-built-head{ text-align:center; max-width:860px; margin:0 auto 44px }
+.nn-built-head h2{ margin-bottom:18px }
+.nn-built-head p{ color:rgba(255,255,255,0.92); font-size:var(--nn-lg) }
+.nn-built-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px }
+@media (max-width:980px){ .nn-built-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:620px){ .nn-built-grid{ grid-template-columns:1fr } }
+.nn-built-card{
+  padding:clamp(22px, 2.6vw, 32px);
+  border-radius:16px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.14);
+  transition:border-color .2s, transform .2s, background .2s;
+}
+.nn-built-card:hover{
+  border-color:rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.10);
+  transform:translateY(-4px);
+}
+.nn-built-ico{
+  width:44px; height:44px; border-radius:11px;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:16px;
+  background:linear-gradient(135deg, rgba(113,31,255,0.3), rgba(45,212,191,0.2));
+  border:1px solid rgba(255,255,255,0.22);
+  font-size:20px;
+}
+.nn-built-card h3{ font-size:19px; margin-bottom:8px }
+.nn-built-card p{ font-size:14.5px; color:rgba(255,255,255,0.82); margin:0 }
+
+/* HYBRID — big-brain SIDE-BY-SIDE */
+.nn-hybrid{ padding:var(--nn-pad-y) 0 }
+.nn-hybrid-grid{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(40px,6vw,88px);
+  align-items:center;
+  max-width:var(--nn-container);
+  margin:0 auto;
+  padding:0 var(--nn-pad-x);
+}
+@media (max-width:900px){ .nn-hybrid-grid{ grid-template-columns:1fr } }
+.nn-hybrid-copy h2{ margin-bottom:20px }
+.nn-hybrid-copy p{ color:rgba(255,255,255,0.92); font-size:var(--nn-lg); max-width:46ch }
+.nn-hybrid-visual{ position:relative; text-align:center }
+.nn-hybrid-visual img{
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  filter:drop-shadow(0 24px 60px rgba(113,31,255,0.45));
+}
+
+/* V1 → V2 STATS */
+.nn-v1v2{ padding:var(--nn-pad-y) 0 }
+.nn-v1v2-head{ text-align:center; max-width:860px; margin:0 auto 40px }
+.nn-v1v2-head h2{ margin-bottom:18px }
+.nn-v1v2-head p{ color:var(--nn-muted); font-size:var(--nn-lg) }
+.nn-v1v2-stats{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  max-width:900px; margin:0 auto;
+}
+@media (max-width:700px){ .nn-v1v2-stats{ grid-template-columns:1fr } }
+.nn-stat{
+  text-align:center;
+  padding:24px 18px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.nn-stat-label{ font-size:12px; text-transform:uppercase; letter-spacing:0.14em; color:var(--nn-muted); margin-bottom:10px; font-weight:600 }
+.nn-stat-value{
+  font-family:'Space Grotesk', sans-serif;
+  font-size:clamp(36px, 5vw, 60px);
+  font-weight:800;
+  background: var(--nn-grad-text);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  line-height:1;
+}
+.nn-stat-suffix{ font-size:0.5em; color:var(--nn-cream); -webkit-text-fill-color:var(--nn-cream); vertical-align:super }
+
+/* PRICING — desktop: 2-col (text left, card right). Mobile: stacked + centered */
+.nn-pricing{ padding:var(--nn-pad-y) 0 }
+.nn-pricing-grid{
+  max-width:var(--nn-container);
+  margin:0 auto;
+  padding:0 var(--nn-pad-x);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(40px, 5vw, 80px);
+  align-items:center;
+}
+.nn-pricing-copy{ text-align:left }
+.nn-pricing-eyebrow{
+  font-size:13px; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--nn-teal); font-weight:600; margin-bottom:14px;
+}
+.nn-pricing h2{
+  margin:0 0 18px;
+  font-size:clamp(40px,5.6vw,72px);
+  line-height:1.05;
+}
+.nn-pricing-small{
+  font-size:clamp(18px, 1.9vw, 24px);
+  font-weight:500; color:rgba(255,255,255,0.92);
+  max-width:36ch; margin:0;
+}
+.nn-pricing-card{
+  width:100%;
+  max-width:540px;
+  margin:0;
+  padding:clamp(30px, 3.4vw, 46px);
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 100%);
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 40px 100px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+}
+@media (max-width:900px){
+  .nn-pricing-grid{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .nn-pricing-copy{ text-align:center }
+  .nn-pricing-small{ margin:0 auto }
+  .nn-pricing-card{ margin:0 auto }
+}
+.nn-pricing-price{
+  font-family:'Space Grotesk', sans-serif;
+  font-size:clamp(44px, 5.5vw, 64px);
+  font-weight:800; line-height:1;
+  background:var(--nn-grad-text);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  margin-bottom:8px;
+}
+.nn-pricing-unit{ font-size:15px; color:rgba(255,255,255,0.75); margin-bottom:24px }
+.nn-pricing-list{ list-style:none; padding:0; margin:0 0 24px; text-align:left }
+.nn-pricing-list li{
+  padding:10px 0; padding-left:28px; position:relative;
+  border-bottom:1px solid rgba(255,255,255,0.10);
+  color:rgba(255,255,255,0.92); font-size:15px;
+}
+.nn-pricing-list li:last-child{ border-bottom:none }
+.nn-pricing-list li::before{
+  content:"✓"; position:absolute; left:0;
+  color:var(--nn-teal); font-weight:700;
+}
+
+/* FINAL CTA */
+.nn-cta{ padding:clamp(80px, 12vh, 140px) 0; text-align:center }
+.nn-cta-inner{ max-width:760px; margin:0 auto }
+.nn-cta-eyebrow{ color:var(--nn-teal); font-weight:600; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px }
+.nn-cta-date{
+  display:inline-block;
+  padding:7px 18px; border-radius:999px;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.3);
+  font-weight:600; font-size:14px;
+  margin-bottom:24px;
+}
+.nn-cta h2{ margin-bottom:22px }
+.nn-cta p{ color:rgba(255,255,255,0.9); margin-bottom:36px; font-size:var(--nn-lg) }
+.nn-form{ display:grid; gap:14px; max-width:480px; margin:0 auto }
+.nn-form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
+@media (max-width:520px){ .nn-form-row{ grid-template-columns:1fr } }
+.nn-form input{
+  width:100%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.22);
+  color:var(--nn-cream);
+  padding:13px 18px;
+  border-radius:10px;
+  font-family:inherit; font-size:15px;
+  transition:border-color 0.2s, background 0.2s;
+}
+.nn-form input::placeholder{ color:rgba(250,250,250,0.55) }
+.nn-form input:focus{
+  outline:none;
+  background:rgba(255,255,255,0.14);
+  border-color:rgba(255,255,255,0.5);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.12);
+}
+.nn-form button{ width:100% }
+.nn-cta-fine{ font-size:13px; color:rgba(255,255,255,0.65); margin-top:18px }
+
+/* FOOTER */
+.nn-footer{
+  padding:clamp(48px, 7vh, 80px) 0 clamp(32px, 4vh, 48px);
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.nn-footer-inner{
+  display:grid; grid-template-columns:1fr auto;
+  gap:40px; align-items:start;
+}
+.nn-footer-brand img{ height:32px; opacity:0.8; margin-bottom:14px }
+.nn-footer-tagline{
+  font-size:14px; color:rgba(255,255,255,0.5);
+  max-width:32ch; line-height:1.5; margin:0;
+}
+.nn-footer-nav{
+  display:flex; gap:clamp(20px, 3vw, 40px);
+  font-size:14px; font-weight:500;
+}
+.nn-footer-nav a{ color:rgba(255,255,255,0.7); transition:color 0.2s; text-decoration:none }
+.nn-footer-nav a:hover{ color:#fff }
+.nn-footer-bottom{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:clamp(32px, 4vh, 48px);
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  font-size:13px; color:rgba(255,255,255,0.4);
+}
+.nn-footer-legal{ display:flex; gap:20px }
+.nn-footer-legal a{ color:rgba(255,255,255,0.4); text-decoration:none; transition:color 0.2s }
+.nn-footer-legal a:hover{ color:rgba(255,255,255,0.7) }
+@media (max-width:600px){
+  .nn-footer-inner{ grid-template-columns:1fr; text-align:center }
+  .nn-footer-nav{ justify-content:center; flex-wrap:wrap }
+  .nn-footer-bottom{ flex-direction:column; gap:12px; text-align:center }
+  .nn-footer-legal{ justify-content:center }
+}
+</style>
+
+
+<!-- Crawford-style fixed bg stages. Hero stage is visible by default;
+     every other stage fades in via GSAP at its section's boundary.
+     All 9 sit behind every .nn-stage-section, which is transparent
+     and lifts content above via z-index:1. Order in the DOM doesn't
+     matter — opacity is the only thing GSAP tweens. -->
+<!-- =============================================================
+     V12 STAGE STACK — one stage per chapter in Marc's 10-chapter map.
+     Order matches reading order. Hero is visible by default (opacity:1);
+     every other stage begins at opacity:0 and is faded in at the
+     chapter boundary by the crossfade chain at the bottom of the file.
+     ============================================================= -->
+<div class="nn-bg-stage nn-bg-stage-hero"            aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-drift"           aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-spotlight-warm"  aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-geometry"        aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-green"           aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-glass"           aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-illustrated"     aria-hidden="true"></div>
+<div class="nn-bg-stage nn-bg-stage-deep-dark"       aria-hidden="true"></div>
+
+
+<!-- =============================================================
+     HEADER — Lives outside all containers so sticky works full-page
+     ============================================================= -->
+<header class="nn-header">
+  <div class="nn-container nn-header-inner">
+    <a href="/" aria-label="Net Net">
+      <img src="https://hellonetnet.com/wp-content/uploads/2024/12/logo-reverse.svg" alt="Net Net" />
+    </a>
+    <nav class="nn-nav">
+      <a href="#drift">Drift &amp; Flow</a>
+      <a href="#how">How It Works</a>
+      <a href="#hybrid">Hybrid Delivery</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#register" class="nn-btn nn-btn-primary">PRE-REGISTER</a>
+    </nav>
+    <button class="nn-hamburger" aria-label="Menu" onclick="this.classList.toggle('open'); document.querySelector('.nn-mobile-drawer').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile fullscreen drawer -->
+<div class="nn-mobile-drawer">
+  <a href="#drift" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Drift &amp; Flow</a>
+  <a href="#how" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">How It Works</a>
+  <a href="#hybrid" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Hybrid Delivery</a>
+  <a href="#pricing" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Pricing</a>
+  <a href="#register" class="nn-btn nn-btn-primary" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">PRE-REGISTER</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C1: HERO — Hero + Drift Opener + Works-For Strip
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c1-hero">
+
+<!-- =============================================================
+     HERO — DARK SPOTLIGHT
+     KEEP: H1 fadeup, hero screenshot tilt-in
+     ============================================================= -->
+<section class="nn-hero nn-stage-section">
+  <div class="nn-container">
+    <p class="nn-hero-overline">Hybrid project management software for creative &amp; technical agencies</p>
+    <span class="nn-hero-tag"><span class="dot"></span> V2 LAUNCHES JULY 1, 2026</span>
+    <h1 class="nn-anim-keep nn-animate-fadeup">See what your work <span class="nn-grad-text">actually takes.</span></h1>
+    <p class="nn-hero-sub">Even when AI is doing half of it.</p>
+    <a href="#register" class="nn-btn nn-btn-primary">PRE-REGISTER FOR V2 →</a>
+
+    <div class="nn-hero-screenshot" data-hero-tilt>
+      <img src="https://hellonetnet.com/wp-content/uploads/2026/04/02-jobs-dark-5.jpg"
+           alt="Net Net Jobs dashboard"
+           loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     DRIFT OPENER — "Now you can run it all." (split from the
+     Drift & Flow section on 2026-04-20 so "Built for" can sit
+     between this kicker and the framework). Rides the hero stage.
+     ============================================================= -->
+<section class="nn-drift nn-stage-section">
+  <div class="nn-container">
+    <div class="nn-drift-opener">
+      <h2 class="nn-anim-keep nn-animate-fadeup">No matter how you price the work, you still have finite hours and moving timelines.</h2>
+      <p style="color:rgba(255,255,255,0.92); font-size:var(--nn-lg); max-width:52ch; margin:20px auto 0;">Now you can run it all.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     SERVICE TYPES STRIP — "Built for" (moved above Drift & Flow
+     per Marc 2026-04-20). Rides the hero stage as a quiet audience
+     qualifier between the hero kicker and the Drift & Flow framework.
+     ============================================================= -->
+<section class="nn-works-for nn-stage-section">
+  <div class="nn-container">
+    <p class="nn-works-for-label">Built for</p>
+    <div class="nn-works-for-list">
+      <span class="nn-works-for-item">Digital Marketing Agencies</span>
+      <span class="nn-works-for-sep">·</span>
+      <span class="nn-works-for-item">Web Design Shops</span>
+      <span class="nn-works-for-sep">·</span>
+      <span class="nn-works-for-item">Creative Services Firms</span>
+      <span class="nn-works-for-sep">·</span>
+      <span class="nn-works-for-item">IT Shops</span>
+      <span class="nn-works-for-sep">·</span>
+      <span class="nn-works-for-item">Consultants</span>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C1: HERO -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C2: DRIFT & FLOW — Drift/Flow Cards + Closer
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c2-drift" style="padding-bottom:clamp(120px, 14vh, 180px);">
+
+<!-- =============================================================
+     DRIFT & FLOW — Backdrop supplied by fixed .nn-bg-stage-drift.
+     Section itself is transparent. GSAP cross-fades the hero stage
+     out and the drift stage in at this boundary (triggered by
+     .nn-drift-head below, see script block at end of page).
+     ============================================================= -->
+<section id="drift" class="nn-drift nn-stage-section">
+  <div class="nn-container">
+    <div class="nn-drift-head">
+      <p class="nn-eyebrow">Drift &amp; Flow: The Two States of Agency Work</p>
+      <h2 class="nn-anim-keep nn-animate-fadeup">Some weeks, everything clicks.<br><span class="nn-grad-text">Other weeks feel off.</span></h2>
+      <p style="color:rgba(255,255,255,0.92); font-size:var(--nn-lg); max-width:52ch; margin:20px auto 0;">We call this 'drift and flow.' If you run an agency, you already know it.</p>
+      <p style="color:rgba(255,255,255,0.78); max-width:52ch; margin:14px auto 0;">Drift is the quiet slide: work outpacing your plan before anyone notices. Flow is when effort and plan stay in sync. Most agencies live somewhere in between and can't see exactly where. Net Net shows you.</p>
+    </div>
+
+    <div class="nn-drift-grid">
+      <div class="nn-drift-card drift">
+        <h3>Drift</h3>
+        <p>Drift happens. It's part of the business. It's the quiet slide. Scope grows. The work takes more than anyone expected. By the time you notice, the job is already off track.</p>
+      </div>
+      <div class="nn-drift-card flow">
+        <h3>Flow</h3>
+        <p>Effort and plan aligned. Your team delivers on pace. Problems surface early. You act before they compound.</p>
+      </div>
+    </div>
+
+    <div class="nn-drift-pronouncement">
+      <span class="nn-drift-rule nn-drift-rule-left" aria-hidden="true"></span>
+      <p class="nn-drift-closer">
+        <span class="nn-drift-closer-lead">Don't let drift become</span><span class="nn-drift-closer-damage">damage.</span>
+      </p>
+      <span class="nn-drift-rule nn-drift-rule-right" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C2: DRIFT & FLOW -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C3: SURVEY — Survey Ribbon
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c3-survey" style="padding:clamp(120px, 14vh, 180px) 0;">
+
+<!-- =============================================================
+     SURVEY RIBBON — compact interstitial (purple pill)
+     ============================================================= -->
+<section class="nn-ribbon" style="background:linear-gradient(135deg, #711FFF 0%, #3D0F8F 100%);">
+  <div class="nn-container nn-ribbon-inner">
+    <div class="nn-ribbon-body">
+      <h3>2026 Agency Operations Benchmark Survey</h3>
+      <p>3 minutes. If you're a creative or technical services firm, please take our survey.</p>
+    </div>
+    <a href="#" class="nn-btn nn-btn-ghost" style="border-color:rgba(255,255,255,0.5); color:#fff;">TAKE THE SURVEY →</a>
+  </div>
+</section>
+
+</section><!-- /C3: SURVEY -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C4: LOOP — The Performance Loop / Flywheel
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c4-loop" style="padding-top:clamp(120px, 14vh, 180px);">
+
+<!-- =============================================================
+     PERFORMANCE LOOP — DARK ← HIGH CONTRAST
+     NO PIN. Nodes visible by default (no off-screen reveal trap).
+     KEEP: 5 staggered node reveals (the hero moment of this page)
+     ============================================================= -->
+<section id="how" class="nn-loop-section nn-stage-section">
+  <div class="nn-loop-inner">
+    <div class="nn-loop-head">
+      <p class="nn-loop-eyebrow">How It All Connects</p>
+      <h2>The <span class="nn-grad-text">Performance Loop</span></h2>
+      <p class="nn-loop-intro">Five steps. One loop. Each cycle, the gap between estimate and reality tightens.</p>
+    </div>
+
+    <div class="nn-loop-wheel">
+      <!-- Arc arrows following a true circle (r=210, center 300,300 in 600×600 square) -->
+      <svg class="nn-loop-wheel-arrows" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <linearGradient id="nnLoopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"  stop-color="rgba(45,212,191,0.85)"/>
+            <stop offset="100%" stop-color="rgba(113,31,255,0.55)"/>
+          </linearGradient>
+          <marker id="nnArrowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 Z" fill="rgba(45,212,191,0.95)"/>
+          </marker>
+          <marker id="nnArrowHeadGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 Z" fill="rgba(245,200,66,0.95)"/>
+          </marker>
+        </defs>
+
+        <!-- Faint dashed ring underneath to reinforce circularity -->
+        <circle class="nn-loop-ring-bg" cx="300" cy="300" r="210"/>
+
+        <!-- 5 arc segments clockwise on ring r=210 centered (300,300) -->
+        <!-- 1 → 2  Plan → Deliver   (15°→57°) -->
+        <path class="nn-loop-arrow-path" d="M 354 97 A 210 210 0 0 1 476 186" marker-end="url(#nnArrowHead)"/>
+        <!-- 2 → 3  Deliver → Track   (87°→129°) -->
+        <path class="nn-loop-arrow-path" d="M 510 289 A 210 210 0 0 1 463 432" marker-end="url(#nnArrowHead)"/>
+        <!-- 3 → 4  Track → Learn     (159°→201°) -->
+        <path class="nn-loop-arrow-path" d="M 375 496 A 210 210 0 0 1 225 496" marker-end="url(#nnArrowHead)"/>
+        <!-- 4 → 5  Learn → Repeat    (231°→273°) -->
+        <path class="nn-loop-arrow-path" d="M 137 432 A 210 210 0 0 1 90 289" marker-end="url(#nnArrowHead)"/>
+        <!-- 5 → 1  Repeat → Plan     (303°→345°) — gold (compounding step) -->
+        <path class="nn-loop-arrow-path" style="stroke:rgba(245,200,66,0.9)" d="M 124 186 A 210 210 0 0 1 246 97" marker-end="url(#nnArrowHeadGold)"/>
+      </svg>
+
+      <!-- 5 frosted glass nodes arranged clockwise in a pentagon -->
+      <div class="nn-loop-node nn-loop-node-1">
+        <div class="nn-loop-node-head">
+          <span class="nn-loop-node-num" aria-hidden="true">01</span>
+          <h4 class="nn-loop-node-title">Plan</h4>
+        </div>
+        <p class="nn-loop-node-body">Scope the job. Estimate the hours. Map the deliverables.</p>
+      </div>
+      <div class="nn-loop-node nn-loop-node-2">
+        <div class="nn-loop-node-head">
+          <span class="nn-loop-node-num" aria-hidden="true">02</span>
+          <h4 class="nn-loop-node-title">Deliver</h4>
+        </div>
+        <p class="nn-loop-node-body">The team executes. Timers run. Progress surfaces in real time.</p>
+      </div>
+      <div class="nn-loop-node nn-loop-node-3">
+        <div class="nn-loop-node-head">
+          <span class="nn-loop-node-num" aria-hidden="true">03</span>
+          <h4 class="nn-loop-node-title">Track</h4>
+        </div>
+        <p class="nn-loop-node-body">Effort tied to deliverables. Drift signals surface early.</p>
+      </div>
+      <div class="nn-loop-node nn-loop-node-4">
+        <div class="nn-loop-node-head">
+          <span class="nn-loop-node-num" aria-hidden="true">04</span>
+          <h4 class="nn-loop-node-title">Learn</h4>
+        </div>
+        <p class="nn-loop-node-body">See where effort matched the plan. See where it drifted. Know why.</p>
+      </div>
+      <div class="nn-loop-node nn-loop-node-5">
+        <div class="nn-loop-node-head">
+          <span class="nn-loop-node-num" aria-hidden="true">05</span>
+          <h4 class="nn-loop-node-title">Repeat, sharper</h4>
+        </div>
+        <p class="nn-loop-node-body">Next job starts with better estimates, tighter scope, fewer surprises.</p>
+      </div>
+
+      <!-- Center hub — compact proof of compounding -->
+      <div class="nn-loop-hub">
+        <p class="nn-loop-hub-label">Proof of Compounding</p>
+        <svg class="nn-loop-hub-chart" viewBox="0 0 200 92" aria-hidden="true">
+          <!-- Estimate baseline -->
+          <line x1="16" y1="74" x2="184" y2="74" stroke="rgba(45,212,191,0.7)" stroke-width="1" stroke-dasharray="4 4"/>
+          <!-- Actual line converging toward estimate -->
+          <path d="M 24 18 C 54 36, 74 54, 94 64 S 144 72, 176 74"
+                fill="none" stroke="#F5C842" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round"
+                style="filter:drop-shadow(0 0 5px rgba(245,200,66,0.45))"/>
+          <circle cx="24" cy="18" r="3" fill="#F5C842"/>
+          <circle cx="94" cy="64" r="2.5" fill="#F5C842"/>
+          <circle cx="176" cy="74" r="3" fill="#F5C842"/>
+          <!-- Gap callouts -->
+          <text x="36" y="14" fill="rgba(255,255,255,0.85)" font-size="9" font-weight="700" font-family="inherit">+47h</text>
+          <text x="168" y="68" fill="rgba(255,255,255,0.85)" font-size="9" font-weight="700" font-family="inherit" text-anchor="end">+3h</text>
+        </svg>
+        <p class="nn-loop-hub-caption">The gap tightens<br/>every cycle.</p>
+      </div>
+    </div>
+
+    <div class="nn-loop-pronouncement">
+      <span class="nn-loop-rule nn-loop-rule-left" aria-hidden="true"></span>
+      <p class="nn-loop-closer"><span class="nn-loop-closer-lead">Every cycle tightens the</span><span class="nn-loop-closer-punch">gap.</span></p>
+      <span class="nn-loop-rule nn-loop-rule-right" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C4: LOOP -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C5: HOW — Visibility Layer + Two Signals + Quick Tasks
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c5-how" style="padding-top:clamp(160px, 18vh, 240px);">
+
+<!-- =============================================================
+     VISIBILITY LAYER — DARK
+     ============================================================= -->
+<section class="nn-visibility nn-stage-section">
+  <div class="nn-container">
+    <p class="nn-eyebrow">The Visibility Layer</p>
+    <h2>Net Net helps you<br><span class="nn-grad-text">get back into the flow</span></h2>
+    <p>Where your hours are going. Which jobs are drifting. Who is and isn't performing. While the work is happening, not after.</p>
+    <p>Net Net closes the gap between what you think things take and what they actually take. You're back in the flow.</p>
+
+    <div class="nn-visibility-img">
+      <img src="https://hellonetnet.com/wp-content/uploads/2026/04/05-performance-pulse-dark-5.jpg"
+           alt="Performance Pulse dashboard"
+           loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     TWO SIGNALS — PURPLE WASH ← HIGH CONTRAST
+     Side-by-side, NO PARALLAX on media (fixes text-behind-image)
+     ============================================================= -->
+<section class="nn-signals nn-stage-section">
+  <div class="nn-container">
+    <div class="nn-signals-head">
+      <p class="nn-eyebrow">Two Signals That Matter</p>
+      <h2>Hours and timelines.<br><span class="nn-grad-text">Together. In real time.</span></h2>
+    </div>
+
+    <div class="nn-signal-row">
+      <div class="nn-signal-copy">
+        <span class="nn-signal-num" aria-hidden="true">01</span>
+        <p class="nn-signal-eyebrow"><span class="nn-signal-dot"></span>Signal 01 <em>Hours</em></p>
+        <h3>Where your hours are going</h3>
+        <p>Labor effort tied to deliverables, not project codes. See who's over capacity before it becomes a delivery problem.</p>
+      </div>
+      <div class="nn-signal-media">
+        <div class="nn-signal-media-frame">
+          <img src="https://hellonetnet.com/wp-content/uploads/2026/04/06-capacity-outlook-dark-5.jpg"
+               alt="Capacity Outlook"
+               loading="lazy" />
+          <div class="nn-signal-callout">
+            <span class="nn-signal-callout-text">Know who's slammed this week.</span>
+            <svg class="nn-signal-arrow" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 5 8 Q 40 18, 94 54" />
+              <circle cx="94" cy="54" r="3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nn-signal-row reverse">
+      <div class="nn-signal-copy">
+        <span class="nn-signal-num" aria-hidden="true">02</span>
+        <p class="nn-signal-eyebrow"><span class="nn-signal-dot"></span>Signal 02 <em>Timeline</em></p>
+        <h3>Whether your jobs are on schedule</h3>
+        <p>Drift signals surface early: effort overruns, date moves, deliverables at risk. See it while you can still act.</p>
+      </div>
+      <div class="nn-signal-media">
+        <div class="nn-signal-media-frame">
+          <img src="https://hellonetnet.com/wp-content/uploads/2026/04/09-timeline-dark-2.jpg"
+               alt="Timeline view"
+               loading="lazy" />
+          <div class="nn-signal-callout">
+            <span class="nn-signal-callout-text">Catch drift the day it starts.</span>
+            <svg class="nn-signal-arrow" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 95 52 Q 60 42, 6 6" />
+              <circle cx="6" cy="6" r="3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third beat: Quick Tasks lives inside the Signals family (plays off Hours + Timeline) -->
+    <div class="nn-tasks-grid nn-tasks-grid-inline">
+      <div class="nn-tasks-copy">
+        <p class="nn-eyebrow">Every Hour Counts</p>
+        <h2>Not every task lives <span class="nn-grad-text">inside a job.</span></h2>
+        <p>Internal work, one-off requests, admin tasks, quick favors. They all consume your team's hours. Net Net's 'Quick Tasks' captures everything outside your formal jobs so nothing slips through unaccounted.</p>
+      </div>
+      <div>
+        <img src="https://hellonetnet.com/wp-content/uploads/2026/04/04-quick-tasks-dark-5.jpg"
+             alt="Quick Tasks interface"
+             loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C5: HOW -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C6: HYBRID + AI — "Your team isn't just humans anymore" + V1→V2
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c6-hybrid">
+
+<!-- =============================================================
+     HYBRID (AI) — PURPLE WASH ← HIGH CONTRAST
+     Big-brain SIDE-BY-SIDE (Marc: left-right, brain pretty big)
+     ============================================================= -->
+<section id="hybrid" class="nn-hybrid nn-stage-section">
+  <div class="nn-hybrid-grid">
+    <div class="nn-hybrid-copy">
+      <p class="nn-eyebrow">The New Agency Reality</p>
+      <h2>Your team isn't just humans <span class="nn-grad-text">anymore.</span></h2>
+      <p>AI agents are doing work inside your agency right now. Net Net is the first platform that tracks both: human effort and AI contribution, side by side.</p>
+      <p style="margin-top:14px;">It's never about replacing people. It's about seeing the full truth of how work gets delivered.</p>
+    </div>
+    <div class="nn-hybrid-visual nn-anim-keep nn-animate-scale">
+      <img src="https://hellonetnet.com/wp-content/uploads/2026/04/AI-Brain.svg"
+           alt="AI brain"
+           loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     V1 → V2 STATS — DARK ← HIGH CONTRAST
+     ============================================================= -->
+<section class="nn-v1v2 nn-stage-section">
+  <div class="nn-container">
+    <div class="nn-v1v2-head">
+      <h2>We didn't bolt AI on.<br><span class="nn-grad-text">We rebuilt for it.</span></h2>
+      <p>Net Net V1 launched in August 2024. We worked with agencies worldwide, shipped hundreds of updates, and learned what service firms actually need. Then we saw AI agents joining agency teams. So we rebuilt from the ground up: MCP integration, full API, hybrid delivery tracking. Native AI, not an afterthought.</p>
+    </div>
+
+    <div class="nn-v1v2-stats">
+      <div class="nn-stat">
+        <p class="nn-stat-label">V1 Launch</p>
+        <p class="nn-stat-value" data-count-to="2024">2024</p>
+      </div>
+      <div class="nn-stat">
+        <p class="nn-stat-label">Updates Shipped</p>
+        <p class="nn-stat-value"><span data-count-to="100">100</span><span class="nn-stat-suffix">+</span></p>
+      </div>
+      <div class="nn-stat">
+        <p class="nn-stat-label">V2 Launching</p>
+        <p class="nn-stat-value" data-count-to="2026">2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C6: HYBRID + AI -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C7: ICP — "Built around how agencies actually work" + chips
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c7-icp">
+
+<!-- =============================================================
+     BUILT AROUND — PURPLE WASH ← HIGH CONTRAST
+     ============================================================= -->
+<section class="nn-built-around nn-stage-section nn-chapter-end-to-portrait">
+  <div class="nn-container">
+    <div class="nn-built-head">
+      <p class="nn-eyebrow">The Way You Actually Work</p>
+      <h2>Built around how agencies <span class="nn-grad-text">actually work.</span></h2>
+      <p>Most project tools were built for software teams. Net Net was built for the shape of agency work — jobs with deliverables, scope that moves, teams that flex.</p>
+    </div>
+
+    <div class="nn-built-grid">
+      <div class="nn-built-card">
+        <div class="nn-built-ico">◉</div>
+        <h3>Jobs, not projects</h3>
+        <p>Scope in hours. Deliverables with owners. Status you can see at a glance.</p>
+      </div>
+      <div class="nn-built-card">
+        <div class="nn-built-ico">◇</div>
+        <h3>Quick Tasks</h3>
+        <p>Anything outside a formal job still gets captured. No more mystery hours.</p>
+      </div>
+      <div class="nn-built-card">
+        <div class="nn-built-ico">⌂</div>
+        <h3>Capacity Outlook</h3>
+        <p>See who's over, under, and on pace before the week gets away from you.</p>
+      </div>
+      <div class="nn-built-card">
+        <div class="nn-built-ico">↺</div>
+        <h3>Performance Pulse</h3>
+        <p>The gap between estimated and actual, surfaced while you can still act.</p>
+      </div>
+      <div class="nn-built-card">
+        <div class="nn-built-ico">◈</div>
+        <h3>Hybrid Delivery</h3>
+        <p>Track human effort and AI contribution side by side. Native, not bolted on.</p>
+      </div>
+      <div class="nn-built-card">
+        <div class="nn-built-ico">☰</div>
+        <h3>Everyone invited</h3>
+        <p>Full-time, part-time, contractors, partners. No seat fees. Ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C7: ICP -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C8: SOCIAL PROOF — Kumail Testimonial
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c8-social-proof">
+
+<!-- =============================================================
+     KUMAIL TESTIMONIAL — Full-bleed portrait + GLASS CARD
+     Image path: kumail-webpage.jpg (verified 200 OK on hellonetnet.com)
+     Moved above Pricing 2026-04-20 per Marc. Sits between the
+     Built Around grid and the Pricing card so the customer's voice
+     lands as social proof right before the price is introduced.
+     KEEP: glass card fadeup (hero moment)
+     ============================================================= -->
+<section class="nn-portrait nn-portrait-desktop reverse">
+  <div class="nn-portrait-bg"
+       style="background-image:url('https://hellonetnet.com/wp-content/uploads/2026/04/kumail-webpage.jpg');"
+       aria-hidden="true"></div>
+  <div class="nn-portrait-overlay" aria-hidden="true"></div>
+  <div class="nn-portrait-inner">
+    <div class="nn-portrait-copy">
+      <div class="nn-portrait-card nn-anim-keep nn-animate-fadeup">
+        <p class="nn-portrait-eyebrow">What Agency Owners Are Saying</p>
+        <p class="nn-portrait-quote">"Marc, I hate Net Net! It really showed me how much we suck at estimating."</p>
+        <p class="nn-portrait-attr">Syed Kumail</p>
+        <p class="nn-portrait-role">Owner, <a href="https://itkumail.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;transition:color 0.2s ease" onmouseover="this.style.color='#2dd4bf'" onmouseout="this.style.color='inherit'">ITK Online Solutions</a> Ltd</p>
+        <p class="nn-portrait-closer"><strong>It's our favorite piece of feedback.</strong> You can't fix what you can't see.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Mobile variant -->
+<section class="nn-portrait-mobile">
+  <div class="nn-container">
+    <div class="nn-portrait-mobile-card">
+      <div class="nn-portrait-mobile-photo"
+           style="background-image:url('https://hellonetnet.com/wp-content/uploads/2026/04/Kumail3-sq.jpg');"
+           aria-hidden="true"></div>
+      <p class="nn-portrait-eyebrow">What Agency Owners Are Saying</p>
+      <p class="nn-portrait-quote">"Marc, I hate Net Net! It really showed me how much we suck at estimating."</p>
+      <p class="nn-portrait-attr">Syed Kumail</p>
+      <p class="nn-portrait-role">Owner, <a href="https://itkumail.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;transition:color 0.2s ease" onmouseover="this.style.color='#2dd4bf'" onmouseout="this.style.color='inherit'">ITK Online Solutions</a> Ltd</p>
+      <p class="nn-portrait-closer"><strong>It's our favorite piece of feedback.</strong> You can't fix what you can't see.</p>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C8: SOCIAL PROOF -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C9: PRICING — Pricing + Invite Everyone
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c9-pricing">
+
+<!-- =============================================================
+     PRICING — rides the glass chapter after Kumail's portrait.
+     Sequence: Built Around grid → Kumail testimonial → Pricing card
+     → Invite Everyone → Founder note → Final CTA.
+     ============================================================= -->
+<section id="pricing" class="nn-pricing nn-stage-section">
+  <div class="nn-pricing-grid">
+    <div class="nn-pricing-copy">
+      <p class="nn-pricing-eyebrow">Pricing</p>
+      <h2 class="nn-anim-keep nn-animate-fadeup">Pay for jobs. <br><span class="nn-grad-text">Not for seats.</span></h2>
+      <p class="nn-pricing-small">Pay for the work you're actually doing.</p>
+    </div>
+
+    <div class="nn-pricing-card nn-anim-keep nn-animate-scale">
+      <p class="nn-pricing-price">$30</p>
+      <p class="nn-pricing-unit">per active job / month</p>
+      <ul class="nn-pricing-list">
+        <li>Your first job is always free</li>
+        <li>Unlimited team members, no seat fees</li>
+        <li>All features included at every level</li>
+        <li>Quick Tasks, Performance Pulse, Reports</li>
+        <li>Annual discount: save 15–50%</li>
+      </ul>
+      <a href="#register" class="nn-btn nn-btn-primary" style="width:100%; justify-content:center;">PRE-REGISTER FOR V2 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     INVITE EVERYONE — DARK (halftone) ← HIGH CONTRAST
+     ============================================================= -->
+<section class="nn-invite nn-stage-section nn-chapter-end-to-portrait">
+  <div class="nn-container">
+    <p class="nn-eyebrow">No Seat Licenses. Ever.</p>
+    <h2>Invite <span class="nn-grad-text">everyone.</span></h2>
+    <p class="nn-invite-sub">Your entire team belongs in Net Net. Full-time employees, part-timers, contractors, partners. No per-seat pricing means you never have to choose who gets access.</p>
+
+    <div class="nn-invite-chips">
+      <span class="nn-invite-chip">Full-time</span>
+      <span class="nn-invite-chip">Part-time</span>
+      <span class="nn-invite-chip">Contractors</span>
+      <span class="nn-invite-chip">Partners</span>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C9: PRICING -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C10: PERSONAL PLEA — Founder Portrait
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c10-personal-plea">
+
+<!-- =============================================================
+     FOUNDER NOTE — Full-bleed portrait + GLASS CARD
+     MATCHES KUMAIL'S CARD (short quote, same type size)
+     KEEP: glass card fadeup (hero moment)
+     ============================================================= -->
+<section class="nn-portrait nn-portrait-desktop">
+  <div class="nn-portrait-bg"
+       style="background-image:url('https://hellonetnet.com/wp-content/uploads/2026/04/Marc-1-scaled.jpg');"
+       aria-hidden="true"></div>
+  <div class="nn-portrait-overlay" aria-hidden="true"></div>
+  <div class="nn-portrait-inner">
+    <div class="nn-portrait-copy">
+      <div class="nn-portrait-card nn-anim-keep nn-animate-fadeup">
+        <p class="nn-portrait-eyebrow">A Note From The Co-Founder</p>
+        <p class="nn-portrait-quote">"I've run an agency for almost two decades. Every PM tool treated us like a software team. Net Net is what I wished existed the whole time — built around how agency work actually flows."</p>
+        <p class="nn-portrait-attr">Marc Pitre</p>
+        <p class="nn-portrait-role">Co-Founder, Net Net</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Mobile variant -->
+<section class="nn-portrait-mobile">
+  <div class="nn-container">
+    <div class="nn-portrait-mobile-card">
+      <div class="nn-portrait-mobile-photo"
+           style="background-image:url('https://hellonetnet.com/wp-content/uploads/2026/04/Marc-Sq.jpg');"
+           aria-hidden="true"></div>
+      <p class="nn-portrait-eyebrow">A Note From The Co-Founder</p>
+      <p class="nn-portrait-quote">"I've run an agency for almost two decades. Every PM tool treated us like a software team. Net Net is what I wished existed the whole time."</p>
+      <p class="nn-portrait-attr">Marc Pitre</p>
+      <p class="nn-portrait-role">Co-Founder, Net Net</p>
+    </div>
+  </div>
+</section>
+
+</section><!-- /C10: PERSONAL PLEA -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C11: CTA — Final CTA + Footer
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c11-cta">
+
+<!-- =============================================================
+     FINAL CTA — PURPLE WASH
+     ============================================================= -->
+<section id="register" class="nn-cta nn-stage-section">
+  <div class="nn-container nn-cta-inner">
+    <p class="nn-cta-eyebrow">Get Early Access</p>
+    <p class="nn-cta-date">July 1, 2026</p>
+    <h2 class="nn-anim-keep nn-animate-fadeup">Ready to see what your <br><span class="nn-grad-text">work actually takes?</span></h2>
+    <p>If you run a creative or technical agency and you're tired of managing by assumption, Net Net was built for you. Join the early adopter program and be one of the first to experience project management that finally shows you the truth about your team's work.</p>
+
+    [gravityform id="1" title="false" description="false" ajax="true"]
+    <p class="nn-cta-fine">No credit card. No spam. Just early access when we launch.</p>
+  </div>
+</section>
+
+<!-- =============================================================
+     FOOTER
+     ============================================================= -->
+<footer class="nn-footer nn-stage-section">
+  <div class="nn-container">
+    <div class="nn-footer-inner">
+      <div class="nn-footer-brand">
+        <img src="https://hellonetnet.com/wp-content/uploads/2024/12/logo-reverse.svg" alt="Net Net" />
+        <p class="nn-footer-tagline">Operational visibility for agencies that run on hours and timelines.</p>
+      </div>
+      <nav class="nn-footer-nav">
+        <a href="#drift">Drift &amp; Flow</a>
+        <a href="#how">How It Works</a>
+        <a href="#hybrid">Hybrid Delivery</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#register">Pre-Register</a>
+      </nav>
+    </div>
+    <div class="nn-footer-bottom">
+      <span>&copy; 2026 Net Net, LLC. All rights reserved.</span>
+      <div class="nn-footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</section><!-- /C11: CTA -->
+
+<!-- =============================================================
+     GSAP — SCROLL ANIMATIONS (CULLED)
+     ~10 hero moments animated (.nn-anim-keep).
+     Flywheel nodes reveal via separate stagger (no pinning).
+     ============================================================= -->
+
+<script>
+(function(){
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  // --- CULLED entrance effects (opt-in via .nn-anim-keep) ---
+  gsap.utils.toArray('.nn-anim-keep.nn-animate-fadeup').forEach(el => {
+    gsap.fromTo(el,
+      { autoAlpha: 0, y: 60 },
+      {
+        autoAlpha: 1, y: 0,
+        duration: 1.0, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.nn-anim-keep.nn-animate-scale').forEach(el => {
+    gsap.fromTo(el,
+      { autoAlpha: 0, scale: 0.9 },
+      {
+        autoAlpha: 1, scale: 1,
+        duration: 1.1, ease: 'back.out(1.4)',
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+      }
+    );
+  });
+
+  // --- HERO IMAGE TILT-IN on scroll (Marc requested) ---
+  const heroImg = document.querySelector('[data-hero-tilt]');
+  if (heroImg){
+    gsap.fromTo(heroImg,
+      { rotationX: 18, y: 40, scale: 0.94, autoAlpha: 0, transformPerspective: 1000, transformOrigin: 'center top' },
+      {
+        rotationX: 0, y: 0, scale: 1, autoAlpha: 1,
+        duration: 1.4, ease: 'power3.out',
+        scrollTrigger: { trigger: heroImg, start: 'top 90%', toggleActions: 'play none none reverse' }
+      }
+    );
+  }
+
+  // --- PERFORMANCE LOOP is now static (Cycle Ladder + Compound Chart).
+  //     No GSAP on this section; background crossfade is handled by the stage chain below. ---
+
+  // --- CRAWFORD CROSS-FADE: bg stage chain across every major
+  // container. Each boundary runs a scrubbed opacity swap.
+  // 'top 90%' is the default anchor — kicks the fade as the next
+  // section peeks in. scrub:0.4 smooths opacity so it lerps
+  // naturally instead of step-snapping with each scroll tick.
+  //
+  // Per-call overrides available via the 4th arg for special cases
+  // (e.g. hero→drift anchors on the "Drift & Flow" eyebrow, not
+  // the top of the section, so the opener reads fully on hero bg).
+  //
+  // fromTo with immediateRender:false is the key: on page load, no
+  // stage's "from" state is forced. Only when a trigger is reached
+  // does its start state snap into place — and because each chain
+  // link's start state matches the previous link's end state, the
+  // whole sequence stays consistent whether you scroll up or down.
+  const crossfade = (triggerSel, outSel, inSel, opts = {}) => {
+    const el = document.querySelector(triggerSel);
+    if (!el) return;
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: opts.start || 'top 90%',
+        end:   opts.end   || '+=500',
+        scrub: opts.scrub ?? 0.4
+      }
+    })
+    .fromTo(outSel,
+      { opacity: 1 },
+      { opacity: 0, ease: 'none', immediateRender: false }, 0)
+    .fromTo(inSel,
+      { opacity: 0 },
+      { opacity: 1, ease: 'none', immediateRender: false }, 0);
+  };
+
+  // Cross-fades. Portraits are full-bleed photos — they cover whatever
+  // stage is beneath them, so no crossfade fires on portrait entries.
+  // Both portraits now sit inside chapter 7 (glass) per the v12 reorder.
+  //
+  /* =============================================================
+     V12 CHAPTER-MAP CROSSFADES (resynced to 2026-04-20 reorder +
+     Works-For move above Drift & Flow)
+
+     Six triggers, one per chapter boundary. Each chapter rides a
+     single stage across its full vertical run so background
+     transitions carry meaning and don't compete with intra-chapter
+     beats.
+
+     DOM order (top → bottom):
+       Hero → Drift-opener ("Now you can run it all.") → Works-For
+         ("Built for …") → Drift & Flow (framework)
+         → Ribbon (opaque) → Flywheel (#how)
+         → Visibility → Signals → Hybrid → V1→V2
+         → Built Around → Kumail portrait → Pricing → Invite
+         → Founder (Marc) portrait → Final CTA
+
+     Chapter-to-stage map:
+       1  Hero + Drift-opener + Works-For  stage-hero            (visible on load)
+       2  Drift & Flow + Ribbon ........... stage-drift           (locked pattern)
+       3  Performance Flywheel (#how) ..... stage-green           (T13 ★ fav, motion)
+       4  Visibility + Signals ............ stage-geometry        (T12, negative-space)
+       5  Hybrid + V1→V2 (AI chapter) ..... stage-illustrated     (T16, waves + dots)
+       6  Built Around + Kumail + Pricing
+            + Invite + Founder ............ stage-glass           (T14 ★ fav, glass ground)
+       7  Final CTA / Footer .............. stage-deep-dark       (BLACK, per Marc)
+
+     Portrait positioning in chapter 6:
+       Kumail now sits between Built Around and Pricing — the
+       customer's voice lands as social proof right before the
+       price is revealed. Founder portrait closes the chapter
+       after Invite, just before the Final CTA transition.
+
+     Notes:
+       • Works-For rides the hero stage as a quiet qualifier between
+         the hero kicker and the Drift & Flow reveal.
+       • Ribbon has an opaque purple gradient, so the stage behind it
+         stays on drift — no transitional spotlight-warm needed here.
+         The spotlight-warm stage remains in DOM/CSS, dormant, for
+         potential reuse in a future chapter.
+       • Portraits are full-bleed photos; they cover whatever stage
+         sits beneath them. Both portraits now sit inside the glass
+         chapter, so the only transition after them is glass →
+         deep-dark at #register.
+     ============================================================= */
+
+  // 1 → 2  Hero chapter to Drift & Flow (keeps v11's Yacht Rock timing).
+  //         Works-For and Drift-opener sit upstream of .nn-drift-head,
+  //         so they ride hero stage until this trigger fires.
+  crossfade('.nn-drift-head',    '.nn-bg-stage-hero',           '.nn-bg-stage-drift',
+            { start: 'top 80%', end: '+=500', scrub: 1.2 });
+
+  // 2 → 3  Drift & Flow + Ribbon to Flywheel (animated green motion, T13 ★)
+  crossfade('#how',              '.nn-bg-stage-drift',          '.nn-bg-stage-green');
+
+  // 3 → 4  Flywheel to Visibility + Signals (negative-space geometry, T12)
+  crossfade('.nn-visibility',    '.nn-bg-stage-green',          '.nn-bg-stage-geometry',
+            { start: 'top 80%', end: '+=500' });
+
+  // 4 → 5  Signals to AI chapter (Hybrid + V1→V2) — illustrated waves + dots, T16
+  crossfade('.nn-hybrid',        '.nn-bg-stage-geometry',       '.nn-bg-stage-illustrated');
+
+  // 5 → 6  AI chapter to Built Around + Pricing + Invite (glass ground, T14 ★)
+  //         Both portraits follow Invite and ride this glass stage.
+  crossfade('.nn-built-around',  '.nn-bg-stage-illustrated',    '.nn-bg-stage-glass');
+
+  // 6 → 9  Built Around chapter (incl. both portraits) to Final CTA (deep black)
+  crossfade('.nn-cta-eyebrow',   '.nn-bg-stage-glass',          '.nn-bg-stage-deep-dark',
+            { start: 'top 70%', end: '+=180', scrub: 0.2 });
+
+  // --- SURVEY RIBBON — scrubbed entrance + parallax + exit (reverses on scroll-up) ---
+  const ribbon = document.querySelector('.nn-ribbon');
+  if (ribbon) {
+    const body = ribbon.querySelector('.nn-ribbon-body');
+    const cta  = ribbon.querySelector('.nn-btn-ghost');
+
+    // Set initial (pre-scroll) state. Ribbon is well below the fold on load, so this is safe.
+    gsap.set(ribbon, { y: 50, scale: 0.96 });
+    gsap.set(body,   { x: -80, autoAlpha: 0 });
+    gsap.set(cta,    { x:  80, autoAlpha: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ribbon,
+        start: 'top 90%',
+        end: 'bottom 10%',
+        scrub: 0.6
+      }
+    });
+
+    // Entrance phase (timeline 0 → 0.4)
+    tl.to(ribbon, { y: 0, scale: 1, duration: 0.4, ease: 'none' }, 0)
+      .to(body,   { x: 0, autoAlpha: 1, duration: 0.4, ease: 'none' }, 0)
+      .to(cta,    { x: 0, autoAlpha: 1, duration: 0.4, ease: 'none' }, 0);
+
+    // Hold phase (0.4 → 0.6) — nothing moves, everything sits.
+
+    // Exit parallax (0.6 → 1.0)
+    tl.to(body,   { x:  40, duration: 0.4, ease: 'none' }, 0.6)
+      .to(cta,    { x: -40, duration: 0.4, ease: 'none' }, 0.6)
+      .to(ribbon, { y: -20, scale: 0.99, duration: 0.4, ease: 'none' }, 0.6);
+  }
+
+  // --- BUILT FOR — staggered chip entrance, scrubbed (reverses on scroll-up) ---
+  const worksFor = document.querySelector('.nn-works-for');
+  if (worksFor) {
+    const chips = worksFor.querySelectorAll('.nn-works-for-item');
+    if (chips.length) {
+      gsap.set(chips, { y: 24, autoAlpha: 0, scale: 0.94 });
+      gsap.to(chips, {
+        y: 0, autoAlpha: 1, scale: 1,
+        stagger: 0.07,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: worksFor,
+          start: 'top 88%',
+          end: 'top 45%',
+          scrub: 0.55
+        }
+      });
+    }
+  }
+
+  // --- TWO SIGNALS — numbered-signal reveal + annotated callout draw, per row, scrubbed ---
+  gsap.utils.toArray('.nn-signal-row').forEach((row, i) => {
+    const isReverse = row.classList.contains('reverse');
+    const outerDir = isReverse ? -1 : 1; // media slides in from its outer edge
+    const innerDir = isReverse ? 1 : -1; // copy drifts in subtly
+
+    const copy   = row.querySelector('.nn-signal-copy');
+    const num    = row.querySelector('.nn-signal-num');
+    const media  = row.querySelector('.nn-signal-media');
+    const call   = row.querySelector('.nn-signal-callout');
+    const callTx = row.querySelector('.nn-signal-callout-text');
+    const arrow  = row.querySelector('.nn-signal-arrow path');
+    const dot    = row.querySelector('.nn-signal-arrow circle');
+
+    // Initial states
+    gsap.set(copy,  { y: 28, autoAlpha: 0 });
+    gsap.set(num,   { x: innerDir * -20, autoAlpha: 0 });
+    gsap.set(media, { x: outerDir * 48, autoAlpha: 0 });
+    if (call)   gsap.set(call,   { autoAlpha: 0 });
+    if (callTx) gsap.set(callTx, { y: 10, scale: 0.94 });
+    if (dot)    gsap.set(dot,    { autoAlpha: 0, scale: 0 });
+    if (arrow) {
+      const len = arrow.getTotalLength ? arrow.getTotalLength() : 200;
+      arrow.style.strokeDasharray  = len;
+      arrow.style.strokeDashoffset = len;
+      gsap.set(arrow, { autoAlpha: 1 });
+    }
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: row, start: 'top 82%', end: 'top 25%', scrub: 0.6
+      }
+    });
+
+    // Phase 1 — copy + media land + rule draws (rule via CSS pseudo animated with GSAP on copy ::before not possible, so animate the numeral/eyebrow/rule via numeral + opacity)
+    tl.to(copy,  { y: 0, autoAlpha: 1, duration: 0.5, ease: 'none' }, 0)
+      .to(num,   { x: 0, autoAlpha: 1, duration: 0.55, ease: 'none' }, 0)
+      .to(media, { x: 0, autoAlpha: 1, duration: 0.55, ease: 'none' }, 0);
+
+    // Phase 2 — callout fades, arrow draws, dot lands
+    if (call && arrow) {
+      tl.to(call,    { autoAlpha: 1, duration: 0.3, ease: 'none' }, 0.55)
+        .to(callTx,  { y: 0, scale: 1, duration: 0.35, ease: 'none' }, 0.55)
+        .to(arrow,   { strokeDashoffset: 0, duration: 0.45, ease: 'none' }, 0.6)
+        .to(dot,     { autoAlpha: 1, scale: 1, duration: 0.2, ease: 'none' }, 0.95);
+    }
+
+    // Animate the accent rule (CSS pseudo) via data attribute + CSS scaleY fallback
+    const rulePseudo = row; // we'll animate the copy's scaleY via a helper class
+    tl.to(copy, {
+      onUpdate: () => {
+        const p = tl.progress();
+        copy.style.setProperty('--nn-rule-scale', Math.min(1, p * 1.6).toFixed(3));
+      },
+      duration: 0.5, ease: 'none'
+    }, 0);
+  });
+
+  // --- DRIFT PRONOUNCEMENT — line-draw rules + damage word punch, scrubbed ---
+  const pronouncement = document.querySelector('.nn-drift-pronouncement');
+  if (pronouncement) {
+    const closer = pronouncement.querySelector('.nn-drift-closer');
+    const damage = pronouncement.querySelector('.nn-drift-closer-damage');
+    const rules  = pronouncement.querySelectorAll('.nn-drift-rule');
+    const isMobile = window.innerWidth < 768;
+    const growScale = isMobile ? 1 : 3;
+    gsap.set(closer, { scale: 1, autoAlpha: 0, y: isMobile ? 20 : 14 });
+    gsap.set(rules,  { scaleX: 0 });
+    const ptl = gsap.timeline({
+      scrollTrigger: {
+        trigger: pronouncement,
+        start: 'top bottom',
+        end: 'top 30%',
+        scrub: 0.55
+      }
+    });
+    ptl.fromTo(closer,
+          { y: isMobile ? 20 : 14, autoAlpha: 0, scale: 1 },
+          { y: 0, autoAlpha: 1, scale: growScale, duration: 0.6, ease: 'none' }, 0)
+       .fromTo(rules,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.45, ease: 'none' }, 0.15);
+  }
+
+  // --- COUNTER-UP on V1/V2 stats ---
+  gsap.utils.toArray('[data-count-to]').forEach(el => {
+    const target = parseInt(el.getAttribute('data-count-to'), 10);
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 1.8,
+      ease: 'power1.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none reverse' },
+      onUpdate(){ el.textContent = Math.round(obj.val); }
+    });
+  });
+
+  /* Ken Burns — subtle zoom on Kumail portrait (desktop only) */
+  if (window.matchMedia('(min-width:769px)').matches) {
+    const kumailSection = document.querySelector('.nn-portrait.reverse');
+    if (kumailSection) {
+      const kumailBg = kumailSection.querySelector('.nn-portrait-bg');
+      if (kumailBg) {
+        gsap.fromTo(kumailBg,
+          { scale: 1 },
+          { scale: 1.08, ease: 'none',
+            scrollTrigger: {
+              trigger: kumailSection,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          }
+        );
+      }
+    }
+  }
+
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+
