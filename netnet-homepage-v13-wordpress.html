@@ -1650,8 +1650,9 @@ p{ margin:0 0 1em }
 }
 </style>
 </head>
+<body>
 
-<!-- WordPress theme override v5 -->
+<!-- WordPress theme override v6 -->
 <style>
 /* ================================================================
    WORDPRESS THEME OVERRIDE v5
@@ -1694,8 +1695,12 @@ p{
 }
 
 a{ color:inherit !important; text-decoration:none !important; }
-img{ max-width:100% !important; height:auto !important; display:block !important; }
-section{ background:transparent !important; }
+img{ max-width:100% !important; display:block !important; }
+/* Header logo */
+.nn-header img{ height:36px !important; width:auto !important; }
+/* Footer logo */
+.nn-footer-brand img{ height:32px !important; width:auto !important; max-height:32px !important; }
+/* Footer logo */
 
 .nn-grad-text{
   background: var(--nn-grad-text) !important;
@@ -1763,13 +1768,6 @@ section{ background:transparent !important; }
 .nn-btn-ghost{
   background:transparent !important; color:var(--nn-cream) !important;
   border:1.5px solid rgba(255,255,255,0.3) !important;
-}
-
-/* --- FOOTER LOGO FIX --- */
-.nn-footer-brand img{
-  height:32px !important;
-  width:auto !important;
-  max-height:32px !important;
 }
 
 /* ================================================================
@@ -1893,7 +1891,6 @@ body #gform_wrapper_1 input[type="submit"]{
 }
 </style>
 
-<!-- Crawford-style fixed bg stages. Hero stage is visible by default;
      every other stage fades in via GSAP at its section's boundary.
      All 9 sit behind every .nn-stage-section, which is transparent
      and lifts content above via z-index:1. Order in the DOM doesn't
@@ -2566,7 +2563,8 @@ body #gform_wrapper_1 input[type="submit"]{
     <div class="nn-footer-inner">
       <div class="nn-footer-brand">
         <img src="https://hellonetnet.com/wp-content/uploads/2024/12/logo-reverse.svg" alt="Net Net" />
-        <p class="nn-footer-tagline">Operational visibility for agencies that run on hours and timelines.</p>
+        <p class="nn-footer-tagline">Workflow management that doesn't suck, built for creative &amp; technical agencies. See what your work actually takes, even when AI is doing half of it.</p>
+        <p class="nn-footer-tagline" style="margin-top:8px; opacity:0.7; font-size:13px;">Plan It → Deliver It → Track It → Learn From It → Repeat</p>
       </div>
       <nav class="nn-footer-nav">
         <a href="#drift">Drift &amp; Flow</a>
@@ -2594,8 +2592,8 @@ body #gform_wrapper_1 input[type="submit"]{
      Flywheel nodes reveal via separate stagger (no pinning).
      ============================================================= -->
 <script>
-
 (function(){
+
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
@@ -2925,3 +2923,4 @@ body #gform_wrapper_1 input[type="submit"]{
 </script>
 
 </body>
+</html>
