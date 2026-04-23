@@ -2122,10 +2122,23 @@ body #gform_wrapper_1 input[type="submit"]{
       </div>
     </div>
 
-    <!-- Third beat: Quick Tasks lives inside the Signals family (plays off Hours + Timeline) -->
+  </div>
+</section>
+
+</section><!-- /C3: SIGNALS (Hours + Timelines) -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     C4: QUICK TASKS — The Work Between the Work
+     Own container, own background (purple wash), own crossfade
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="c4-quicktasks" style="padding:clamp(120px, 14vh, 180px) 0;">
+
+<section id="quicktasks" class="nn-quicktasks-section nn-stage-section">
+  <div class="nn-container">
     <div class="nn-tasks-grid nn-tasks-grid-inline">
       <div class="nn-tasks-copy">
-        <p class="nn-eyebrow">Every Hour Counts</p>
+        <p class="nn-eyebrow">The Work Between the Work</p>
         <h2>Not every task lives <span class="nn-grad-text">inside a job.</span></h2>
         <p>Internal work, one-off requests, admin tasks, quick favors. They all consume your team's hours. Net Net's 'Quick Tasks' captures everything outside your formal jobs so nothing slips through unaccounted.</p>
       </div>
@@ -2138,17 +2151,15 @@ body #gform_wrapper_1 input[type="submit"]{
   </div>
 </section>
 
-</section><!-- /C5: HOW -->
+</section><!-- /C4: QUICK TASKS -->
+
 
 <!-- ═══════════════════════════════════════════════════════════════
-     C6: HYBRID + AI — "Your team isn't just humans anymore" + V1→V2
+     C5: HYBRID DELIVERY — AI + Human Work, One Platform
+     Own container, own background (illustrated waves), own crossfade
      ═══════════════════════════════════════════════════════════════ -->
-<section id="c6-hybrid">
+<section id="c5-hybrid" style="padding:clamp(120px, 14vh, 180px) 0;">
 
-<!-- =============================================================
-     HYBRID (AI) — PURPLE WASH ← HIGH CONTRAST
-     Big-brain SIDE-BY-SIDE (Marc: left-right, brain pretty big)
-     ============================================================= -->
 <section id="hybrid" class="nn-hybrid nn-stage-section">
   <div class="nn-hybrid-grid">
     <div class="nn-hybrid-copy">
@@ -2165,14 +2176,11 @@ body #gform_wrapper_1 input[type="submit"]{
   </div>
 </section>
 
-<!-- =============================================================
-     V1 → V2 STATS — DARK ← HIGH CONTRAST
-     ============================================================= -->
 <section class="nn-v1v2 nn-stage-section">
   <div class="nn-container">
     <div class="nn-v1v2-head">
       <h2>We didn't bolt AI on.<br><span class="nn-grad-text">We rebuilt for it.</span></h2>
-      <p>Net Net V1 launched in August 2024. We worked with agencies worldwide, shipped hundreds of updates, and learned what service firms actually need. Then we saw AI agents joining agency teams. So we rebuilt from the ground up: MCP integration, full API, hybrid delivery tracking. Native AI, not an afterthought.</p>
+      <p>Net Net V1 launched in August 2024. We worked with agencies worldwide, shipped hundreds of updates, and learned what service firms actually need. Then we saw AI agents joining agency teams. So we rebuilt from the ground up, with native hybrid delivery tracking built into every layer. Not an afterthought.</p>
     </div>
 
     <div class="nn-v1v2-stats">
@@ -2597,21 +2605,29 @@ body #gform_wrapper_1 input[type="submit"]{
   // Removed: Performance Loop green stage, Visibility Layer
   // hero → drift (halftone) → geometry (signals) → illustrated (hybrid) → glass (built+pricing) → deep-dark (CTA)
 
+  // V14 CROSSFADE CHAIN — 6 transitions, 7 stages
+  // hero → drift (halftone) → geometry (Signals) → purple wash (Quick Tasks)
+  // → illustrated (Hybrid) → glass (Built Around + Pricing) → deep-dark (CTA)
+
   // 1 → 2  Hero to Drift & Flow (halftone duotone)
   crossfade('.nn-drift-head',    '.nn-bg-stage-hero',           '.nn-bg-stage-drift',
             { start: 'top 80%', end: '+=500', scrub: 1.2 });
 
-  // 2 → 3  Drift to Signals (negative-space geometry)
+  // 2 → 3  Drift to Signals (negative-space geometry — clean technical canvas)
   crossfade('.nn-signals',       '.nn-bg-stage-drift',          '.nn-bg-stage-geometry',
             { start: 'top 80%', end: '+=500' });
 
-  // 3 → 4  Signals to Hybrid/AI (illustrated waves + dots)
-  crossfade('.nn-hybrid',        '.nn-bg-stage-geometry',       '.nn-bg-stage-illustrated');
+  // 3 → 4  Signals to Quick Tasks (purple wash with pattern — dramatic contrast)
+  crossfade('.nn-quicktasks-section', '.nn-bg-stage-geometry',  '.nn-bg-stage-wash',
+            { start: 'top 80%', end: '+=500' });
 
-  // 4 → 5  AI to Built Around + Pricing + Portraits (glassmorphic ground)
+  // 4 → 5  Quick Tasks to Hybrid/AI (illustrated waves + dots)
+  crossfade('.nn-hybrid',        '.nn-bg-stage-wash',           '.nn-bg-stage-illustrated');
+
+  // 5 → 6  Hybrid to Built Around + Pricing + Portraits (glassmorphic ground)
   crossfade('.nn-built-around',  '.nn-bg-stage-illustrated',    '.nn-bg-stage-glass');
 
-  // 5 → 6  Built Around chapter to Final CTA (deep black)
+  // 6 → 7  Built Around chapter to Final CTA (deep black)
   crossfade('.nn-cta-eyebrow',   '.nn-bg-stage-glass',          '.nn-bg-stage-deep-dark',
             { start: 'top 70%', end: '+=180', scrub: 0.2 });
 
