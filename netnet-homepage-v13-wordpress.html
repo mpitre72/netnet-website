@@ -1648,6 +1648,255 @@ p{ margin:0 0 1em }
 }
 </style>
 
+<!-- WordPress theme override -->
+<style>
+/* ================================================================
+   WORDPRESS THEME OVERRIDE — fights WP core, Hello Elementor,
+   wp-block-library, Gravity Forms theme, and Elementor frontend
+   CSS that load alongside our page and stomp on our styles.
+   All rules use !important to win the specificity war.
+   ================================================================ */
+
+/* --- GLOBAL RESETS — undo WP/theme damage --- */
+body{
+  margin:0 !important;
+  padding:0 !important;
+  background:var(--nn-dark) !important;
+  color:var(--nn-cream) !important;
+  font-family:'Plus Jakarta Sans', -apple-system, system-ui, sans-serif !important;
+  font-size:var(--nn-body) !important;
+  line-height:1.6 !important;
+  overflow-x:clip !important;
+  -webkit-font-smoothing:antialiased !important;
+}
+
+/* WP admin bar offset fix */
+html{ margin-top:0 !important; }
+#wpadminbar{ position:fixed !important; }
+
+/* Kill WP block library spacing */
+.wp-block-html{ margin-bottom:0 !important; padding:0 !important; }
+.entry-content, .page-content, .post-content{ padding:0 !important; margin:0 !important; }
+.site-content, .ast-container, #content{ padding:0 !important; margin:0 auto !important; max-width:none !important; }
+
+h1,h2,h3{
+  font-family:'Space Grotesk', -apple-system, system-ui, sans-serif !important;
+  letter-spacing:-0.02em !important;
+  line-height:1.05 !important;
+  margin:0 0 0.5em !important;
+  color:var(--nn-cream) !important;
+}
+h1{ font-size:var(--nn-h1) !important; font-weight:700 !important; }
+h2{ font-size:var(--nn-h2) !important; font-weight:700 !important; }
+h3{ font-size:var(--nn-h3) !important; font-weight:600 !important; }
+
+p{ margin:0 0 1em !important; color:var(--nn-cream) !important; }
+a{ color:inherit !important; text-decoration:none !important; }
+img{ max-width:100% !important; height:auto !important; display:block !important; }
+
+/* --- Section backgrounds — override any WP defaults --- */
+section{ background:transparent !important; }
+
+/* --- Gradient text fix for WP --- */
+.nn-grad-text{
+  background: var(--nn-grad-text) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  color:transparent !important;
+}
+
+/* --- Nav links color --- */
+.nn-nav a{ color:var(--nn-cream) !important; }
+.nn-nav-cta{ color:#fff !important; }
+
+/* --- Eyebrow --- */
+.nn-eyebrow{ color:var(--nn-teal) !important; }
+
+/* --- Muted text --- */
+.nn-muted, [class*="nn-muted"]{ color:var(--nn-muted) !important; }
+
+/* --- Hero section specifics --- */
+.nn-hero{ padding-top:var(--nn-pad-y) !important; padding-bottom:0 !important; min-height:100vh !important; }
+.nn-hero h1{ color:var(--nn-cream) !important; }
+
+/* --- CTA section --- */
+.nn-cta-eyebrow{ color:var(--nn-cream) !important; font-family:'Space Grotesk', sans-serif !important; }
+.nn-cta-date{ color:var(--nn-cream) !important; }
+.nn-cta-fine{ color:var(--nn-muted) !important; }
+
+/* --- Card backgrounds --- */
+.nn-glass-card{
+  background:rgba(255,255,255,0.06) !important;
+  backdrop-filter:blur(18px) !important;
+  -webkit-backdrop-filter:blur(18px) !important;
+  border:1px solid rgba(255,255,255,0.12) !important;
+  border-radius:20px !important;
+}
+
+/* --- Buttons override WP button styles --- */
+.nn-btn-primary{
+  background:linear-gradient(135deg, #711FFF 0%, #2DD4BF 100%) !important;
+  color:#fff !important;
+  border:none !important;
+  font-family:inherit !important;
+}
+.nn-btn-ghost{
+  background:transparent !important;
+  color:var(--nn-cream) !important;
+  border:1.5px solid rgba(255,255,255,0.3) !important;
+}
+
+/* ================================================================
+   GRAVITY FORMS OVERRIDE — frosted glass dark theme
+   Beefed up to beat GF theme_reset, foundation, framework, orbital
+   ================================================================ */
+
+/* Container */
+#gform_wrapper_1{
+  max-width:520px !important;
+  margin:0 auto !important;
+  font-family:'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Kill ALL Gravity theme framework junk */
+#gform_wrapper_1.gform-theme--framework input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]),
+#gform_wrapper_1 .gform-theme--framework input[type="text"],
+#gform_wrapper_1 .gform-theme--framework input[type="email"]{
+  all: unset !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+/* Labels — visually hidden for a11y */
+#gform_wrapper_1 .gfield_label,
+#gform_wrapper_1 .ginput_complex label,
+#gform_wrapper_1 .ginput_complex .name_first label,
+#gform_wrapper_1 .ginput_complex .name_last label{
+  position:absolute !important;
+  width:1px !important; height:1px !important;
+  overflow:hidden !important; clip:rect(0,0,0,0) !important;
+  white-space:nowrap !important; border:0 !important;
+}
+
+/* Sub-label containers */
+#gform_wrapper_1 .ginput_complex .name_first,
+#gform_wrapper_1 .ginput_complex .name_last{ padding:0 !important; }
+
+/* Field grid — MORE SPACING */
+#gform_wrapper_1 .gform_fields{
+  display:grid !important;
+  gap:20px !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+
+/* Name field side by side */
+#gform_wrapper_1 #field_1_1 .ginput_complex{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:20px !important;
+}
+@media (max-width:520px){
+  #gform_wrapper_1 #field_1_1 .ginput_complex{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* --- FROSTED GLASS INPUT FIELDS --- */
+#gform_wrapper_1 input[type="text"],
+#gform_wrapper_1 input[type="email"]{
+  width:100% !important;
+  background:rgba(255,255,255,0.10) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+  border:1px solid rgba(255,255,255,0.25) !important;
+  border-radius:14px !important;
+  padding:18px 22px !important;
+  color:#FAFAF5 !important;
+  font-family:'Plus Jakarta Sans', sans-serif !important;
+  font-size:15px !important;
+  transition:border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
+  box-sizing:border-box !important;
+}
+
+#gform_wrapper_1 input[type="text"]::placeholder,
+#gform_wrapper_1 input[type="email"]::placeholder{
+  color:rgba(250,250,250,0.50) !important;
+}
+
+#gform_wrapper_1 input[type="text"]:focus,
+#gform_wrapper_1 input[type="email"]:focus{
+  outline:none !important;
+  background:rgba(255,255,255,0.16) !important;
+  border-color:rgba(255,255,255,0.5) !important;
+  box-shadow:0 0 0 3px rgba(113,31,255,0.25), 0 4px 20px rgba(0,0,0,0.3) !important;
+}
+
+/* Submit button */
+#gform_wrapper_1 .gform_footer,
+#gform_wrapper_1 .gform-footer{
+  padding:0 !important; margin:4px 0 0 !important;
+}
+
+#gform_wrapper_1 input[type="submit"],
+#gform_wrapper_1 .gform_button{
+  width:100% !important;
+  background:linear-gradient(135deg, var(--nn-purple, #711FFF), var(--nn-teal, #2DD4BF)) !important;
+  color:#fff !important;
+  font-family:'Space Grotesk', sans-serif !important;
+  font-weight:700 !important;
+  font-size:15px !important;
+  letter-spacing:0.08em !important;
+  text-transform:uppercase !important;
+  border:none !important;
+  border-radius:14px !important;
+  padding:20px 32px !important;
+  cursor:pointer !important;
+  transition:filter 0.2s, transform 0.15s !important;
+  box-sizing:border-box !important;
+  box-shadow:0 8px 24px rgba(113,31,255,0.3) !important;
+}
+
+#gform_wrapper_1 input[type="submit"]:hover,
+#gform_wrapper_1 .gform_button:hover{
+  filter:brightness(1.12) !important;
+  transform:translateY(-1px) !important;
+  box-shadow:0 12px 32px rgba(113,31,255,0.45) !important;
+}
+
+/* Validation */
+#gform_wrapper_1 .gfield_error input[type="text"],
+#gform_wrapper_1 .gfield_error input[type="email"]{
+  border-color:rgba(255,100,100,0.6) !important;
+  background:rgba(255,50,50,0.08) !important;
+}
+#gform_wrapper_1 .validation_message{
+  color:rgba(255,150,150,0.9) !important;
+  font-size:13px !important; margin-top:6px !important;
+  background:transparent !important; border:none !important; padding:0 !important;
+}
+#gform_wrapper_1 .gform_validation_errors{
+  background:rgba(255,50,50,0.08) !important;
+  border:1px solid rgba(255,100,100,0.3) !important;
+  border-radius:12px !important;
+  color:rgba(255,200,200,0.9) !important;
+  padding:16px !important; margin-bottom:16px !important;
+}
+
+/* Confirmation */
+#gform_wrapper_1 .gform_confirmation_message,
+#gform_confirmation_wrapper_1{
+  color:#FAFAF5 !important;
+  font-family:'Plus Jakarta Sans', sans-serif !important;
+  font-size:18px !important; text-align:center !important; padding:24px !important;
+}
+
+/* Field containers */
+#gform_wrapper_1 .gfield{ padding:0 !important; margin:0 !important; border:none !important; }
+#gform_wrapper_1 .ginput_container{ margin:0 !important; }
+</style>
+
 
 <!-- Crawford-style fixed bg stages. Hero stage is visible by default;
      every other stage fades in via GSAP at its section's boundary.
