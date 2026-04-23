@@ -785,21 +785,23 @@ p{ margin:0 0 1em }
 
 /* HAMBURGER TOGGLE — hidden on desktop */
 .nn-hamburger{
-  display:none; background:none; border:none; cursor:pointer;
-  width:40px; height:40px; position:relative; z-index:102;
-  padding:0; flex-shrink:0;
+  display:none; background:none; border:1px solid rgba(255,255,255,0.25); cursor:pointer;
+  width:44px; height:44px; position:relative; z-index:102;
+  padding:0; flex-shrink:0; border-radius:8px;
 }
 .nn-hamburger span{
   display:block; width:22px; height:2px; background:#fff;
-  border-radius:2px; position:absolute; left:9px;
+  border-radius:2px; position:absolute; left:10px;
   transition:transform 0.3s ease, opacity 0.2s ease;
 }
-.nn-hamburger span:nth-child(1){ top:12px }
-.nn-hamburger span:nth-child(2){ top:19px }
-.nn-hamburger span:nth-child(3){ top:26px }
-.nn-hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg) }
+.nn-hamburger span:nth-child(1){ top:13px }
+.nn-hamburger span:nth-child(2){ top:21px }
+.nn-hamburger span:nth-child(3){ top:29px }
+/* Open state: X icon */
+.nn-hamburger.open{ border-color:rgba(255,255,255,0.5) }
+.nn-hamburger.open span:nth-child(1){ transform:translateY(8px) rotate(45deg) }
 .nn-hamburger.open span:nth-child(2){ opacity:0 }
-.nn-hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg) }
+.nn-hamburger.open span:nth-child(3){ transform:translateY(-8px) rotate(-45deg) }
 
 /* MOBILE DRAWER */
 .nn-mobile-drawer{
@@ -1642,13 +1644,13 @@ p{ margin:0 0 1em }
 .nn-footer-legal{ display:flex; gap:20px }
 .nn-footer-legal a{ color:rgba(255,255,255,0.4); text-decoration:none; transition:color 0.2s }
 .nn-footer-legal a:hover{ color:rgba(255,255,255,0.7) }
-@media (max-width:600px){
-  .nn-footer-inner{ grid-template-columns:1fr; text-align:center }
-  .nn-footer-nav{ justify-content:center; flex-wrap:wrap }
-  .nn-footer-bottom{ flex-direction:column; gap:12px; text-align:center }
-  .nn-footer-legal{ justify-content:center }
-}
-</style>
+@media (max-width:768px){
+  .nn-footer-inner{
+    grid-template-columns:1fr; text-align:center;
+    gap:32px;
+  }
+  .nn-footer-brand{ display:flex; flex-direction:column; align-items:center; }
+  .nn-footer-brand img{ margin:0 auto 14px; }
 
 <!-- WordPress theme override -->
 <style>
@@ -1887,8 +1889,32 @@ body #gform_wrapper_1 input[type="submit"]{
 #gform_wrapper_1 .ginput_container::after{
   display:none !important;
 }
+
+/* Mobile hamburger fix - prevent WP from breaking the spans */
+.nn-hamburger{ background:none !important; }
+.nn-hamburger span{
+  display:block !important;
+  width:22px !important;
+  height:2px !important;
+  background:#fff !important;
+  border-radius:2px !important;
+  position:absolute !important;
+}
+
+/* Mobile footer centering */
+@media (max-width:768px){
+  .nn-footer-brand{ display:flex !important; flex-direction:column !important; align-items:center !important; }
+  .nn-footer-brand img{ margin:0 auto 14px !important; }
+  .nn-footer-tagline{ max-width:none !important; text-align:center !important; }
+}
 </style>
 
+  .nn-footer-bottom{ flex-direction:column; gap:12px; text-align:center }
+  .nn-footer-legal{ justify-content:center }
+}
+</style>
+</head>
+<body>
 
 <!-- Crawford-style fixed bg stages. Hero stage is visible by default;
      every other stage fades in via GSAP at its section's boundary.
@@ -2201,7 +2227,7 @@ body #gform_wrapper_1 input[type="submit"]{
     <div class="nn-built-head">
       <p class="nn-eyebrow">The Way You Actually Work</p>
       <h2>Built around how agencies <span class="nn-grad-text">actually work.</span></h2>
-      <p>Most project tools were built for software teams. Net Net was built for the shape of agency work — jobs with deliverables, scope that moves, teams that flex.</p>
+      <p>Typical project management software is either too technical or doesn't track production work. Net Net was born out of a digital marketing firm's struggles to get true visibility and controls for all the projects and retainers they were running. It was engineered for the way we do business ever since its launch in 2024. V2 will greatly expand on that.</p>
     </div>
 
     <div class="nn-built-grid">
@@ -2361,7 +2387,7 @@ body #gform_wrapper_1 input[type="submit"]{
     <div class="nn-portrait-copy">
       <div class="nn-portrait-card nn-anim-keep nn-animate-fadeup">
         <p class="nn-portrait-eyebrow">A Note From The Co-Founder</p>
-        <p class="nn-portrait-quote">"I've run an agency for almost two decades. Every PM tool treated us like a software team. Net Net is what I wished existed the whole time — built around how agency work actually flows."</p>
+        <p class="nn-portrait-quote">"I've run an agency for almost two decades. Every PM tool treated us like a software team. Net Net is what I wished existed the whole time, built around how agency work actually flows."</p>
         <p class="nn-portrait-attr">Marc Pitre</p>
         <p class="nn-portrait-role">Co-Founder, Net Net</p>
       </div>
@@ -2452,7 +2478,6 @@ body #gform_wrapper_1 input[type="submit"]{
      ~10 hero moments animated (.nn-anim-keep).
      Flywheel nodes reveal via separate stagger (no pinning).
      ============================================================= -->
-
 <script>
 (function(){
   if (!window.gsap || !window.ScrollTrigger) return;
@@ -2460,6 +2485,7 @@ body #gform_wrapper_1 input[type="submit"]{
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
+
 
   // --- CULLED entrance effects (opt-in via .nn-anim-keep) ---
   gsap.utils.toArray('.nn-anim-keep.nn-animate-fadeup').forEach(el => {
@@ -2791,3 +2817,6 @@ body #gform_wrapper_1 input[type="submit"]{
   window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
 </script>
+
+</body>
+</html>
