@@ -1749,23 +1749,19 @@ section{ background:transparent !important; }
 
 /* ================================================================
    GRAVITY FORMS OVERRIDE — frosted glass dark theme
-   Beefed up to beat GF theme_reset, foundation, framework, orbital
+   NO all:unset — targeted overrides only to beat GF orbital theme
    ================================================================ */
 
 /* Container */
-#gform_wrapper_1{
+#gform_wrapper_1,
+#gform_wrapper_1.gform_wrapper,
+#gform_wrapper_1.gform-theme--framework{
   max-width:520px !important;
   margin:0 auto !important;
   font-family:'Plus Jakarta Sans', sans-serif !important;
-}
-
-/* Kill ALL Gravity theme framework junk */
-#gform_wrapper_1.gform-theme--framework input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]),
-#gform_wrapper_1 .gform-theme--framework input[type="text"],
-#gform_wrapper_1 .gform-theme--framework input[type="email"]{
-  all: unset !important;
-  display: block !important;
-  box-sizing: border-box !important;
+  background:transparent !important;
+  border:none !important;
+  padding:0 !important;
 }
 
 /* Labels — visually hidden for a11y */
@@ -1783,8 +1779,9 @@ section{ background:transparent !important; }
 #gform_wrapper_1 .ginput_complex .name_first,
 #gform_wrapper_1 .ginput_complex .name_last{ padding:0 !important; }
 
-/* Field grid — MORE SPACING */
-#gform_wrapper_1 .gform_fields{
+/* Field grid — more spacing */
+#gform_wrapper_1 .gform_fields,
+#gform_wrapper_1 .gform_fields.top_label{
   display:grid !important;
   gap:20px !important;
   padding:0 !important;
@@ -1792,20 +1789,29 @@ section{ background:transparent !important; }
 }
 
 /* Name field side by side */
-#gform_wrapper_1 #field_1_1 .ginput_complex{
+#gform_wrapper_1 #field_1_1 .ginput_complex,
+#gform_wrapper_1 .ginput_complex.ginput_container_name{
   display:grid !important;
   grid-template-columns:1fr 1fr !important;
   gap:20px !important;
 }
 @media (max-width:520px){
-  #gform_wrapper_1 #field_1_1 .ginput_complex{
+  #gform_wrapper_1 #field_1_1 .ginput_complex,
+  #gform_wrapper_1 .ginput_complex.ginput_container_name{
     grid-template-columns:1fr !important;
   }
 }
 
-/* --- FROSTED GLASS INPUT FIELDS --- */
+/* --- FROSTED GLASS INPUT FIELDS ---
+   Ultra-high specificity selectors to beat GF orbital theme */
+#gform_wrapper_1.gform-theme--framework input[type="text"],
+#gform_wrapper_1.gform-theme--framework input[type="email"],
+#gform_wrapper_1 .gform_body input[type="text"],
+#gform_wrapper_1 .gform_body input[type="email"],
 #gform_wrapper_1 input[type="text"],
-#gform_wrapper_1 input[type="email"]{
+#gform_wrapper_1 input[type="email"],
+body #gform_wrapper_1 input[type="text"],
+body #gform_wrapper_1 input[type="email"]{
   width:100% !important;
   background:rgba(255,255,255,0.10) !important;
   backdrop-filter:blur(12px) !important;
@@ -1816,8 +1822,15 @@ section{ background:transparent !important; }
   color:#FAFAF5 !important;
   font-family:'Plus Jakarta Sans', sans-serif !important;
   font-size:15px !important;
+  line-height:1.4 !important;
   transition:border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
   box-sizing:border-box !important;
+  outline:none !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  height:auto !important;
+  margin:0 !important;
+  box-shadow:none !important;
 }
 
 #gform_wrapper_1 input[type="text"]::placeholder,
@@ -1826,11 +1839,13 @@ section{ background:transparent !important; }
 }
 
 #gform_wrapper_1 input[type="text"]:focus,
-#gform_wrapper_1 input[type="email"]:focus{
-  outline:none !important;
+#gform_wrapper_1 input[type="email"]:focus,
+body #gform_wrapper_1 input[type="text"]:focus,
+body #gform_wrapper_1 input[type="email"]:focus{
   background:rgba(255,255,255,0.16) !important;
   border-color:rgba(255,255,255,0.5) !important;
   box-shadow:0 0 0 3px rgba(113,31,255,0.25), 0 4px 20px rgba(0,0,0,0.3) !important;
+  outline:none !important;
 }
 
 /* Submit button */
@@ -1840,7 +1855,8 @@ section{ background:transparent !important; }
 }
 
 #gform_wrapper_1 input[type="submit"],
-#gform_wrapper_1 .gform_button{
+#gform_wrapper_1 .gform_button,
+body #gform_wrapper_1 input[type="submit"]{
   width:100% !important;
   background:linear-gradient(135deg, var(--nn-purple, #711FFF), var(--nn-teal, #2DD4BF)) !important;
   color:#fff !important;
@@ -1856,6 +1872,10 @@ section{ background:transparent !important; }
   transition:filter 0.2s, transform 0.15s !important;
   box-sizing:border-box !important;
   box-shadow:0 8px 24px rgba(113,31,255,0.3) !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  height:auto !important;
+  line-height:1.4 !important;
 }
 
 #gform_wrapper_1 input[type="submit"]:hover,
@@ -1892,9 +1912,26 @@ section{ background:transparent !important; }
   font-size:18px !important; text-align:center !important; padding:24px !important;
 }
 
-/* Field containers */
-#gform_wrapper_1 .gfield{ padding:0 !important; margin:0 !important; border:none !important; }
-#gform_wrapper_1 .ginput_container{ margin:0 !important; }
+/* Field containers — kill GF theme spacing/borders */
+#gform_wrapper_1 .gfield{
+  padding:0 !important; margin:0 !important; border:none !important;
+  background:transparent !important;
+}
+#gform_wrapper_1 .ginput_container{
+  margin:0 !important;
+}
+#gform_wrapper_1 .gform_body{
+  padding:0 !important;
+  margin:0 !important;
+}
+
+/* Kill GF orbital theme decorations */
+#gform_wrapper_1 .gfield::before,
+#gform_wrapper_1 .gfield::after,
+#gform_wrapper_1 .ginput_container::before,
+#gform_wrapper_1 .ginput_container::after{
+  display:none !important;
+}
 </style>
 
 
