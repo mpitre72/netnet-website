@@ -812,6 +812,15 @@ p{ margin:0 0 1em }
   pointer-events:none;
 }
 .nn-mobile-drawer.open{ opacity:1; pointer-events:auto }
+.nn-drawer-close{
+  position:absolute; top:20px; right:20px;
+  background:none; border:1px solid rgba(255,255,255,0.3);
+  color:#fff; font-size:24px; width:44px; height:44px;
+  border-radius:10px; cursor:pointer; display:flex;
+  align-items:center; justify-content:center;
+  transition:border-color 0.2s, background 0.2s;
+}
+.nn-drawer-close:hover{ border-color:rgba(255,255,255,0.6); background:rgba(255,255,255,0.08); }
 .nn-mobile-drawer a{
   font-size:clamp(20px, 4.5vw, 28px); font-weight:600; color:#fff;
   opacity:0.9; transition:opacity 0.2s; text-decoration:none;
@@ -1657,6 +1666,8 @@ p{ margin:0 0 1em }
   .nn-footer-legal{ justify-content:center }
 }
 </style>
+</head>
+<body>
 
 <!-- WordPress theme override -->
 <style>
@@ -1915,8 +1926,6 @@ body #gform_wrapper_1 input[type="submit"]{
 }
 </style>
 
-
-<!-- Crawford-style fixed bg stages. Hero stage is visible by default;
      every other stage fades in via GSAP at its section's boundary.
      All 9 sit behind every .nn-stage-section, which is transparent
      and lifts content above via z-index:1. Order in the DOM doesn't
@@ -1960,6 +1969,7 @@ body #gform_wrapper_1 input[type="submit"]{
 
 <!-- Mobile fullscreen drawer -->
 <div class="nn-mobile-drawer">
+  <button class="nn-drawer-close" aria-label="Close menu" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); document.querySelector('.nn-mobile-drawer').classList.remove('open');">✕</button>
   <a href="#drift" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Drift &amp; Flow</a>
   <a href="#signals" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Two Signals</a>
   <a href="#hybrid" onclick="document.querySelector('.nn-hamburger').classList.remove('open'); this.parentElement.classList.remove('open');">Hybrid Delivery</a>
@@ -2486,9 +2496,9 @@ body #gform_wrapper_1 input[type="submit"]{
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
-
   // --- CULLED entrance effects (opt-in via .nn-anim-keep) ---
   gsap.utils.toArray('.nn-anim-keep.nn-animate-fadeup').forEach(el => {
+
     gsap.fromTo(el,
       { autoAlpha: 0, y: 60 },
       {
