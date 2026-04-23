@@ -1005,7 +1005,9 @@ p{ margin:0 0 1em }
 .nn-drift-pronouncement{
   display:flex; align-items:center; justify-content:center;
   gap:clamp(16px, 2.4vw, 32px); margin-top:52px; flex-wrap:wrap;
-  overflow:hidden;
+}
+@media (max-width:767px){
+  .nn-drift-pronouncement{ overflow:hidden; }
 }
 .nn-drift-rule{
   display:block; height:1px; width:clamp(50px, 10vw, 130px);
@@ -1647,17 +1649,17 @@ p{ margin:0 0 1em }
   .nn-footer-legal{ justify-content:center }
 }
 </style>
+</head>
 
-<!-- WordPress theme override -->
+<!-- WordPress theme override v3 -->
 <style>
 /* ================================================================
-   WORDPRESS THEME OVERRIDE — fights WP core, Hello Elementor,
-   wp-block-library, Gravity Forms theme, and Elementor frontend
-   CSS that load alongside our page and stomp on our styles.
-   All rules use !important to win the specificity war.
+   WORDPRESS THEME OVERRIDE v3
+   Fixes: centered headings, drift text clipping, form spacing,
+   section backgrounds
    ================================================================ */
 
-/* --- GLOBAL RESETS — undo WP/theme damage --- */
+/* --- GLOBAL RESETS --- */
 body{
   margin:0 !important;
   padding:0 !important;
@@ -1670,34 +1672,35 @@ body{
   -webkit-font-smoothing:antialiased !important;
 }
 
-/* WP admin bar offset fix */
 html{ margin-top:0 !important; }
 #wpadminbar{ position:fixed !important; }
 
-/* Kill WP block library spacing */
 .wp-block-html{ margin-bottom:0 !important; padding:0 !important; }
 .entry-content, .page-content, .post-content{ padding:0 !important; margin:0 !important; }
 .site-content, .ast-container, #content{ padding:0 !important; margin:0 auto !important; max-width:none !important; }
 
+/* HEADINGS — preserve auto horizontal margins for centering */
 h1,h2,h3{
   font-family:'Space Grotesk', -apple-system, system-ui, sans-serif !important;
   letter-spacing:-0.02em !important;
   line-height:1.05 !important;
-  margin:0 0 0.5em !important;
   color:var(--nn-cream) !important;
 }
 h1{ font-size:var(--nn-h1) !important; font-weight:700 !important; }
 h2{ font-size:var(--nn-h2) !important; font-weight:700 !important; }
 h3{ font-size:var(--nn-h3) !important; font-weight:600 !important; }
+/* Only override top/bottom margin — NOT left/right (preserves margin:auto centering) */
+h1,h2,h3{
+  margin-top:0 !important;
+  margin-bottom:0.5em !important;
+}
 
 p{ margin:0 0 1em !important; color:var(--nn-cream) !important; }
 a{ color:inherit !important; text-decoration:none !important; }
 img{ max-width:100% !important; height:auto !important; display:block !important; }
 
-/* --- Section backgrounds — override any WP defaults --- */
 section{ background:transparent !important; }
 
-/* --- Gradient text fix for WP --- */
 .nn-grad-text{
   background: var(--nn-grad-text) !important;
   -webkit-background-clip:text !important;
@@ -1706,26 +1709,28 @@ section{ background:transparent !important; }
   color:transparent !important;
 }
 
-/* --- Nav links color --- */
 .nn-nav a{ color:var(--nn-cream) !important; }
 .nn-nav-cta{ color:#fff !important; }
-
-/* --- Eyebrow --- */
 .nn-eyebrow{ color:var(--nn-teal) !important; }
-
-/* --- Muted text --- */
 .nn-muted, [class*="nn-muted"]{ color:var(--nn-muted) !important; }
 
-/* --- Hero section specifics --- */
+/* --- Section specifics --- */
 .nn-hero{ padding-top:var(--nn-pad-y) !important; padding-bottom:0 !important; min-height:100vh !important; }
 .nn-hero h1{ color:var(--nn-cream) !important; }
-
-/* --- CTA section --- */
 .nn-cta-eyebrow{ color:var(--nn-cream) !important; font-family:'Space Grotesk', sans-serif !important; }
 .nn-cta-date{ color:var(--nn-cream) !important; }
 .nn-cta-fine{ color:var(--nn-muted) !important; }
 
-/* --- Card backgrounds --- */
+/* Centered text sections — ensure auto margins survive */
+.nn-visibility h2{ margin-left:auto !important; margin-right:auto !important; }
+.nn-loop-head{ margin-left:auto !important; margin-right:auto !important; }
+.nn-loop-head h2{ margin-left:auto !important; margin-right:auto !important; }
+
+/* Survey ribbon background fix */
+.nn-ribbon{
+  background:linear-gradient(135deg, #711FFF 0%, #3D0F8F 100%) !important;
+}
+
 .nn-glass-card{
   background:rgba(255,255,255,0.06) !important;
   backdrop-filter:blur(18px) !important;
@@ -1734,7 +1739,6 @@ section{ background:transparent !important; }
   border-radius:20px !important;
 }
 
-/* --- Buttons override WP button styles --- */
 .nn-btn-primary{
   background:linear-gradient(135deg, #711FFF 0%, #2DD4BF 100%) !important;
   color:#fff !important;
@@ -1748,11 +1752,9 @@ section{ background:transparent !important; }
 }
 
 /* ================================================================
-   GRAVITY FORMS OVERRIDE — frosted glass dark theme
-   NO all:unset — targeted overrides only to beat GF orbital theme
+   GRAVITY FORMS — frosted glass dark theme v3
    ================================================================ */
 
-/* Container */
 #gform_wrapper_1,
 #gform_wrapper_1.gform_wrapper,
 #gform_wrapper_1.gform-theme--framework{
@@ -1764,7 +1766,6 @@ section{ background:transparent !important; }
   padding:0 !important;
 }
 
-/* Labels — visually hidden for a11y */
 #gform_wrapper_1 .gfield_label,
 #gform_wrapper_1 .ginput_complex label,
 #gform_wrapper_1 .ginput_complex .name_first label,
@@ -1775,11 +1776,9 @@ section{ background:transparent !important; }
   white-space:nowrap !important; border:0 !important;
 }
 
-/* Sub-label containers */
 #gform_wrapper_1 .ginput_complex .name_first,
 #gform_wrapper_1 .ginput_complex .name_last{ padding:0 !important; }
 
-/* Field grid — more spacing */
 #gform_wrapper_1 .gform_fields,
 #gform_wrapper_1 .gform_fields.top_label{
   display:grid !important;
@@ -1788,7 +1787,6 @@ section{ background:transparent !important; }
   margin:0 !important;
 }
 
-/* Name field side by side */
 #gform_wrapper_1 #field_1_1 .ginput_complex,
 #gform_wrapper_1 .ginput_complex.ginput_container_name{
   display:grid !important;
@@ -1802,8 +1800,7 @@ section{ background:transparent !important; }
   }
 }
 
-/* --- FROSTED GLASS INPUT FIELDS ---
-   Ultra-high specificity selectors to beat GF orbital theme */
+/* FROSTED GLASS INPUTS */
 #gform_wrapper_1.gform-theme--framework input[type="text"],
 #gform_wrapper_1.gform-theme--framework input[type="email"],
 #gform_wrapper_1 .gform_body input[type="text"],
@@ -1848,10 +1845,11 @@ body #gform_wrapper_1 input[type="email"]:focus{
   outline:none !important;
 }
 
-/* Submit button */
+/* SUBMIT BUTTON — more top margin for breathing room */
 #gform_wrapper_1 .gform_footer,
 #gform_wrapper_1 .gform-footer{
-  padding:0 !important; margin:4px 0 0 !important;
+  padding:0 !important;
+  margin:12px 0 0 !important;
 }
 
 #gform_wrapper_1 input[type="submit"],
@@ -1885,7 +1883,6 @@ body #gform_wrapper_1 input[type="submit"]{
   box-shadow:0 12px 32px rgba(113,31,255,0.45) !important;
 }
 
-/* Validation */
 #gform_wrapper_1 .gfield_error input[type="text"],
 #gform_wrapper_1 .gfield_error input[type="email"]{
   border-color:rgba(255,100,100,0.6) !important;
@@ -1904,7 +1901,6 @@ body #gform_wrapper_1 input[type="submit"]{
   padding:16px !important; margin-bottom:16px !important;
 }
 
-/* Confirmation */
 #gform_wrapper_1 .gform_confirmation_message,
 #gform_confirmation_wrapper_1{
   color:#FAFAF5 !important;
@@ -1912,20 +1908,13 @@ body #gform_wrapper_1 input[type="submit"]{
   font-size:18px !important; text-align:center !important; padding:24px !important;
 }
 
-/* Field containers — kill GF theme spacing/borders */
 #gform_wrapper_1 .gfield{
   padding:0 !important; margin:0 !important; border:none !important;
   background:transparent !important;
 }
-#gform_wrapper_1 .ginput_container{
-  margin:0 !important;
-}
-#gform_wrapper_1 .gform_body{
-  padding:0 !important;
-  margin:0 !important;
-}
+#gform_wrapper_1 .ginput_container{ margin:0 !important; }
+#gform_wrapper_1 .gform_body{ padding:0 !important; margin:0 !important; }
 
-/* Kill GF orbital theme decorations */
 #gform_wrapper_1 .gfield::before,
 #gform_wrapper_1 .gfield::after,
 #gform_wrapper_1 .ginput_container::before,
@@ -1933,7 +1922,6 @@ body #gform_wrapper_1 input[type="submit"]{
   display:none !important;
 }
 </style>
-
 
 <!-- Crawford-style fixed bg stages. Hero stage is visible by default;
      every other stage fades in via GSAP at its section's boundary.
@@ -2635,8 +2623,8 @@ body #gform_wrapper_1 input[type="submit"]{
      ~10 hero moments animated (.nn-anim-keep).
      Flywheel nodes reveal via separate stagger (no pinning).
      ============================================================= -->
-
 <script>
+
 (function(){
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
@@ -2966,3 +2954,4 @@ body #gform_wrapper_1 input[type="submit"]{
 })();
 </script>
 
+</body>
