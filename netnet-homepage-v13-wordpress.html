@@ -1651,18 +1651,14 @@ p{ margin:0 0 1em }
 </style>
 </head>
 
-<!-- WordPress theme override v4 -->
+<!-- WordPress theme override v5 -->
 <style>
 /* ================================================================
-   WORDPRESS THEME OVERRIDE v3
-   Fixes: centered headings, drift text clipping, form spacing,
-   section backgrounds
+   WORDPRESS THEME OVERRIDE v5
    ================================================================ */
 
-/* --- GLOBAL RESETS --- */
 body{
-  margin:0 !important;
-  padding:0 !important;
+  margin:0 !important; padding:0 !important;
   background:var(--nn-dark) !important;
   color:var(--nn-cream) !important;
   font-family:'Plus Jakarta Sans', -apple-system, system-ui, sans-serif !important;
@@ -1671,34 +1667,34 @@ body{
   overflow-x:clip !important;
   -webkit-font-smoothing:antialiased !important;
 }
-
 html{ margin-top:0 !important; }
 #wpadminbar{ position:fixed !important; }
-
 .wp-block-html{ margin-bottom:0 !important; padding:0 !important; }
-.entry-content, .page-content, .post-content{ padding:0 !important; margin:0 !important; }
-.site-content, .ast-container, #content{ padding:0 !important; margin:0 auto !important; max-width:none !important; }
+.entry-content,.page-content,.post-content{ padding:0 !important; margin:0 !important; }
+.site-content,.ast-container,#content{ padding:0 !important; margin:0 auto !important; max-width:none !important; }
 
-/* HEADINGS — preserve auto horizontal margins for centering */
+/* HEADINGS — only override top/bottom margin */
 h1,h2,h3{
   font-family:'Space Grotesk', -apple-system, system-ui, sans-serif !important;
   letter-spacing:-0.02em !important;
   line-height:1.05 !important;
   color:var(--nn-cream) !important;
+  margin-top:0 !important;
+  margin-bottom:0.5em !important;
 }
 h1{ font-size:var(--nn-h1) !important; font-weight:700 !important; }
 h2{ font-size:var(--nn-h2) !important; font-weight:700 !important; }
 h3{ font-size:var(--nn-h3) !important; font-weight:600 !important; }
-/* Only override top/bottom margin — NOT left/right (preserves margin:auto centering) */
-h1,h2,h3{
+
+/* PARAGRAPHS — only override top/bottom margin, PRESERVE auto for centering */
+p{
   margin-top:0 !important;
-  margin-bottom:0.5em !important;
+  margin-bottom:1em !important;
+  color:var(--nn-cream) !important;
 }
 
-p{ margin:0 0 1em !important; color:var(--nn-cream) !important; }
 a{ color:inherit !important; text-decoration:none !important; }
 img{ max-width:100% !important; height:auto !important; display:block !important; }
-
 section{ background:transparent !important; }
 
 .nn-grad-text{
@@ -1708,29 +1704,49 @@ section{ background:transparent !important; }
   -webkit-text-fill-color:transparent !important;
   color:transparent !important;
 }
-
 .nn-nav a{ color:var(--nn-cream) !important; }
 .nn-nav-cta{ color:#fff !important; }
 .nn-eyebrow{ color:var(--nn-teal) !important; }
-.nn-muted, [class*="nn-muted"]{ color:var(--nn-muted) !important; }
+.nn-muted,[class*="nn-muted"]{ color:var(--nn-muted) !important; }
 
-/* --- Section specifics --- */
+/* Section specifics */
 .nn-hero{ padding-top:var(--nn-pad-y) !important; padding-bottom:0 !important; min-height:100vh !important; }
 .nn-hero h1{ color:var(--nn-cream) !important; }
 .nn-cta-eyebrow{ color:var(--nn-cream) !important; font-family:'Space Grotesk', sans-serif !important; }
 .nn-cta-date{ color:var(--nn-cream) !important; }
 .nn-cta-fine{ color:var(--nn-muted) !important; }
 
-/* Centered text sections — ensure auto margins survive */
+/* Centered text sections — ensure auto margins survive on both h2 AND p */
 .nn-visibility h2{ margin-left:auto !important; margin-right:auto !important; }
+.nn-visibility p{ margin-left:auto !important; margin-right:auto !important; }
 .nn-loop-head{ margin-left:auto !important; margin-right:auto !important; text-align:center !important; }
 .nn-loop-head h2{ margin-left:auto !important; margin-right:auto !important; }
+.nn-loop-intro{ margin-left:auto !important; margin-right:auto !important; }
 
-/* Survey ribbon background fix */
-.nn-ribbon{
-  background:linear-gradient(135deg, #711FFF 0%, #3D0F8F 100%) !important;
+/* Invite everyone section — centered text */
+.nn-invite{ text-align:center !important; }
+.nn-invite p, .nn-invite-sub{ margin-left:auto !important; margin-right:auto !important; }
+.nn-invite h2{ margin-left:auto !important; margin-right:auto !important; }
+
+/* --- PERFORMANCE LOOP CONTRAST FIX ---
+   White text on green bg needs more punch */
+.nn-loop-section h2{
+  color:#fff !important;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3) !important;
+}
+.nn-loop-eyebrow{
+  color:var(--nn-gold) !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4) !important;
+}
+.nn-loop-intro{
+  color:rgba(255,255,255,0.95) !important;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.4) !important;
 }
 
+/* Survey ribbon */
+.nn-ribbon{ background:linear-gradient(135deg, #711FFF 0%, #3D0F8F 100%) !important; }
+
+/* Glass cards */
 .nn-glass-card{
   background:rgba(255,255,255,0.06) !important;
   backdrop-filter:blur(18px) !important;
@@ -1739,59 +1755,50 @@ section{ background:transparent !important; }
   border-radius:20px !important;
 }
 
+/* Buttons */
 .nn-btn-primary{
   background:linear-gradient(135deg, #711FFF 0%, #2DD4BF 100%) !important;
-  color:#fff !important;
-  border:none !important;
-  font-family:inherit !important;
+  color:#fff !important; border:none !important; font-family:inherit !important;
 }
 .nn-btn-ghost{
-  background:transparent !important;
-  color:var(--nn-cream) !important;
+  background:transparent !important; color:var(--nn-cream) !important;
   border:1.5px solid rgba(255,255,255,0.3) !important;
 }
 
-/* ================================================================
-   GRAVITY FORMS — frosted glass dark theme v3
-   ================================================================ */
+/* --- FOOTER LOGO FIX --- */
+.nn-footer-brand img{
+  height:32px !important;
+  width:auto !important;
+  max-height:32px !important;
+}
 
+/* ================================================================
+   GRAVITY FORMS — frosted glass dark theme
+   ================================================================ */
 #gform_wrapper_1,
 #gform_wrapper_1.gform_wrapper,
 #gform_wrapper_1.gform-theme--framework{
-  max-width:520px !important;
-  margin:0 auto !important;
+  max-width:520px !important; margin:0 auto !important;
   font-family:'Plus Jakarta Sans', sans-serif !important;
-  background:transparent !important;
-  border:none !important;
-  padding:0 !important;
+  background:transparent !important; border:none !important; padding:0 !important;
 }
-
 #gform_wrapper_1 .gfield_label,
 #gform_wrapper_1 .ginput_complex label,
 #gform_wrapper_1 .ginput_complex .name_first label,
 #gform_wrapper_1 .ginput_complex .name_last label{
-  position:absolute !important;
-  width:1px !important; height:1px !important;
+  position:absolute !important; width:1px !important; height:1px !important;
   overflow:hidden !important; clip:rect(0,0,0,0) !important;
   white-space:nowrap !important; border:0 !important;
 }
-
 #gform_wrapper_1 .ginput_complex .name_first,
 #gform_wrapper_1 .ginput_complex .name_last{ padding:0 !important; }
-
 #gform_wrapper_1 .gform_fields,
 #gform_wrapper_1 .gform_fields.top_label{
-  display:grid !important;
-  gap:20px !important;
-  padding:0 !important;
-  margin:0 !important;
+  display:grid !important; gap:20px !important; padding:0 !important; margin:0 !important;
 }
-
 #gform_wrapper_1 #field_1_1 .ginput_complex,
 #gform_wrapper_1 .ginput_complex.ginput_container_name{
-  display:grid !important;
-  grid-template-columns:1fr 1fr !important;
-  gap:20px !important;
+  display:grid !important; grid-template-columns:1fr 1fr !important; gap:20px !important;
 }
 @media (max-width:520px){
   #gform_wrapper_1 #field_1_1 .ginput_complex,
@@ -1799,8 +1806,6 @@ section{ background:transparent !important; }
     grid-template-columns:1fr !important;
   }
 }
-
-/* FROSTED GLASS INPUTS */
 #gform_wrapper_1.gform-theme--framework input[type="text"],
 #gform_wrapper_1.gform-theme--framework input[type="email"],
 #gform_wrapper_1 .gform_body input[type="text"],
@@ -1811,30 +1816,20 @@ body #gform_wrapper_1 input[type="text"],
 body #gform_wrapper_1 input[type="email"]{
   width:100% !important;
   background:rgba(255,255,255,0.10) !important;
-  backdrop-filter:blur(12px) !important;
-  -webkit-backdrop-filter:blur(12px) !important;
+  backdrop-filter:blur(12px) !important; -webkit-backdrop-filter:blur(12px) !important;
   border:1px solid rgba(255,255,255,0.25) !important;
-  border-radius:14px !important;
-  padding:18px 22px !important;
-  color:#FAFAF5 !important;
-  font-family:'Plus Jakarta Sans', sans-serif !important;
-  font-size:15px !important;
-  line-height:1.4 !important;
+  border-radius:14px !important; padding:18px 22px !important;
+  color:#FAFAF5 !important; font-family:'Plus Jakarta Sans', sans-serif !important;
+  font-size:15px !important; line-height:1.4 !important;
   transition:border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
-  box-sizing:border-box !important;
-  outline:none !important;
-  appearance:none !important;
-  -webkit-appearance:none !important;
-  height:auto !important;
-  margin:0 !important;
-  box-shadow:none !important;
+  box-sizing:border-box !important; outline:none !important;
+  appearance:none !important; -webkit-appearance:none !important;
+  height:auto !important; margin:0 !important; box-shadow:none !important;
 }
-
 #gform_wrapper_1 input[type="text"]::placeholder,
 #gform_wrapper_1 input[type="email"]::placeholder{
   color:rgba(250,250,250,0.50) !important;
 }
-
 #gform_wrapper_1 input[type="text"]:focus,
 #gform_wrapper_1 input[type="email"]:focus,
 body #gform_wrapper_1 input[type="text"]:focus,
@@ -1844,77 +1839,52 @@ body #gform_wrapper_1 input[type="email"]:focus{
   box-shadow:0 0 0 3px rgba(113,31,255,0.25), 0 4px 20px rgba(0,0,0,0.3) !important;
   outline:none !important;
 }
-
-/* SUBMIT BUTTON — more top margin for breathing room */
 #gform_wrapper_1 .gform_footer,
 #gform_wrapper_1 .gform-footer{
-  padding:0 !important;
-  margin:12px 0 0 !important;
+  padding:0 !important; margin:12px 0 0 !important;
 }
-
 #gform_wrapper_1 input[type="submit"],
 #gform_wrapper_1 .gform_button,
 body #gform_wrapper_1 input[type="submit"]{
   width:100% !important;
   background:linear-gradient(135deg, var(--nn-purple, #711FFF), var(--nn-teal, #2DD4BF)) !important;
-  color:#fff !important;
-  font-family:'Space Grotesk', sans-serif !important;
-  font-weight:700 !important;
-  font-size:15px !important;
-  letter-spacing:0.08em !important;
-  text-transform:uppercase !important;
-  border:none !important;
-  border-radius:14px !important;
-  padding:20px 32px !important;
-  cursor:pointer !important;
+  color:#fff !important; font-family:'Space Grotesk', sans-serif !important;
+  font-weight:700 !important; font-size:15px !important;
+  letter-spacing:0.08em !important; text-transform:uppercase !important;
+  border:none !important; border-radius:14px !important;
+  padding:20px 32px !important; cursor:pointer !important;
   transition:filter 0.2s, transform 0.15s !important;
   box-sizing:border-box !important;
   box-shadow:0 8px 24px rgba(113,31,255,0.3) !important;
-  appearance:none !important;
-  -webkit-appearance:none !important;
-  height:auto !important;
-  line-height:1.4 !important;
+  appearance:none !important; -webkit-appearance:none !important;
+  height:auto !important; line-height:1.4 !important;
 }
-
 #gform_wrapper_1 input[type="submit"]:hover,
 #gform_wrapper_1 .gform_button:hover{
-  filter:brightness(1.12) !important;
-  transform:translateY(-1px) !important;
+  filter:brightness(1.12) !important; transform:translateY(-1px) !important;
   box-shadow:0 12px 32px rgba(113,31,255,0.45) !important;
 }
-
 #gform_wrapper_1 .gfield_error input[type="text"],
 #gform_wrapper_1 .gfield_error input[type="email"]{
   border-color:rgba(255,100,100,0.6) !important;
   background:rgba(255,50,50,0.08) !important;
 }
 #gform_wrapper_1 .validation_message{
-  color:rgba(255,150,150,0.9) !important;
-  font-size:13px !important; margin-top:6px !important;
-  background:transparent !important; border:none !important; padding:0 !important;
+  color:rgba(255,150,150,0.9) !important; font-size:13px !important;
+  margin-top:6px !important; background:transparent !important;
+  border:none !important; padding:0 !important;
 }
-#gform_wrapper_1 .gform_validation_errors{
-  background:rgba(255,50,50,0.08) !important;
-  border:1px solid rgba(255,100,100,0.3) !important;
-  border-radius:12px !important;
-  color:rgba(255,200,200,0.9) !important;
-  padding:16px !important; margin-bottom:16px !important;
-}
-
 #gform_wrapper_1 .gform_confirmation_message,
 #gform_confirmation_wrapper_1{
-  color:#FAFAF5 !important;
-  font-family:'Plus Jakarta Sans', sans-serif !important;
+  color:#FAFAF5 !important; font-family:'Plus Jakarta Sans', sans-serif !important;
   font-size:18px !important; text-align:center !important; padding:24px !important;
 }
-
 #gform_wrapper_1 .gfield{
   padding:0 !important; margin:0 !important; border:none !important;
   background:transparent !important;
 }
 #gform_wrapper_1 .ginput_container{ margin:0 !important; }
 #gform_wrapper_1 .gform_body{ padding:0 !important; margin:0 !important; }
-
 #gform_wrapper_1 .gfield::before,
 #gform_wrapper_1 .gfield::after,
 #gform_wrapper_1 .ginput_container::before,
